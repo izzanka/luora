@@ -13,7 +13,7 @@ class ContentController extends Controller
     
     public function index(){
         
-        $user = User::with(['questions','answers'])->find(auth()->id());
+        $user = User::with('question')->find(auth()->id());
         $contents = $user->getContents();
      
         // foreach($contents as $content){
@@ -26,8 +26,8 @@ class ContentController extends Controller
     }
 
     public function questions(){
-        $user = User::find(auth()->id());
-        return view('user.content.index',compact('user'));
+        $questions = Question::where('user_id',auth()->id())->get();
+        return view('user.content.index',compact('questions'));
 
         // $data = "";   
         // if($request->ajax()){
@@ -48,8 +48,7 @@ class ContentController extends Controller
 
 
     public function answers(){
-        $user = User::find(auth()->id());
-        $answers = $user->answers()->with('question')->get();
+        $answers = Answer::where('user_id',auth()->id())->with('question')->get();
 
         return view('user.content.index',compact('answers'));
 

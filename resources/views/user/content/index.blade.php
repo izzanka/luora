@@ -48,11 +48,11 @@ Your Content
                         </div>
                     </div>
                     <hr>
-                    @forelse ($user->questions as $question)
+                    @forelse ($questions as $question)
                     <div class="row">
                         <div class="col-12">
                             <a href="{{ route('question.show',$question->title_slug) }}">{{ $question->title }}</a><br>
-                            <small class="text-secondary">Asked {{ $question->created_at->format('M Y') }}</small>
+                            <small class="text-secondary">Asked {{ $question->created_at->format('d M Y') }}</small>
                         </div>
                     </div>
                     <hr>
@@ -72,7 +72,7 @@ Your Content
                     <div class="row q">
                         <div class="col-12">
                             <span class="text-secondary">Your answer for </span><a href="{{ route('question.show',$answer->question->title_slug) }}">{{ $answer->question->title }}</a><br>
-                            <small class="text-secondary">Answered {{ $answer->question->created_at->format('M Y') }}</small>
+                            <small class="text-secondary">Answered {{ $answer->question->created_at->format('d M Y') }}</small>
                         </div>
                     </div>
                     <hr>
@@ -93,9 +93,9 @@ Your Content
                         <div class="col-12">
                             <a href="{{ route('question.show',$content->title_slug ?? $content->question->title_slug) }}">{{ $content->title ?? $content->question->title }}</a><br>
                             @if ($content->title)
-                                <small class="text-secondary">Asked {{ $content->created_at->format('M Y') }}</small>
+                                <small class="text-secondary">Asked {{ $content->created_at->format('d M Y') }}</small>
                             @elseif($content->question->title)
-                                <small class="text-secondary">Answered {{ $content->created_at->format('M Y') }}</small>
+                                <small class="text-secondary">Answered {{ $content->created_at->format('d M Y') }}</small>
                             @endif
                         </div>
                     </div>
