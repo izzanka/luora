@@ -38,6 +38,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <input type="text" name="name" class="form-control" value="{{ $user->name }}">
+                                                @include('layouts.error', ['name' => 'name'])
                                             </div>
                                         </div>
                                     </div>
@@ -67,6 +68,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <textarea name="credential" cols="10" rows="7" class="form-control" placeholder="librarian in New York, reads constanty (50)">{{ $user->credential }}</textarea>    
+                                                @include('layouts.error', ['name' => 'credential'])
                                             </div>
                                         </div>
                                     </div>
@@ -102,6 +104,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <textarea name="description" cols="10" rows="7" class="form-control" placeholder="">{{ $user->description }}</textarea>    
+                                                @include('layouts.error', ['name' => 'description'])
                                             </div>
                                         </div>
                                     </div>
@@ -182,12 +185,14 @@
                                                         <div class="col-12">
                                                             <label for="">Position</label>
                                                             <input type="text" name="position" class="form-control" value="{{ $user->employment->position ?? '' }}">
+                                                            @include('layouts.error', ['name' => 'position'])
                                                         </div>
                                                     </div>
                                                     <div class="row mt-2">
                                                         <div class="col-12">
                                                             <label for="">Company / Organization</label>
                                                             <input type="text" name="company" class="form-control" value="{{ $user->employment->company ?? '' }}">
+                                                            @include('layouts.error', ['name' => 'company'])
                                                         </div>
                                                     </div>
                                                     <div class="row mt-2">
@@ -201,6 +206,7 @@
                                                                 @endif
                                                                
                                                             </select>
+                                                            @include('layouts.error', ['name' => 'start_year'])
                                                         </div>
                                                     </div>
                                                     <div class="row mt-2" id="endyear">
@@ -215,8 +221,8 @@
                                                                 @else
                                                                     <option value="" selected>----</option>
                                                                 @endif
-
                                                             </select>
+                                                            @include('layouts.error', ['name' => 'end_year'])
                                                         </div>
                                                     </div>
                                                     <div class="row mt-4">
@@ -281,18 +287,21 @@
                                                     <div class="col-12">
                                                         <label for="">School</label>
                                                         <input type="text" name="school" value="{{ $user->education->school ?? '' }}" class="form-control">
+                                                        @include('layouts.error', ['name' => 'school'])
                                                     </div>
                                                 </div>
                                                 <div class="row mt-2">
                                                     <div class="col-12">
                                                         <label for="">Primary</label>
                                                         <input type="text" name="primary" value="{{ $user->education->primary ?? '' }}" class="form-control">
+                                                        @include('layouts.error', ['name' => 'primary'])
                                                     </div>
                                                 </div>
                                                 <div class="row mt-2">
                                                     <div class="col-12">
                                                         <label for="">Degree Type</label>
                                                         <input type="text" name="degree_type" value="{{ $user->education->degree_type ?? '' }}" class="form-control">
+                                                        @include('layouts.error', ['name' => 'degree_type'])
                                                     </div>
                                                 </div>
                                                 <div class="row mt-2">
@@ -308,6 +317,7 @@
                                                                 <option value="" selected>----</option>
                                                             @endif
                                                         </select>
+                                                        @include('layouts.error', ['name' => 'graduation_year'])
                                                     </div>
                                                 </div>
                                             </div>
@@ -321,6 +331,7 @@
                                 </div>
                             </div>
                         </form>
+
                     </div>
                     <div class="row mt-2">
                         <div class="col-12">
@@ -410,7 +421,6 @@
                                 </div>
                             </div>
                         </form>
-
                     </div>
 
                     <div class="row mt-2">

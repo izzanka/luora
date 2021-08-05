@@ -24,17 +24,10 @@
                 <div class="row">
                     <div class="col-12">
                         <textarea name="title" cols="10" rows="7" class="form-control">{{ $question->title }}</textarea>
+                        @include('layouts.error', ['name' => 'title'])
                     </div>
                 </div>
                 <hr>
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <div class="input-group input-group-sm">
-                            <i class="bi bi-link-45deg" style="font-size: 20px"></i>
-                            <input type="text" name="link" class="form-control ml-2" value="{{ $question->link }}" placeholder="Optional: include a link source that gives context">
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -44,6 +37,7 @@
         </div>
     </div>
 </form>
+
 
 
 
@@ -218,6 +212,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <textarea name="text" cols="10" rows="7" class="form-control" id="text"></textarea>
+                                                @include('layouts.error', ['name' => 'text'])
                                             </div>
                                         </div>
                                     </div>
@@ -229,6 +224,7 @@
                                 </div>
                             </div>
                         </form>
+
                         <div class="card mt-2">
                             <div class="card-body">
                                 <div class="row">
@@ -280,8 +276,8 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="btn-group" role="group">
-                                                    <a href="{{  route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'upvote'])}}" class="text-success mr-2" ><i class="bi bi-arrow-up-circle{{ auth()->user()->hasUpVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->upVoters()->count() }}</a>
-                                                    <a href="{{  route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'downvote']) }}" class="text-danger mr-4" ><i class="bi bi-arrow-down-circle{{ auth()->user()->hasDownVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->downVoters()->count() }}</a>
+                                                    <a href="{{  route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'upvote'])}}" class="text-success mr-2" id="upvote"><i class="bi bi-arrow-up-circle{{ auth()->user()->hasUpVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->upVoters()->count() }}</a>
+                                                    <a href="{{  route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'downvote']) }}" class="text-danger mr-4" id="downvote"><i class="bi bi-arrow-down-circle{{ auth()->user()->hasDownVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->downVoters()->count() }}</a>
                                                     <a href="" class="text-secondary"><i class="bi bi-chat"></i> 0</a>
                                                 </div>
                                             </div>
@@ -341,6 +337,7 @@
         });
     });
 
+    //script for copy link to clipboard
     function copy(){
         var dummy = document.createElement('input'),
         text = window.location.href;
