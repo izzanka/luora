@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-{{ $user->name }} - Socialite
+{{ $user->name }} - Luora
 @endsection
 
 @section('content')

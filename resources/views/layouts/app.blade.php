@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title','Socialite')</title>
+    <title>@yield('title','Luora')</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -36,8 +36,8 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('home') }}">
-                    <b class="text-danger">Socialite</b>
+                <a class="navbar-brand mr-5" href="{{ route('home') }}">
+                    <b class="text-danger">Luora</b>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -65,7 +65,7 @@
                                 <a href="#" class="text-dark"><i class="bi bi-bell" style="font-size: 1.5rem;"></i></a>
                         </li>
                         <li class="nav-item ml-4">
-                            <select name="livesearch" class="form-control livesearch" style="width: 380px">
+                            <select name="livesearch" class="form-control livesearch" style="width: 375px">
                             
                             </select>
                         </li>
