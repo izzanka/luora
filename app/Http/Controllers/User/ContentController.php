@@ -13,7 +13,7 @@ class ContentController extends Controller
     
     public function index(){
         
-        $user = User::with('question')->find(auth()->id());
+        $user = User::find(auth()->id());
         $contents = $user->getContents();
      
         // foreach($contents as $content){
