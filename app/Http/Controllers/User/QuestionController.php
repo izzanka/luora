@@ -12,6 +12,17 @@ use App\Http\Controllers\Controller;
 
 class QuestionController extends Controller
 {
+    public function edit_title($request){
+        //remove space
+       $removeSpace = str_replace(' ','-',$request->title);
+       //remove special char
+       $removeChar = preg_replace('/[^A-Za-z0-9\-]/', '',$removeSpace);
+       //add space
+       $addSpace = str_replace('-',' ',$removeChar);
+       //make uppper case to first string and add ? in last string
+       return ucfirst($addSpace) . '?';
+    }
+
     public function show(Question $question){
 
         $answers = Answer::where('question_id',$question->id)->with('user')->latest()->get();
@@ -30,22 +41,13 @@ class QuestionController extends Controller
             'title' => 'required',
         ]);
 
-       $user = auth()->user();
-
-       //remove space
-       $removeSpace = str_replace(' ','-',$request->title);
-       //remove special char
-       $removeChar = preg_replace('/[^A-Za-z0-9\-]/', '',$removeSpace);
-       //add space
-       $addSpace = str_replace('-',' ',$removeChar);
-       //make uppper case to first string and add ? in last string
-       $title = ucfirst($addSpace) . '?';
+        $user = auth()->user();
+        $title = $this->edit_title($request);
   
-       $question = $user->questions()->create([
+        $question = $user->questions()->create([
             'title' => $title,
             'title_slug' => Str::of($title)->slug('-'),
-            'link' => $request->link,
-       ]);
+        ]);
 
         if($request->topic_id){
             $check = 0;
@@ -69,7 +71,7 @@ class QuestionController extends Controller
 
     public function update(Question $question,Request $request){
 
-        if($request->title && $request->link){
+        if($request->title){
             $request->validate([
                 'title' => 'required',
                 'link' => 'url'
@@ -77,17 +79,12 @@ class QuestionController extends Controller
     
             $user = auth()->user();
     
-            $removeSpace = str_replace(' ','-',$request->title);
-            $removeChar = preg_replace('/[^A-Za-z0-9\-]/', '',$removeSpace);
-            $addSpace = str_replace('-',' ',$removeChar);
-    
-            $title = ucfirst($addSpace) . '?';
+            $title = $this->edit_title($request);
             $title_slug = Str::of($title)->slug('-');
         
             $question->update([
                 'title' => $title,
                 'title_slug' => $title_slug,
-                'link' => $request->link
             ]);
         }
 
@@ -108,6 +105,8 @@ class QuestionController extends Controller
 
             $title_slug = Str::of($question->title)->slug('-');
         }
+
+       
 
         return redirect()->route('question.show',$title_slug)->with('message',['text' => 'Question updated successfully!', 'class' => 'success']);;
 

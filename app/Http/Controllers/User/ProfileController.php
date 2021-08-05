@@ -14,7 +14,31 @@ use App\Http\Controllers\Controller;
 
 class ProfileController extends Controller
 {
-    
+    public function employment_credential($user){
+        $year_or_current = $user->employment->currently ? 'present' : $user->employment->end_year;
+        return 
+        [
+            'credential' => $user->employment->position . ' at ' . $user->employment->company,
+            'year' => ' (' . $user->employment->start_year . '-' . $year_or_current . ')'
+        ];
+    }
+
+    public function education_credential($user){
+        $year_or_current = $user->education->graduation_year ? ' (Graduated ' . $user->education->graduation_year . ')' : null;
+        return [
+            'credential' => $user->education->degree_type . ' in ' . $user->education->primary . ', ' . $user->education->school,
+            'year' => $year_or_current,
+        ]; 
+    }
+
+    public function location_credential($user){
+        $year_or_current = $user->location->currently ? 'present' : $user->location->end_year;
+        return [
+            'credential' => 'Lives in ' . $user->location->location,
+            'year' => ' (' . $user->location->start_year . '-' . $year_or_current . ')',
+        ]; 
+    }
+
     public function index(User $user)
     {
         $topics = Topic::all();
@@ -25,29 +49,17 @@ class ProfileController extends Controller
 
         //check employment credential
         if($user->employment){
-            $end = $user->employment->currently ? 'present' : $user->employment->end_year;
-            $employment_credential = [
-                'credential' => $user->employment->position . ' at ' . $user->employment->company,
-                'year' => ' (' . $user->employment->start_year . '-' . $end . ')'
-            ];
+            $employment_credential = $this->employment_credential($user);
         }
         //check education credential
         if($user->education){
-            $end2 = $user->education->graduation_year ? ' (Graduated ' . $user->education->graduation_year . ')' : null;
-            $education_credential =[
-                'credential' => $user->education->degree_type . ' in ' . $user->education->primary . ', ' . $user->education->school,
-                'year' => $end2,
-            ]; 
+           $education_credential = $this->education_credential($user);
         }
         //check location credential
         if($user->location){
-            $end3 = $user->location->currently ? 'present' : $user->location->end_year;
-            $location_credential = [
-                'credential' => 'Lives in ' . $user->location->location,
-                'year' => ' (' . $user->location->start_year . '-' . $end3 . ')',
-            ]; 
+            $location_credential = $this->location_credential($user);
         }
-       
+
         return view('user.profile.index',compact('user','topics','employment_credential','education_credential','location_credential'));
     }
 
@@ -205,35 +217,27 @@ class ProfileController extends Controller
     }
 
     public function show(User $user){
-
-        if($user->id == auth()->id()){
-            return redirect()->route('profile.index',auth()->user()->name_slug);
-        }
-
+        
         $employment_credential = [];
         $education_credential = [];
         $location_credential = [];
 
+        //redirect to profile if show logged account
+        if($user->id == auth()->id()){
+            return redirect()->route('profile.index',auth()->user()->name_slug);
+        }
+
+        //check employment credential
         if($user->employment){
-            $end = $user->employment->currently ? 'present' : $user->employment->end_year;
-            $employment_credential = [
-                'credential' => $user->employment->position . ' at ' . $user->employment->company,
-                'year' => ' (' . $user->employment->start_year . '-' . $end . ')'
-            ];
+            $employment_credential = $this->employment_credential($user);
         }
+        //check education credential
         if($user->education){
-            $end2 = $user->education->graduation_year ? ' (Graduated ' . $user->education->graduation_year . ')' : null;
-            $education_credential =[
-                'credential' => $user->education->degree_type . ' in ' . $user->education->primary . ', ' . $user->education->school,
-                'year' => $end2,
-            ]; 
+           $education_credential = $this->education_credential($user);
         }
+        //check location credential
         if($user->location){
-            $end3 = $user->location->currently ? 'present' : $user->location->end_year;
-            $location_credential = [
-                'credential' => 'Lives in ' . $user->location->location,
-                'year' => ' (' . $user->location->start_year . '-' . $end3 . ')',
-            ]; 
+            $location_credential = $this->location_credential($user);
         }
        
         return view('user.profile.show',compact('user','employment_credential','education_credential','location_credential'));
