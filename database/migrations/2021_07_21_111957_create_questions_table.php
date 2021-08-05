@@ -17,7 +17,7 @@ class CreateQuestionsTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('title',100);
-            $table->string('title_slug');;
+            $table->string('title_slug')->unique();
             $table->string('link')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();

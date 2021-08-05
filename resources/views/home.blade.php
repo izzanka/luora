@@ -35,6 +35,7 @@
                 <div class="spinner-border ajax-loading mt-4 text-danger" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
+                <div class="ajax-loading text mt-2"></div>
             </div>
            
          
@@ -87,7 +88,7 @@
         .done(function(data)
         {          
           if(data.length == 0){
-          $('.ajax-loading').html("No more answers");
+          $('.ajax-loading.text').html("No more answers");
           return;
         }
           $('.ajax-loading').hide();

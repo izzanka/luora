@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\User\ShareController;
 use App\Http\Controllers\User\AnswerController;
 use App\Http\Controllers\User\ContentController;
 use App\Http\Controllers\User\ProfileController;
@@ -43,7 +44,7 @@ Route::group(['middleware' => ['auth']],function(){
     Route::get('/answer/{answer}/destroy',[AnswerController::class,'destroy'])->name('answer.destroy');
     Route::post('/{question:title_slug}/answer',[AnswerController::class,'store'])->name('answer.store');
     Route::get('/{question:title_slug}/answer/{answer}/{vote}',[AnswerController::class,'vote'])->name('answer.vote');
-    
+
     //profile
     Route::get('/{user:name_slug}/follow',[ProfileController::class,'follow'])->name('follow');
     Route::get('/profile/{user:name_slug}/show',[ProfileController::class,'show'])->name('profile.show');
