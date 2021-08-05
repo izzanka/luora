@@ -16,7 +16,7 @@ class CreateLocationsTable extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('location');
+            $table->string('location',240);
             $table->string('start_year',4);
             $table->string('end_year',4)->nullable();
             $table->boolean('currently')->nullable();
