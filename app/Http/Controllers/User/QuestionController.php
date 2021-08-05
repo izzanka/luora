@@ -17,7 +17,11 @@ class QuestionController extends Controller
         $answers = Answer::where('question_id',$question->id)->with('user')->latest()->get();
         $topics = Topic::all();
 
-        return view('user.question.show',compact('question','answers','topics'));
+        $link = route('question.show',$question);
+        $facebook = \Share::page($link)->facebook()->getRawLinks();
+        $twitter = \Share::page($link)->twitter()->getRawLinks();
+
+        return view('user.question.show',compact('question','answers','topics','facebook','twitter'));
     }
 
     public function store(Request $request){

@@ -16,6 +16,7 @@ class HomeController extends Controller
         $answers = Answer::with(['user','question'])->latest()->paginate(10);
         $credential = "";
         $data = "";
+    
 
         if($request->ajax()){
            
@@ -24,6 +25,11 @@ class HomeController extends Controller
                 views($answer)
                 ->cooldown(1440)
                 ->record();
+
+                //set share
+                $link = route('question.show',$answer->question);
+                $facebook = \Share::page($link)->facebook()->getRawLinks();
+                $twitter = \Share::page($link)->twitter()->getRawLinks();
 
                 //set credential
                 if($answer->user->credential){
@@ -44,6 +50,19 @@ class HomeController extends Controller
                             }
                         }
                     }
+                }
+
+                //set vote
+                if(auth()->user()->hasUpVoted($answer)){
+                    $upvoted = "-fill";
+                }else{
+                    $upvoted = "";
+                }
+
+                if(auth()->user()->hasDownVoted($answer)){
+                    $downvoted = "-fill";
+                }else{
+                    $downvoted = "";
                 }
 
                 //set following or not
@@ -100,14 +119,21 @@ class HomeController extends Controller
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="btn-group" role="group">
-                                            <a href="'.route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'upvote']).'" class="text-success mr-4" ><i class="bi bi-arrow-up-circle"></i> '. $answer->upVoters()->count().'</a>
-                                            <a href="'.route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'downvote']).'" class="text-danger" ><i class="bi bi-arrow-down-circle"></i> '. $answer->downVoters()->count().'</a>
+                                            <a href="'.route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'upvote']).'" class="text-success mr-2" ><i class="bi bi-arrow-up-circle'.$upvoted.'"></i> '. $answer->upVoters()->count().'</a>
+                                            <a href="'.route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'downvote']).'" class="text-danger mr-4" ><i class="bi bi-arrow-down-circle'.$downvoted.'"></i> '. $answer->downVoters()->count().'</a>
+                                            <a href="" class="text-secondary"><i class="bi bi-chat"></i> 0</a>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="btn-group float-right" role="group">
-                                            <a href="" class="text-primary"><i class="bi bi-share"></i> 700</a>
-                                          </div>
+                                        <a href="" class="text-dark" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="bi bi-share"></i></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item" href="'. $facebook .'" target="_blank"><i class="bi bi-facebook mr-2"></i>Facebook</a>
+                                                <a class="dropdown-item" href="'. $twitter .'" target="_blank"><i class="bi bi-twitter mr-2"></i>Twitter</a>
+                                                <a class="dropdown-item" href="javascript: void(0)" onclick="copy()">Copy link</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
