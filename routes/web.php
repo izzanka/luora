@@ -1,0 +1,65 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\User\AnswerController;
+use App\Http\Controllers\User\ContentController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\SettingController;
+use App\Http\Controllers\User\QuestionController;
+use App\Http\Controllers\Auth\SocialiteController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Auth::routes();
+
+Route::group(['middleware' => ['auth']],function(){
+
+    //home
+    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/search',[HomeController::class,'search'])->name('search');
+
+    //setting
+    Route::get('/settings',[SettingController::class,'index'])->name('settings.index');
+
+    //content
+    Route::get('/content',[ContentController::class,'index'])->name('content.index');
+    Route::get('/content/answers',[ContentController::class,'answers'])->name('content.answers.index');
+    Route::get('/content/questions',[ContentController::class,'questions'])->name('content.questions.index');
+
+    //answer
+    Route::get('/answer',[AnswerController::class,'index'])->name('answer.index');
+    Route::put('/answer/{answer}/update',[AnswerController::class,'update'])->name('answer.update');
+    Route::get('/answer/{answer}/destroy',[AnswerController::class,'destroy'])->name('answer.destroy');
+    Route::post('/{question:title_slug}/answer',[AnswerController::class,'store'])->name('answer.store');
+    Route::get('/{question:title_slug}/answer/{answer}/{vote}',[AnswerController::class,'vote'])->name('answer.vote');
+    
+    //profile
+    Route::get('/{user:name_slug}/follow',[ProfileController::class,'follow'])->name('follow');
+    Route::get('/profile/{user:name_slug}/show',[ProfileController::class,'show'])->name('profile.show');
+    Route::get('/profile/{user:name_slug}',[ProfileController::class,'index'])->name('profile.index');
+    Route::put('/profile/{user:name_slug}/user/{profile}',[ProfileController::class,'update_profile'])->name('profile.update');
+    Route::put('/profile/{user:name_slug}/credential/{credentials}',[ProfileController::class,'update_credentials'])->name('profile.credentials');
+    Route::put('/profile/{user:name_slug}/topics',[ProfileController::class,'update_topics'])->name('profile.topics');
+
+    //question
+    Route::post('/add-question',[QuestionController::class,'store'])->name('question.store');
+    Route::get('/{question:title_slug}',[QuestionController::class,'show'])->name('question.show');
+    Route::put('/{question:title_slug}/update',[QuestionController::class,'update'])->name('question.update');
+    Route::get('/{question:title_slug}/destroy',[QuestionController::class,'destroy'])->name('question.destroy');
+
+});
+
+
+Route::get('/auth/redirect/{provider}',[SocialiteController::class,'redirect']);
+Route::get('/auth/callback/{provider}',[SocialiteController::class,'callback']);
