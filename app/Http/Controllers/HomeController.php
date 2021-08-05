@@ -14,19 +14,18 @@ class HomeController extends Controller
     public function index(Request $request)
     {   
         $answers = Answer::with(['user','question'])->latest()->paginate(10);
-        
         $credential = "";
         $data = "";
-
 
         if($request->ajax()){
            
             foreach($answers as $answer){
-
+                //count views
                 views($answer)
                 ->cooldown(1440)
                 ->record();
 
+                //set credential
                 if($answer->user->credential){
                     $credential = $answer->user->credential;
                 }else{
@@ -47,6 +46,7 @@ class HomeController extends Controller
                     }
                 }
 
+                //set following or not
                 if(auth()->user()->isFollowing($answer->user)){
                     $status = '<a href="'. route('follow',$answer->user->name_slug) .'">Following</a>';
                 }else{

@@ -12,7 +12,6 @@ use App\Http\Controllers\Controller;
 
 class QuestionController extends Controller
 {
-
     public function show(Question $question){
 
         $answers = Answer::where('question_id',$question->id)->with('user')->latest()->get();

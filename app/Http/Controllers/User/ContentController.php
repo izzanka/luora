@@ -12,6 +12,7 @@ class ContentController extends Controller
 {
     
     public function index(){
+        
         $user = User::with(['questions','answers'])->find(auth()->id());
         $contents = $user->getContents();
      

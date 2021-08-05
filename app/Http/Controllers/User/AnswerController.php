@@ -118,6 +118,7 @@ class AnswerController extends Controller
     }
 
     public function update(Answer $answer,Request $request){
+
         $request->validate([
             'text' => 'required'
         ]);
@@ -130,6 +131,7 @@ class AnswerController extends Controller
     }
 
     public function destroy(Answer $answer){
+        
         $answer->delete();
         return back()->with('message',['text' => 'Answer deleted successfully!', 'class' => 'success']);
     }

@@ -23,6 +23,7 @@ class ProfileController extends Controller
         $education_credential = [];
         $location_credential = [];
 
+        //check employment credential
         if($user->employment){
             $end = $user->employment->currently ? 'present' : $user->employment->end_year;
             $employment_credential = [
@@ -30,6 +31,7 @@ class ProfileController extends Controller
                 'year' => ' (' . $user->employment->start_year . '-' . $end . ')'
             ];
         }
+        //check education credential
         if($user->education){
             $end2 = $user->education->graduation_year ? ' (Graduated ' . $user->education->graduation_year . ')' : null;
             $education_credential =[
@@ -37,6 +39,7 @@ class ProfileController extends Controller
                 'year' => $end2,
             ]; 
         }
+        //check location credential
         if($user->location){
             $end3 = $user->location->currently ? 'present' : $user->location->end_year;
             $location_credential = [
@@ -239,6 +242,7 @@ class ProfileController extends Controller
     public function follow(User $user){
         $authUser = auth()->user();
         
+        //check is auth user is following or not
         if($authUser->isFollowing($user)){
             $authUser->unfollow($user);
         }else{
