@@ -13,11 +13,10 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {   
-        $answers = Answer::with(['user','question'])->latest()->paginate(10);
+        $answers = Answer::with(['user','question'])->where('user_id','!=',auth()->id())->latest()->paginate(10);
         $credential = "";
         $data = "";
     
-
         if($request->ajax()){
            
             foreach($answers as $answer){
