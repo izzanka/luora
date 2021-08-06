@@ -50,7 +50,8 @@ Route::group(['middleware' => ['auth']],function(){
     Route::get('/profile/{user:name_slug}/show',[ProfileController::class,'show'])->name('profile.show');
     Route::get('/profile/{user:name_slug}',[ProfileController::class,'index'])->name('profile.index');
     Route::put('/profile/{user:name_slug}/user/{profile}',[ProfileController::class,'update_profile'])->name('profile.update');
-    Route::put('/profile/{user:name_slug}/credential/{credentials}',[ProfileController::class,'update_credentials'])->name('profile.credentials');
+    Route::put('/profile/{user:name_slug}/update/credential/{credentials}',[ProfileController::class,'update_credentials'])->name('profile.credentials.update');
+    Route::get('/profile/{user:name_slug}/destroy/credential/{credentials}',[ProfileController::class,'destroy_credentials'])->name('profile.credentials.destroy');
     Route::put('/profile/{user:name_slug}/topics',[ProfileController::class,'update_topics'])->name('profile.topics');
 
     //question

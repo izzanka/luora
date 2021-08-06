@@ -18,13 +18,13 @@
                         </div>
                         <div class="col-10">
                             <div class="row">
-                                <div class="col-12">
-                                    <b style="font-size: 24px" id="name">{{ $user->name }} </b><small id="btneditName"><a href="" class="text-secondary" data-toggle="modal" data-target="#nameModal">Edit</a></small>
+                                <div class="col-12" id="name">
+                                    <b style="font-size: 24px" >{{ $user->name }} </b><small id="btneditName"><a href="" class="text-secondary" data-toggle="modal" data-target="#nameModal">Edit</a></small>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-12">
-                                    <a style="font-size: 18px" href="" class="text-dark" data-toggle="modal" data-target="#profileModal">{{ $user->credential ?? 'Add profile credential' }}</a>
+                                <div class="col-12" id="credential">
+                                    <span style="font-size: 18px" >{{ $user->credential ?? 'Add profile credential' }} </span><small id="btneditCredential"><a href="" class="text-secondary" data-toggle="modal" data-target="#profileModal">Edit</a></small>
                                 </div>
                             </div>
                             <div class="row mt-2 mb-2">
@@ -33,8 +33,9 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-12">
-                                    <a style="font-size: 15px" href="" class="text-secondary" data-toggle="modal" data-target="#descModal">{{ $user->description ?? 'Write a description about yourself' }}</a>
+                                <div class="col-12" id="desc">
+                                    <span >{{ $user->description ?? 'Write a description about yourself' }}</span><br>
+                                    <small id="btneditDesc"><a href="" class="text-secondary" data-toggle="modal" data-target="#descModal">Edit</a></small>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +62,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
                                     <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                     </div>
                                 </div>
@@ -85,13 +86,13 @@
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-12">
-                                                <textarea name="credential" cols="10" rows="7" class="form-control" placeholder="librarian in New York, reads constanty (50)">{{ $user->credential }}</textarea>    
+                                                <input type="text" name="credential" class="form-control" placeholder="librarian in New York, reads constanty (60)" value="{{ $user->credential }}"> 
                                                 @include('layouts.error', ['name' => 'credential'])
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
                                     <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                     </div>
                                 </div>
@@ -100,40 +101,37 @@
                         </form>
 
                     </div>
-                    <div class="row">
              
-
-                         <!-- Modal Edit Profile Description -->
-                         <form action="{{ route('profile.update',['user' => $user->name_slug,'profile' => 'description']) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="modal fade" id="descModal" tabindex="-1" aria-labelledby="descModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="descModalLabel">Edit description</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <textarea name="description" cols="10" rows="7" class="form-control" placeholder="">{{ $user->description }}</textarea>    
-                                                @include('layouts.error', ['name' => 'description'])
-                                            </div>
+                        <!-- Modal Edit Profile Description -->
+                        <form action="{{ route('profile.update',['user' => $user->name_slug,'profile' => 'description']) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal fade" id="descModal" tabindex="-1" aria-labelledby="descModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="descModalLabel">Edit description</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <textarea name="description" cols="10" rows="10" class="form-control" placeholder="">{{ $user->description }}</textarea>    
+                                            @include('layouts.error', ['name' => 'description'])
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary rounded-pill">Save</button>
-                                    </div>
                                 </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                 </div>
                             </div>
-                        </form>
+                            </div>
+                        </div>
+                    </form>
 
-                    </div>
                     <hr>
                     <div class="row">
                         <div class="col-3">
@@ -164,9 +162,9 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
-                            <i class="bi bi-briefcase mr-2" style="font-size: 15px"></i>
+                            <i class="bi bi-briefcase mr-2"></i>
                             @if ($employment_credential)
-                                <span class="text-dark"> {{ $employment_credential['credential'] }} <small class="text-secondary">{{  $employment_credential['year']}}</small></span>
+                                <a href="" class="text-dark" data-toggle="modal" data-target="#employmentModal"> {{ $employment_credential['credential'] }}<small class="text-secondary">{{  $employment_credential['year']}}</small></a>
                             @else
                                 <a href="" data-toggle="modal" data-target="#employmentModal"> Add employment credential</a>
                             @endif
@@ -174,7 +172,7 @@
                     </div>
                     
                     <!-- Modal Edit Employment Credential-->
-                    <form action="{{ route('profile.credentials', ['user' => $user->name_slug,'credentials' => 'employment']) }}" method="POST">
+                    <form action="{{ route('profile.credentials.update', ['user' => $user->name_slug,'credentials' => 'employment']) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="modal fade" id="employmentModal" tabindex="-1" aria-labelledby="employmentModalLabel" aria-hidden="true">
@@ -191,6 +189,14 @@
                                         <div class="col-12">
                                             <div class="card">
                                                 <div class="card-body">
+                                                    @if ($user->employment)
+                                                        <div class="row">
+                                                        <div class="col-12">
+                                                            <a href="{{ route('profile.credentials.destroy',['user' => $user->name_slug,'credentials' => 'employment']) }}" class="btn btn-sm btn-outline-secondary float-right">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <label for="">Position</label>
@@ -259,7 +265,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                 </div>
                             </div>
@@ -269,16 +275,16 @@
 
                     <div class="row mt-2">
                         <div class="col-12">
-                            <i class="bi bi-book mr-2" style="font-size: 15px"></i>
+                            <i class="bi bi-book mr-2"></i>
                             @if ($education_credential)
-                                <span class="text-dark"> {{ $education_credential['credential'] }} <small class="text-secondary">{{  $education_credential['year']}}</small></span>
+                                <a class="text-dark" href="" data-toggle="modal" data-target="#educationModal"> {{ $education_credential['credential'] }} <small class="text-secondary">{{  $education_credential['year']}}</small></a>
                             @else
                                 <a href="" data-toggle="modal" data-target="#educationModal"> Add education credential</a>
                             @endif
                         </div>
 
                         <!-- Modal Edit Education Credential -->
-                        <form action="{{ route('profile.credentials',['user' => $user->name_slug, 'credentials' => 'education']) }}" method="POST">
+                        <form action="{{ route('profile.credentials.update',['user' => $user->name_slug, 'credentials' => 'education']) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="modal fade" id="educationModal" tabindex="-1" aria-labelledby="educationModalLabel" aria-hidden="true">
@@ -293,6 +299,13 @@
                                     <div class="modal-body">
                                         <div class="card">
                                             <div class="card-body">
+                                                @if ($user->education)
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <a href="{{ route('profile.credentials.destroy',['user' => $user->name_slug,'credentials' => 'education']) }}" class="btn btn-sm btn-outline-secondary float-right">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <label for="">School</label>
@@ -334,7 +347,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
                                     <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                     </div>
                                 </div>
@@ -345,16 +358,16 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col-12">
-                            <i class="bi bi-geo-alt mr-2" style="font-size: 15px"></i>
+                            <i class="bi bi-geo-alt mr-2"></i>
                             @if ($location_credential)
-                                <span class="text-dark"> {{ $location_credential['credential'] }} <small class="text-secondary">{{  $location_credential['year']}}</small></span>
+                                <a class="text-dark" href="" data-toggle="modal" data-target="#locationModal"> {{ $location_credential['credential'] }} <small class="text-secondary">{{  $location_credential['year']}}</small></a>
                             @else
                                 <a href="" data-toggle="modal" data-target="#locationModal"> Add location credential</a>
                             @endif
                         </div>
 
                         <!-- Modal Edit Location Credential -->
-                        <form action="{{ route('profile.credentials',['user' => $user->name_slug,'credentials' => 'location']) }}" method="POST">
+                        <form action="{{ route('profile.credentials.update',['user' => $user->name_slug,'credentials' => 'location']) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
@@ -369,6 +382,13 @@
                                     <div class="modal-body">
                                         <div class="card">
                                             <div class="card-body">
+                                                @if ($user->location)
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <a href="{{ route('profile.credentials.destroy',['user' => $user->name_slug,'credentials' => 'location']) }}" class="btn btn-sm btn-outline-secondary float-right">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <label for="">Location</label>
@@ -424,7 +444,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
                                     <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                     </div>
                                 </div>
@@ -435,7 +455,7 @@
 
                     <div class="row mt-2">
                         <div class="col-12">
-                            <i class="bi bi-calendar mr-2" style="font-size: 15px"></i> Joined {{ $user->created_at->format('M Y') }}
+                            <i class="bi bi-calendar mr-2"></i> Joined {{ $user->created_at->format('M Y') }}
                         </div>
                     </div>
                 </div>
@@ -491,7 +511,7 @@
                                         </div>     
                                     </div>  
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
                                         <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                     </div>
                                 </div>
@@ -527,11 +547,26 @@
 <script>
     //script for hide & show button edit profile name
     $("#btneditName").hide();
+    $("#btneditCredential").hide();
+    $("#btneditDesc").hide();
+
     $("#name").mouseenter(function(){
         $("#btneditName").show();
     });
-    $("#btneditName").mouseleave(function(){
+    $("#name").mouseleave(function(){
         $("#btneditName").hide();
+    });
+    $("#credential").mouseenter(function(){
+        $("#btneditCredential").show();
+    });
+    $("#credential").mouseleave(function(){
+        $("#btneditCredential").hide();
+    });
+    $("#desc").mouseenter(function(){
+        $("#btneditDesc").show();
+    });
+    $("#desc").mouseleave(function(){
+        $("#btneditDesc").hide();
     });
 
     //script for currently checkbox

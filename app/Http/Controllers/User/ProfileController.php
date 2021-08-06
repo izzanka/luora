@@ -64,30 +64,40 @@ class ProfileController extends Controller
     }
 
     public function update_topics(Request $request,User $user){
-
+    
         $utopics = UserTopic::where('user_id',$user->id)->get();
-            
+    
         foreach($utopics as $utopic){
+            $topic = Topic::find($utopic->topic_id);
+            $topic->qty -= 1;
+            $topic->update();
             $utopic->delete();
         }
 
-        for ($i=0; $i < count($request->topic_id); $i++) {
-
-            UserTopic::create([
-                'user_id' => $user->id,
-                'topic_id' => $request->topic_id[$i]
-            ]);
-           
+        if($request->topic_id){
+            for ($i=0; $i < count($request->topic_id); $i++) {
+    
+                UserTopic::create([
+                    'user_id' => $user->id,
+                    'topic_id' => $request->topic_id[$i]
+                ]);
+    
+                $topic = Topic::find($request->topic_id[$i]);
+                $topic->qty += 1;
+                $topic->update();
+               
+            }
+            return back()->with('message',['text' => 'Topics updated successfully!', 'class' => 'success']);
+        }else{
+            return back()->with('message',['text' => 'Topics deleted successfully!', 'class' => 'success']);
         }
-
-        return back()->with('message',['text' => 'Topics updated successfully!', 'class' => 'success']);
+       
     }
 
     public function update_credentials(Request $request,User $user,$credentials){
 
        if($credentials == "employment"){
          
-            $title = "Employment";
             $request->validate([
                 'position' => 'required|max:60',
                 'company' => 'required|max:12',
@@ -115,7 +125,7 @@ class ProfileController extends Controller
             }
 
         }else if($credentials == "education"){
-            $title = "Education";
+            
             $request->validate([
                 'school' => 'required',
                 'primary' => 'required',
@@ -144,7 +154,7 @@ class ProfileController extends Controller
             }
 
         }else if($credentials == "location"){
-            $title = "Location";
+            
             $request->validate([
                 'location' => 'required',
                 'start_year' => 'required|max:4',
@@ -173,7 +183,7 @@ class ProfileController extends Controller
             }
         }
 
-        return back()->with('message',['text' => $title . ' credential updated successfully!', 'class' => 'success']);
+        return back()->with('message',['text' => $credentials . ' credential updated successfully!', 'class' => 'success']);
 
     }
 
@@ -216,13 +226,25 @@ class ProfileController extends Controller
         return back()->with('message',['text' =>  'Profile ' . $title . ' updated successfully!', 'class' => 'success']);
     }
 
+    public function destroy_credentials(Request $request,User $user,$credentials){
+        if($credentials == "employment"){
+            $user->employment->delete();
+        }else if($credentials == "education"){
+            $user->education->delete();
+        }else if($credentials == "location"){
+            $user->location->delete();
+        }
+
+        return back()->with('message',['text' => $credentials . ' credential deleted successfully!', 'class' => 'success']);
+    }
+
     public function show(User $user){
         
         $employment_credential = [];
         $education_credential = [];
         $location_credential = [];
 
-        //redirect to profile if show logged account
+        //redirect to profile if want to show logged account
         if($user->id == auth()->id()){
             return redirect()->route('profile.index',auth()->user()->name_slug);
         }
