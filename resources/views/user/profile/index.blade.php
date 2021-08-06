@@ -13,12 +13,30 @@
       
                 <div class="card-body">
                     <div class="row mb-4">
-                        <div class="col-sm-2">
+                        <div class="col-2">
                             <img src="{{ $user->avatar }}" alt="avatar" class="rounded-circle mr-2" width="100px" height="100px">
                         </div>
-                        <div class="col-sm-9">
-                            <b style="font-size: 25px" id="name">{{ $user->name }} </b><small id="btneditName"><a href="" class="text-secondary" data-toggle="modal" data-target="#nameModal">Edit</a></small><br>
-                            <a href="" class="text-secondary" data-toggle="modal" data-target="#profileModal">{{ $user->credential ?? 'Add profile credential' }}</a>
+                        <div class="col-10">
+                            <div class="row">
+                                <div class="col-12">
+                                    <b style="font-size: 24px" id="name">{{ $user->name }} </b><small id="btneditName"><a href="" class="text-secondary" data-toggle="modal" data-target="#nameModal">Edit</a></small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <a style="font-size: 18px" href="" class="text-dark" data-toggle="modal" data-target="#profileModal">{{ $user->credential ?? 'Add profile credential' }}</a>
+                                </div>
+                            </div>
+                            <div class="row mt-2 mb-2">
+                                <div class="col-12">
+                                    <span class="text-secondary" style="font-size: 13px">{{ $user->followers()->count() ?? 0 }} Followers<i class="bi bi-dot"></i>{{ $user->followings()->count() ?? 0 }} Followings</span><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <a style="font-size: 15px" href="" class="text-secondary" data-toggle="modal" data-target="#descModal">{{ $user->description ?? 'Write a description about yourself' }}</a>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Modal Edit Profile Name -->
@@ -43,8 +61,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                     </div>
                                 </div>
                                 </div>
@@ -73,8 +91,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                     </div>
                                 </div>
                                 </div>
@@ -83,9 +101,7 @@
 
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
-                            <a href="" class="text-secondary" data-toggle="modal" data-target="#descModal">{{ $user->description ?? 'Write a description about yourself' }}</a>
-                        </div>
+             
 
                          <!-- Modal Edit Profile Description -->
                          <form action="{{ route('profile.update',['user' => $user->name_slug,'profile' => 'description']) }}" method="POST">
@@ -109,8 +125,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                     </div>
                                 </div>
                                 </div>
@@ -120,23 +136,17 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-sm-2">
+                        <div class="col-3">
                             {{ $user->answers->count() ?? 0}} Answers
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-3">
                             {{ $user->questions->count() ?? 0}} Questions
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-3">
                             0 Shares
                         </div>
-                        <div class="col-sm-2">
-                            0 Followers
-                        </div>
-                        <div class="col-sm-2">
-                            0 Following
-                        </div>
-                        <div class="col-sm-2">
-                            0 Activity
+                        <div class="col-3">
+                            0 Topics
                         </div>
                     </div>
                     <hr>
@@ -249,8 +259,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                 </div>
                             </div>
                             </div>
@@ -324,8 +334,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                     </div>
                                 </div>
                                 </div>
@@ -414,8 +424,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                     </div>
                                 </div>
                                 </div>
@@ -481,8 +491,8 @@
                                         </div>     
                                     </div>  
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary rounded-pill">Save</button>
                                     </div>
                                 </div>
                                 </div>

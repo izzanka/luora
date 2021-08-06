@@ -20,8 +20,8 @@
                 </div>
             
                 <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary store">Post</button>
+                <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary store rounded-pill">Post</button>
                 </div>
             </div>
             </div>

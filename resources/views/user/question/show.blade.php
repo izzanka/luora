@@ -12,7 +12,7 @@
     @csrf
     @method('PUT')
     <div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="questionModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
             <h5 class="modal-title" id="questionModalLabel"><b>Edit Question</b></h5>
@@ -23,15 +23,14 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
-                        <textarea name="title" cols="10" rows="7" class="form-control">{{ $question->title }}</textarea>
+                        <input type="text" name="title" value="{{ $question->title }}" class="form-control">
                         @include('layouts.error', ['name' => 'title'])
                     </div>
                 </div>
-                <hr>
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-text rounded-pill" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary rounded-pill">Update</button>
             </div>
         </div>
         </div>
@@ -87,8 +86,8 @@
                 </div>     
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary rounded-pill">Update</button>
             </div>
         </div>
         </div>
@@ -217,8 +216,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary store-update">Save</button>
+                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary store-update rounded-pill">Update</button>
                                     </div>
                                 </div>
                                 </div>

@@ -1,10 +1,10 @@
 <form action="{{ route('question.store') }}" method="POST">
     @csrf
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="add-questionModal" tabindex="-1" aria-labelledby="add-questionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add question</h5>
+            <h5 class="modal-title" id="add-questionModalLabel">Add question</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -63,8 +63,8 @@
                 
             </div>  
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Add question</button>
+                <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary rounded-pill">Add question</button>
             </div>
         </div>
         </div>
