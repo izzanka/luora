@@ -131,7 +131,6 @@
                                     </a>
                                 </div>
                             </li>
-
                             <button class="btn btn-sm btn-danger ml-2 rounded-pill" data-toggle="modal" data-target="#add-questionModal">Add question</button>
                         
                         @endguest

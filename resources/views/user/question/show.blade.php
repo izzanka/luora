@@ -86,7 +86,7 @@
                 </div>     
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary rounded-pill">Update</button>
             </div>
         </div>
@@ -216,7 +216,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-white rounded-pill" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
                                     <button type="submit" class="btn btn-primary store-update rounded-pill">Update</button>
                                     </div>
                                 </div>
@@ -224,7 +224,7 @@
                             </div>
                         </form>
 
-                        <div class="card mt-2">
+                        <div class="card mt-2" id="{{ $answer->user->name_slug }}">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-12">
@@ -285,8 +285,8 @@
                                                     <a href="" class="text-dark" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class="bi bi-share"></i></a>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <a class="dropdown-item" href="{{ $facebook }}" target="_blank"><i class="bi bi-facebook mr-2"></i>Facebook</a>
-                                                        <a class="dropdown-item" href="{{ $twitter }}" target="_blank"><i class="bi bi-twitter mr-2"></i>Twitter</a>
+                                                        <a class="dropdown-item" href="{{ $facebook }}#{{ $answer->user->name_slug }}" target="_blank"><i class="bi bi-facebook mr-2"></i>Facebook</a>
+                                                        <a class="dropdown-item" href="{{ $twitter }}#{{ $answer->user->name_slug }}" target="_blank"><i class="bi bi-twitter mr-2"></i>Twitter</a>
                                                         <a class="dropdown-item" href="javascript: void(0)" onclick="copy()">Copy link</a>
                                                     </div>
                                                 </div>
