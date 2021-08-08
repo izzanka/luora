@@ -137,11 +137,11 @@ class HomeController extends Controller
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
                 ';
             }
+
             return $data;
         }
 
@@ -149,6 +149,7 @@ class HomeController extends Controller
     }
 
     public function search(Request $request){
+        
         $users = [];
 
         if($request->has('q')){

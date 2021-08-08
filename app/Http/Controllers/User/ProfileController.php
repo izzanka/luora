@@ -39,8 +39,8 @@ class ProfileController extends Controller
         ]; 
     }
 
-    public function index(User $user)
-    {
+    public function index(User $user){
+
         $topics = Topic::all();
         $user->load(['employment','education','location']);
         $employment_credential = [];
@@ -87,8 +87,6 @@ class ProfileController extends Controller
                 $topic->update();
         
             }
-         
-
             return back()->with('message',['text' => 'Topics updated successfully!', 'class' => 'success']);
         }else{
             return back()->with('message',['text' => 'Topics deleted successfully!', 'class' => 'success']);
@@ -186,7 +184,6 @@ class ProfileController extends Controller
         }
 
         return back()->with('message',['text' => $credentials . ' credential updated successfully!', 'class' => 'success']);
-
     }
 
     public function update_profile(Request $request,User $user,$profile){
@@ -222,7 +219,6 @@ class ProfileController extends Controller
             ]);
 
             return redirect()->route('profile.index',$name_slug)->with('message',['text' =>  'Profile ' . $title . ' updated successfully!', 'class' => 'success']);
-
         }
 
         return back()->with('message',['text' =>  'Profile ' . $profile . ' updated successfully!', 'class' => 'success']);
@@ -295,8 +291,4 @@ class ProfileController extends Controller
        
         return back();
     }
-
-   
-
-
 }

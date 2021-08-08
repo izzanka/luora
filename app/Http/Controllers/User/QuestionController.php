@@ -61,9 +61,7 @@ class QuestionController extends Controller
                     'question_id' => $question->id,
                     'topic_id' => $request->topic_id[$i]
                 ]);
-               
             }
-            
         }
 
         return back()->with('message',['text' => 'Question added successfully!', 'class' => 'success']);
@@ -72,6 +70,7 @@ class QuestionController extends Controller
     public function update(Question $question,Request $request){
 
         if($request->title){
+
             $request->validate([
                 'title' => 'required',
                 'link' => 'url'
@@ -106,10 +105,7 @@ class QuestionController extends Controller
             $title_slug = Str::of($question->title)->slug('-');
         }
 
-       
-
-        return redirect()->route('question.show',$title_slug)->with('message',['text' => 'Question updated successfully!', 'class' => 'success']);;
-
+        return redirect()->route('question.show',$title_slug)->with('message',['text' => 'Question updated successfully!', 'class' => 'success']);
     }
 
     public function destroy(Question $question){
@@ -126,7 +122,6 @@ class QuestionController extends Controller
 
         $question->delete();
 
-        return redirect()->route('content.index')->with('message',['text' => 'Question deleted successfully!', 'class' => 'success']);;
-        
+        return redirect()->route('content.index')->with('message',['text' => 'Question deleted successfully!', 'class' => 'success']);
     }
 }
