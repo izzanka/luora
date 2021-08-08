@@ -287,7 +287,7 @@
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                         <a class="dropdown-item" href="{{ $facebook }}#{{ $answer->user->name_slug }}" target="_blank"><i class="bi bi-facebook mr-2"></i>Facebook</a>
                                                         <a class="dropdown-item" href="{{ $twitter }}#{{ $answer->user->name_slug }}" target="_blank"><i class="bi bi-twitter mr-2"></i>Twitter</a>
-                                                        <a class="dropdown-item" href="javascript: void(0)" onclick="copy()">Copy link</a>
+                                                        <a class="dropdown-item" href="javascript: void(0)" onclick="copy()" data-attr="#{{ $answer->user->name_slug }}" id="copyLink">Copy link</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -316,7 +316,7 @@
 </div>
 @endsection
 @section('script')
-<script>    
+<script> 
     //script for answer modal & form
     $(document).on('click','#answer', function(){
         let href = $(this).attr('data-attr');
@@ -338,16 +338,17 @@
 
     //script for copy link to clipboard
     function copy(){
-        var dummy = document.createElement('input'),
-        text = window.location.href;
+        let dummy = document.createElement('input');
+        let href = $('#copyLink').attr('data-attr');
+        let text = window.location.href + href;
 
         document.body.appendChild(dummy);
         dummy.value = text;
         dummy.select();
         document.execCommand('copy');
-        document.body.removeChild(dummy)
+        document.body.removeChild(dummy);
 
-        alert('Link copied to clipboard')
+        alert('Link copied to clipboard');
     }
 
 </script>

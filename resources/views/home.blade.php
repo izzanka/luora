@@ -85,8 +85,7 @@
             $('.ajax-loading').show();
           }
         })
-        .done(function(data)
-        {          
+        .done(function(data){          
           if(data.length == 0){
           $('.ajax-loading.text').html("No more answers");
           return;
@@ -94,6 +93,7 @@
           $('.ajax-loading').hide();
           $("#results").append(data);
         })
+
         .fail(function(jqXHR, ajaxOptions, thrownError)
         {
           alert('No response from server');

@@ -71,7 +71,7 @@ Your Content
                     @forelse ($answers as $answer)
                     <div class="row q">
                         <div class="col-12">
-                            <span class="text-secondary">Your answer for </span><a href="{{ route('question.show',$answer->question->title_slug) }}">{{ $answer->question->title }}</a><br>
+                            <span class="text-secondary">Your answer to </span><a href="{{ route('question.show',$answer->question->title_slug) }}">{{ $answer->question->title }}</a><br>
                             <small class="text-secondary">Answered {{ $answer->question->created_at->format('d M Y') }}</small>
                         </div>
                     </div>
