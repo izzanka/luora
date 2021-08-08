@@ -18,7 +18,7 @@
                         </div>
                         <div class="col-10">
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-12" id="name" data-attr="{{ $user->name_slug }}">
                                     <b style="font-size: 24px">{{ $user->name }} </b>
                                 </div>
                             </div>
@@ -75,27 +75,31 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row mt-2">
+                    <div class="row">
                         <div class="col-3">
-                            {{ $user->answers->count() ?? 0}} Answers
+                            <a href="#" class="text-dark" id="showAnswers" data-href="{{ route('profile.answers.show',$user->name_slug) }}">{{ $user->answers->count() ?? 0}} Answers</a>
                         </div>
                         <div class="col-3">
-                            {{ $user->questions->count() ?? 0}} Questions
+                            <a href="#" class="text-dark" id="showQuestions" data-href="{{ route('profile.questions.show',$user->name_slug) }}">{{ $user->questions->count() ?? 0}} Questions</a>
                         </div>
                         <div class="col-3">
                             0 Shares
                         </div>
-                        {{-- <div class="col-3">
-                            {{ $user->followers()->count() ?? 0 }} Followers
-                        </div>
                         <div class="col-3">
-                            {{ $user->followings()->count() ?? 0 }} Followings
-                        </div> --}}
-                        <div class="col-3">
-                            0 Topics
+                            <a href="#" class="text-dark" id="showTopics" data-href="{{ route('profile.topics.show',$user->name_slug) }}">{{ $user->topics->count() ?? 0 }} Topics</a>
                         </div>
                     </div>
                     <hr>
+                    <div class="row" id="showAnswersHtml"></div>
+                    <div class="row" id="showQuestionsHtml"></div>
+                    <div class="row" id="showTopicsHtml"></div>
+                    <span id="noData"><b>No Data</b></span>
+                    <div class="text-center">
+                        <div class="spinner-border ajax-loading-2 mt-2 text-danger" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div class="ajax-loading text mt-2"></div>
+                    </div>   
                 </div>
         </div>
         <div class="col-4">
@@ -103,7 +107,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            Credentials & Highlights
+                            Credentials & Highlights <i class="bi bi-pencil-square float-right"></i>      
                         </div>
                     </div>
                     <hr>
@@ -145,7 +149,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        Knows about                   
+                        Knows about <i class="bi bi-pencil-square float-right"></i>      
                     </div>
                 </div>
                 <hr>
@@ -158,7 +162,7 @@
                         @empty
                         <div class="row">
                             <div class="col-sm-12">
-                            
+                                You haven't added any topics yet.
                             </div>
                         </div>
                         @endforelse
@@ -170,4 +174,7 @@
         </div>
     </div>
 </div>
+@endsection
+@section('script')
+<script src="{{ asset('js/profile.js') }}"></script>
 @endsection

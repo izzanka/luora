@@ -18,7 +18,7 @@
                         </div>
                         <div class="col-10">
                             <div class="row">
-                                <div class="col-12" id="name">
+                                <div class="col-12" id="name" data-attr="{{ $user->name_slug }}">
                                     <b style="font-size: 24px" >{{ $user->name }} </b><small id="btneditName"><a href="" class="text-secondary" data-toggle="modal" data-target="#nameModal">Edit</a></small>
                                 </div>
                             </div>
@@ -135,19 +135,28 @@
                     <hr>
                     <div class="row">
                         <div class="col-3">
-                            {{ $user->answers->count() ?? 0}} Answers
+                            <a href="#" class="text-dark" id="showAnswers" data-href="{{ route('profile.answers.show',$user->name_slug) }}">{{ $user->answers->count() ?? 0}} Answers</a>
                         </div>
                         <div class="col-3">
-                            {{ $user->questions->count() ?? 0}} Questions
+                            <a href="#" class="text-dark" id="showQuestions" data-href="{{ route('profile.questions.show',$user->name_slug) }}">{{ $user->questions->count() ?? 0}} Questions</a>
                         </div>
                         <div class="col-3">
                             0 Shares
                         </div>
                         <div class="col-3">
-                            0 Topics
+                            <a href="#" class="text-dark" id="showTopics" data-href="{{ route('profile.topics.show',$user->name_slug) }}">{{ $user->topics->count() ?? 0 }} Topics</a>
                         </div>
                     </div>
                     <hr>
+                    <div class="row" id="showAnswersHtml"></div>
+                    <div class="row" id="showQuestionsHtml"></div>
+                    <div class="row" id="showTopicsHtml"></div>
+                    <span id="noData"><b>No Data</b></span>
+                    <div class="text-center">
+                        <div class="spinner-border ajax-loading-2 mt-2 text-danger" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>                    
                 </div>
         </div>
         <div class="col-4">
@@ -467,7 +476,7 @@
                         Knows about
                     <a href="" class="text-dark float-right" data-toggle="modal" data-target="#topicModal"><i class="bi bi-pencil-square"></i></a>
                     <!-- Modal Add Topics-->
-                    <form action="{{ route('profile.topics',$user->name_slug) }}" method="POST">
+                    <form action="{{ route('profile.topics.update',$user->name_slug) }}" method="POST">
                         @csrf
                         @method('PUT')
                             <div class="modal fade" id="topicModal" tabindex="-1" aria-labelledby="topicModalLabel" aria-hidden="true">
@@ -544,7 +553,102 @@
 </div>
 @endsection
 @section('script')
+<script src="{{ asset('js/profile.js') }}"></script>
 <script>
+    // //profile show
+    // $('.ajax-loading-2').hide();
+
+    // $(document).on('click','#showTopics',function(e){
+    //     $("#showQuestionsHtml").hide();
+    //     $("#showAnswersHtml").hide();
+    //     $("#showTopicsHtml").show();
+    //     e.preventDefault();
+    //     let site_url = $(this).attr('data-href');
+    //     let html = "";
+    //     $.ajax({
+    //         url: site_url,
+    //         type: 'get',
+    //         dataType: 'json',
+    //         cache: false,
+    //         beforeSend: function(){
+    //             $('.ajax-loading-2').show();
+    //         }
+    //     })
+    //     .done(function(data){
+    //         $('.ajax-loading-2').hide();
+    //         $.each(data, function(index,value){
+    //             for (let i=0; i< value.length; i++) {
+    //                 html += '<div class="col-12">' + '<b>' + '<a href="#" class="text-dark">' + value[i].name + '</a>' + '</b>' + '<span class="float-right">' + '(' + value[i].qty +  ' Followers)' + '</span>' + '<hr>' + '</div>'
+    //             }
+    //             $("#showTopicsHtml").html(html); 
+    //         });
+            
+    //     })
+    // })
+
+    // $(document).on('click','#showQuestions',function(e){
+    //     $("#showAnswersHtml").hide();
+    //     $("#showTopicsHtml").hide();
+    //     $("#showQuestionsHtml").show();
+    //     e.preventDefault();
+    //     let site_url = $(this).attr('data-href');
+    //     let html2 = "";
+    //     $.ajax({
+    //         url: site_url,
+    //         type: 'get',
+    //         dataType: 'json',
+    //         cahce: false,
+    //         beforeSend: function(){
+    //             $('.ajax-loading-2').show();
+    //         }
+    //     })
+    //     .done(function(data){
+    //         $('.ajax-loading-2').hide();
+    //         $.each(data, function(index,value){
+    //             for (let i=0; i< value.length; i++) {
+    //                 let title_slug = value[i].title_slug;
+    //                 html2 += '<div class="col-12">' + '<b>' + '<a href="/' + title_slug + '" class="text-dark">' + value[i].title + '</a>' + '</b>' + '<hr>' + '</div>'
+    //             }
+    //             $("#showQuestionsHtml").html(html2); 
+    //         });
+            
+    //     })
+    // })
+
+    
+    // $(document).on('click','#showAnswers',function(e){
+
+    //     $("#showQuestionsHtml").hide();
+    //     $("#showTopicsHtml").hide();
+    //     $("#showAnswersHtml").show();
+    //     e.preventDefault();
+    //     let site_url = $(this).attr('data-href');
+    //     let html3 = "";
+    //     $.ajax({
+    //         url: site_url,
+    //         type: 'get',
+    //         dataType: 'json',
+    //         cahce: false,
+    //         beforeSend: function(){
+    //             $('.ajax-loading-2').show();
+    //         }
+    //     })
+    //     .done(function(data){
+    //         let name_slug = $('#name').attr('data-href');
+    //         $('.ajax-loading-2').hide();
+    //         $.each(data, function(index,value){
+    //             for (let i=0; i< value.length; i++) {
+    //                let title_slug = value[i].question.title_slug;
+    //                let title = value[i].question.title;
+
+    //                html3 += '<div class="col-12">' + '<b>' + '<a href="/' + title_slug + '#'+ name_slug +'" class="text-dark">' + title + '</a>' + '</b>' + '<br>' + value[i].text + '<hr>' + '</div>';
+    //             }
+    //             $("#showAnswersHtml").html(html3); 
+    //         });
+            
+    //     })
+    // })
+
     //script for hide & show button edit profile name
     $("#btneditName").hide();
     $("#btneditCredential").hide();

@@ -66,7 +66,7 @@ class ProfileController extends Controller
     public function update_topics(Request $request,User $user){
     
         $utopics = UserTopic::where('user_id',$user->id)->get();
-    
+
         foreach($utopics as $utopic){
             $topic = Topic::find($utopic->topic_id);
             $topic->qty -= 1;
@@ -81,12 +81,14 @@ class ProfileController extends Controller
                     'user_id' => $user->id,
                     'topic_id' => $request->topic_id[$i]
                 ]);
-    
+                
                 $topic = Topic::find($request->topic_id[$i]);
                 $topic->qty += 1;
                 $topic->update();
-               
+        
             }
+         
+
             return back()->with('message',['text' => 'Topics updated successfully!', 'class' => 'success']);
         }else{
             return back()->with('message',['text' => 'Topics deleted successfully!', 'class' => 'success']);
@@ -223,10 +225,11 @@ class ProfileController extends Controller
 
         }
 
-        return back()->with('message',['text' =>  'Profile ' . $title . ' updated successfully!', 'class' => 'success']);
+        return back()->with('message',['text' =>  'Profile ' . $profile . ' updated successfully!', 'class' => 'success']);
     }
 
     public function destroy_credentials(Request $request,User $user,$credentials){
+
         if($credentials == "employment"){
             $user->employment->delete();
         }else if($credentials == "education"){
@@ -236,6 +239,21 @@ class ProfileController extends Controller
         }
 
         return back()->with('message',['text' => $credentials . ' credential deleted successfully!', 'class' => 'success']);
+    }
+
+    public function show_topics(User $user){
+        $show_topics = $user->topics()->orderBy('qty','desc')->get();
+        return response()->json(['data' => $show_topics]);
+    }
+
+    public function show_questions(User $user){
+        $show_questions = $user->questions()->latest()->get();
+        return response()->json(['data' => $show_questions]);
+    }
+
+    public function show_answers(User $user){
+        $show_answers = $user->answers()->with('question')->latest()->get();
+        return response()->json(['data' => $show_answers]);
     }
 
     public function show(User $user){
@@ -277,6 +295,8 @@ class ProfileController extends Controller
        
         return back();
     }
+
+   
 
 
 }

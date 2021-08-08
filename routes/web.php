@@ -49,10 +49,14 @@ Route::group(['middleware' => ['auth']],function(){
     Route::get('/{user:name_slug}/follow',[ProfileController::class,'follow'])->name('follow');
     Route::get('/profile/{user:name_slug}/show',[ProfileController::class,'show'])->name('profile.show');
     Route::get('/profile/{user:name_slug}',[ProfileController::class,'index'])->name('profile.index');
-    Route::put('/profile/{user:name_slug}/user/{profile}',[ProfileController::class,'update_profile'])->name('profile.update');
+    Route::put('/profile/{user:name_slug}/update/topics',[ProfileController::class,'update_topics'])->name('profile.topics.update');
+    Route::put('/profile/{user:name_slug}/update/{profile}',[ProfileController::class,'update_profile'])->name('profile.update');
     Route::put('/profile/{user:name_slug}/update/credential/{credentials}',[ProfileController::class,'update_credentials'])->name('profile.credentials.update');
     Route::get('/profile/{user:name_slug}/destroy/credential/{credentials}',[ProfileController::class,'destroy_credentials'])->name('profile.credentials.destroy');
-    Route::put('/profile/{user:name_slug}/topics',[ProfileController::class,'update_topics'])->name('profile.topics');
+    Route::get('/profile/{user:name_slug}/topics',[ProfileController::class,'show_topics'])->name('profile.topics.show');
+    Route::get('/profile/{user:name_slug}/questions',[ProfileController::class,'show_questions'])->name('profile.questions.show');
+    Route::get('/profile/{user:name_slug}/answers',[ProfileController::class,'show_answers'])->name('profile.answers.show');
+
 
     //question
     Route::post('/add-question',[QuestionController::class,'store'])->name('question.store');
