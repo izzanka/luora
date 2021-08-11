@@ -52,8 +52,42 @@ Account Settings
                                 Password
                             </div>
                             <div class="col-6">
-                                <a href="#">Change Password</a>
+                                @if (auth()->user()->provider_id)
+                                    <a href="#" class="text-dark">Change Password</a>
+                                @else
+                                    <a href="" data-toggle="modal" data-target="#passwordModal">Change Password</a>
+                                @endif
                             </div>
+                            <!-- Modal -->
+                            <form action="{{ route('settings.password',auth()->id()) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="passwordModalLabel">Change password</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label for="">Password</label>
+                                                    <input type="password" name="password" class="form-control">
+                                                    @include('layouts.error', ['name' => 'password'])
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary rounded-pill">Save</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -75,4 +109,9 @@ Account Settings
      
     </div>
 </div>
+@endsection
+@section('script')
+<script>
+    
+</script>
 @endsection

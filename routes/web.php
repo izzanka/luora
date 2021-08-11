@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth']],function(){
 
     //setting
     Route::get('/settings',[SettingController::class,'index'])->name('settings.index');
+    Route::put('/settings/password/{user}',[SettingController::class,'update_password'])->name('settings.password');
 
     //content
     Route::get('/content',[ContentController::class,'index'])->name('content.index');
@@ -69,7 +70,6 @@ Route::group(['middleware' => ['auth']],function(){
     Route::get('/{question:title_slug}/destroy',[QuestionController::class,'destroy'])->name('question.destroy');
 
 });
-
 
 Route::get('/auth/redirect/{provider}',[SocialiteController::class,'redirect']);
 Route::get('/auth/callback/{provider}',[SocialiteController::class,'callback']);

@@ -37,9 +37,6 @@
     </div>
 </form>
 
-
-
-
 <!-- Modal Topic-->
 <form action="{{ route('question.update',$question->title_slug) }}" method="POST">
     @csrf

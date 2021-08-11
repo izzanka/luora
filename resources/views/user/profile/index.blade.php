@@ -231,7 +231,6 @@
                                                                 @endif
                                                                
                                                             </select>
-                                                            @include('layouts.error', ['name' => 'start_year'])
                                                         </div>
                                                     </div>
                                                     <div class="row mt-2" id="endyear">
@@ -247,7 +246,6 @@
                                                                     <option value="" selected>----</option>
                                                                 @endif
                                                             </select>
-                                                            @include('layouts.error', ['name' => 'end_year'])
                                                         </div>
                                                     </div>
                                                     <div class="row mt-4">
@@ -349,7 +347,6 @@
                                                                 <option value="" selected>----</option>
                                                             @endif
                                                         </select>
-                                                        @include('layouts.error', ['name' => 'graduation_year'])
                                                     </div>
                                                 </div>
                                             </div>
@@ -402,6 +399,7 @@
                                                     <div class="col-12">
                                                         <label for="">Location</label>
                                                         <input type="text" name="location" class="form-control" value="{{ $user->location->location ?? '' }}">
+                                                        @include('layouts.error', ['name' => 'location'])
                                                     </div>
                                                 </div>
                                                 <div class="row mt-2">
@@ -554,4 +552,79 @@
 @endsection
 @section('script')
 <script src="{{ asset('js/profile.js') }}"></script>
+<script>
+    //script for hide & show button edit profile name
+    $("#btneditName").hide();
+    $("#btneditCredential").hide();
+    $("#btneditDesc").hide();
+
+    $("#name").mouseenter(function(){
+        $("#btneditName").show();
+    });
+    $("#name").mouseleave(function(){
+        $("#btneditName").hide();
+    });
+    $("#credential").mouseenter(function(){
+        $("#btneditCredential").show();
+    });
+    $("#credential").mouseleave(function(){
+        $("#btneditCredential").hide();
+    });
+    $("#desc").mouseenter(function(){
+        $("#btneditDesc").show();
+    });
+    $("#desc").mouseleave(function(){
+        $("#btneditDesc").hide();
+    });
+
+    //script for currently checkbox
+    if($("#currently").prop("checked") == true){
+        $("#endyear").hide();
+    }
+    if($("#currently2").prop("checked") == true){
+        $("#endyear2").hide();
+    }
+    $("#currently").on('click',function(){
+      if($(this).prop("checked") == true){
+          $("#endyear").hide();
+      }else if($(this).prop("checked") == false){
+          $("#endyear").show();
+      }
+    });
+    $("#currently2").on('click',function(){
+      if($(this).prop("checked") == true){
+          $("#endyear2").hide();
+      }else if($(this).prop("checked") == false){
+          $("#endyear2").show();
+      }
+    });
+
+    //script for show years in dropdown
+    let startyearDropdown = document.getElementById('startyear-dropdown');
+    let endyearDropdown = document.getElementById('endyear-dropdown');
+    let startyearDropdown2 = document.getElementById('startyear-dropdown2');
+    let endyearDropdown2 = document.getElementById('endyear-dropdown2');
+    let gradyearDropdown = document.getElementById('gradyear-dropdown');
+
+    yeardropdown(startyearDropdown);
+    yeardropdown(endyearDropdown);
+    yeardropdown(startyearDropdown2);
+    yeardropdown(endyearDropdown2);
+    yeardropdown(gradyearDropdown);
+
+    function yeardropdown(dropdown){
+        let currentYear = new Date().getFullYear();    
+        let earliestYear = 2000;     
+        while (currentYear >= earliestYear) {      
+            let dateOption = document.createElement('option');          
+            dateOption.text = currentYear;      
+            dateOption.value = currentYear;        
+            dropdown.add(dateOption);      
+            currentYear -= 1;    
+        }
+    }
+ 
+
+    
+</script>
 @endsection
