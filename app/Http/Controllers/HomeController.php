@@ -55,7 +55,7 @@ class HomeController extends Controller
                     }
                 }
 
-                //set vote
+                //set vote status
                 if(auth()->user()->hasUpVoted($answer)){
                     $upvoted = "-fill";
                 }else{
@@ -68,7 +68,7 @@ class HomeController extends Controller
                     $downvoted = "";
                 }
 
-                //set following or not
+                //set follow status
                 if(auth()->user()->isFollowing($answer->user)){
                     $status = '<a href="'. route('follow',$answer->user->name_slug) .'">Following</a>';
                 }else{

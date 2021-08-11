@@ -17,20 +17,20 @@ class StatController extends Controller
         
         $answers = Answer::where('user_id',auth()->id())->with('question')->get();
         $questions = Question::where('user_id',auth()->id())->get();
-        $data1 = 0;
-        $data2 = 0;
+        $total_answers = 0;
+        $total_questions = 0;
         $views = ['Answers' => 0,'Questions' => 0,'All' => 0];
 
         foreach ($answers as $answer) {
-            $data1 = views($answer)->count();
-            $views['Answers'] = $data1;
+            $total_answers = views($answer)->count();
+            $views['Answers'] = $total_answers;
         }
         foreach($questions as $question){
-            $data2 = views($question)->count();
-            $views['Questions'] = $data2;
+            $total_questions = views($question)->count();
+            $views['Questions'] = $total_questions;
         }
 
-        $views['All'] = $data1 + $data2;
+        $views['All'] = $total_answers + $total_questions;
     
         return response()->json($views);
     }
