@@ -59,13 +59,15 @@ class QuestionController extends Controller
                 $check++;
                 //check if added topics more than 8
                 if($check > 8){
-                    return back()->with('message',['text' => 'Topics cant more than 8!', 'class' => 'danger']);
+                    // return back()->with('message',['text' => 'Topics cant more than 8!', 'class' => 'danger']);
+                    break;
                 }
                 QuestionTopic::create([
                     'question_id' => $question->id,
                     'topic_id' => $request->topic_id[$i]
                 ]);
             }
+            
         }
 
         return back()->with('message',['text' => 'Question added successfully!', 'class' => 'success']);
