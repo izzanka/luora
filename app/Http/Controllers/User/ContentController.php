@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\User;
 use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Http\Request;
@@ -11,10 +10,7 @@ use App\Http\Controllers\Controller;
 class ContentController extends Controller
 {
     public function index(){
-
-        $user = User::find(auth()->id());
-        $contents = $user->getContents();
-
+        $contents = auth()->user()->getContents();
         return view('user.content.index',compact('contents'));
     }
 
