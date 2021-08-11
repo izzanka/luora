@@ -22,7 +22,11 @@ class HomeController extends Controller
             foreach($answers as $answer){
                 //count views
                 views($answer)
-                ->cooldown(1440)
+                ->cooldown(86400)
+                ->record();
+
+                views($answer->question)
+                ->cooldown(86400)
                 ->record();
 
                 //set share

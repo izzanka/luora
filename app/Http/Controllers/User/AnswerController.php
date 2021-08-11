@@ -15,6 +15,11 @@ class AnswerController extends Controller
     public function index()
     {
         $questions = Question::where('user_id','!=',auth()->id())->latest()->get();
+        foreach($questions as $question){
+            views($question)
+            ->cooldown(86400)
+            ->record();
+        }
         return view('user.answer.index',compact('questions'));
     }
 

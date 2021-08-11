@@ -98,7 +98,7 @@
                                 <div class="dropdown-menu dropdown-menu-right dmenu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('profile.index',Auth::user()->name_slug) }}" class="text-dark"><b style="font-size: 15px">{{ Auth::user()->name }} <i class="bi bi-chevron-right ml-2"></i></b> </a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#"><i class="bi bi-bar-chart mr-2"></i>Stats</a>
+                                    <a class="dropdown-item" href="{{ route('stats.index') }}"><i class="bi bi-bar-chart mr-2"></i>Stats</a>
                                     <a class="dropdown-item" href="{{ route('content.index') }}"><i class="bi bi-journals mr-2"></i>Your Content</a>
                                     <a class="dropdown-item" href="#"><i class="bi bi-bookmark mr-2"></i>Bookmarks</a>
                                     <div class="dropdown-divider"></div>

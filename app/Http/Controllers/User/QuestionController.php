@@ -28,6 +28,10 @@ class QuestionController extends Controller
         $answers = Answer::where('question_id',$question->id)->with('user')->latest()->get();
         $topics = Topic::all();
 
+        views($question)
+        ->cooldown(86400)
+        ->record();
+
         $link = route('question.show',$question);
         $facebook = \Share::page($link)->facebook()->getRawLinks();
         $twitter = \Share::page($link)->twitter()->getRawLinks();
