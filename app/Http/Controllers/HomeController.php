@@ -20,11 +20,11 @@ class HomeController extends Controller
         if($request->ajax()){
            
             foreach($answers as $answer){
-                //count views
+                //count view
                 views($answer)
                 ->cooldown(86400)
                 ->record();
-
+                //count question
                 views($answer->question)
                 ->cooldown(86400)
                 ->record();
@@ -80,7 +80,7 @@ class HomeController extends Controller
                 }
                 
                 $data .= '
-                <div class="card mt-3">
+                <div class="card mt-3" id="'. $answer->user->name_slug .'">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
@@ -132,9 +132,9 @@ class HomeController extends Controller
                                         <a href="" class="text-dark" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="bi bi-share"></i></a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <a class="dropdown-item" href="'. $facebook .'" target="_blank"><i class="bi bi-facebook mr-2"></i>Facebook</a>
-                                                <a class="dropdown-item" href="'. $twitter .'" target="_blank"><i class="bi bi-twitter mr-2"></i>Twitter</a>
-                                                <a class="dropdown-item" href="javascript: void(0)" onclick="copy()">Copy link</a>
+                                                <a class="dropdown-item" href="'. $facebook . '#'.$answer->user->name_slug.''. '" target="_blank"><i class="bi bi-facebook mr-2"></i>Facebook</a>
+                                                <a class="dropdown-item" href="'. $twitter . '#'.$answer->user->name_slug.''.'" target="_blank"><i class="bi bi-twitter mr-2"></i>Twitter</a>
+                                                <a class="dropdown-item" href="javascript: void(0)" onclick="copy()" id="copyLink" data-attr="'. $answer->question->title_slug .'#'. $answer->user->name_slug.'">Copy link</a>
                                             </div>
                                         </div>
                                     </div>
