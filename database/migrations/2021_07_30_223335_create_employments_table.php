@@ -15,7 +15,7 @@ class CreateEmploymentsTable extends Migration
     {
         Schema::create('employments', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->foreignId('user_id')->constrained();
             $table->string('position',60);
             $table->string('company',12);
             $table->string('start_year',4);
