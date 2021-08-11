@@ -100,6 +100,21 @@
         });
     }
     
+    //script for copy link to clipboard
+    function copy(){
+        let dummy = document.createElement('input');
+        let href = $('#copyLink').attr('data-attr');
+        let text = 'http://127.0.0.1:8000/' + href;
+
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+
+        alert('Link copied to clipboard');
+    }
+    
 
 </script>
 @endsection
