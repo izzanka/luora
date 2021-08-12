@@ -21,7 +21,7 @@ class TopicSeeder extends Seeder
             'Anime',
             'Fitness',
             'Clothing',
-            'Movie',
+            'Movies',
             'Writers',
             'Author',
             'Books',
@@ -42,7 +42,11 @@ class TopicSeeder extends Seeder
             'Medical',
             'Dreams',
             'Recipes',
-            'Experiences'
+            'Experiences',
+            'English',
+            'Literature',
+            'Facts',
+            'Food'
         ];
 
         for ($i=0; $i <count($topics) ; $i++) { 
