@@ -27,6 +27,7 @@ class QuestionController extends Controller
 
         $answers = Answer::where('question_id',$question->id)->with('user')->latest()->get();
         $topics = Topic::all();
+        $credential = "";
 
         views($question)
         ->cooldown(86400)
@@ -42,7 +43,27 @@ class QuestionController extends Controller
         $facebook = \Share::page($link)->facebook()->getRawLinks();
         $twitter = \Share::page($link)->twitter()->getRawLinks();
 
-        return view('user.question.show',compact('question','answers','topics','facebook','twitter'));
+        if($answer->user->credential){
+            $credential = $answer->user->credential;
+        }else{
+            $answer->user->load(['employment','education','location']);
+            if($answer->user->employment){
+                $end = $answer->user->employment->currently ? 'present' : $answer->user->employment->end_year;
+                $credential = $answer->user->employment->position . ' at ' . $answer->user->employment->company . ' (' . $answer->user->employment->start_year . '-' . $end . ')';
+            }else{
+                if($answer->user->education){
+                    $end2 = $answer->user->education->graduation_year ? ' (Graduated ' . $answer->user->education->graduation_year . ')' : null;
+                    $credential = $answer->user->education->degree_type . ' in ' . $answer->user->education->primary . ', ' . $answer->user->education->school . $end2;
+                }else{
+                    if($answer->user->location){
+                        $end3 = $answer->user->location->currently ? 'present' : $answer->user->location->end_year;
+                        $credential = 'Lives in ' . $answer->user->location->location . ' (' . $answer->user->location->start_year . '-' . $end3 . ')';
+                    }
+                }
+            }
+        }
+
+        return view('user.question.show',compact('question','answers','topics','facebook','twitter','credential'));
     }
 
     public function store(Request $request){

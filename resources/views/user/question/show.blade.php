@@ -169,28 +169,6 @@
             <div class="row mt-2">
                 <div class="col-12">
                     @foreach ($answers as $answer)
-                        @php
-                            $credential = "";
-                            if($answer->user->credential){
-                                $credential = $answer->user->credential;
-                            }else{
-                                $answer->user->load(['employment','education','location']);
-                                if($answer->user->employment){
-                                    $end = $answer->user->employment->currently ? 'present' : $answer->user->employment->end_year;
-                                    $credential = $answer->user->employment->position . ' at ' . $answer->user->employment->company . ' (' . $answer->user->employment->start_year . '-' . $end . ')';
-                                }else{
-                                    if($answer->user->education){
-                                        $end2 = $answer->user->education->graduation_year ? ' (Graduated ' . $answer->user->education->graduation_year . ')' : null;
-                                        $credential = $answer->user->education->degree_type . ' in ' . $answer->user->education->primary . ', ' . $answer->user->education->school . $end2;
-                                    }else{
-                                        if($answer->user->location){
-                                            $end3 = $answer->user->location->currently ? 'present' : $answer->user->location->end_year;
-                                            $credential = 'Lives in ' . $answer->user->location->location . ' (' . $answer->user->location->start_year . '-' . $end3 . ')';
-                                        }
-                                    }
-                                }
-                            }
-                        @endphp
                         <!-- Modal Answer-->
                         <form action="" method="POST" id="answer-updateForm">
                             @csrf
