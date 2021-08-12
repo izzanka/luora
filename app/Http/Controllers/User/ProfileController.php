@@ -40,6 +40,10 @@ class ProfileController extends Controller
     }
 
     public function index(User $user){
+        //redirect to show profile
+        if($user->id != auth()->id()){
+            return redirect()->route('profile.show',$user->name_slug);
+        }
 
         $topics = Topic::all();
         $user->load(['employment','education','location']);
@@ -64,6 +68,10 @@ class ProfileController extends Controller
     }
 
     public function update_topics(Request $request,User $user){
+
+        if($user->id != auth()->id()){
+            return back();
+        }  
     
         $utopics = UserTopic::where('user_id',$user->id)->get();
 
@@ -96,8 +104,11 @@ class ProfileController extends Controller
 
     public function update_credentials(Request $request,User $user,$credentials){
 
-       if($credentials == "employment"){
-         
+        if($user->id != auth()->id()){
+            return back();
+        }   
+
+        if($credentials == "employment"){
             $request->validate([
                 'position' => 'required|max:60',
                 'company' => 'required|max:12',
@@ -188,6 +199,10 @@ class ProfileController extends Controller
 
     public function update_profile(Request $request,User $user,$profile){
 
+        if($user->id != auth()->id()){
+            return back();
+        }  
+
         if($profile == "credential"){
 
             $title = "Credential";
@@ -225,6 +240,10 @@ class ProfileController extends Controller
     }
 
     public function destroy_credentials(Request $request,User $user,$credentials){
+
+        if($user->id != auth()->id()){
+            return back();
+        }  
 
         if($credentials == "employment"){
             $user->employment->delete();

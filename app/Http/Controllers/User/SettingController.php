@@ -15,6 +15,10 @@ class SettingController extends Controller
 
     public function update_password(Request $request,User $user){
         
+        if($user->id != auth()->id()){
+            return back();
+        }  
+    
         $request->validate([
             'password' => 'required|string|min:8'
         ]);
