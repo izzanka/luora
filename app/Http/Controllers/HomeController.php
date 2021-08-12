@@ -13,7 +13,7 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {   
-        $answers = Answer::with(['user','question'])->where('user_id','!=',auth()->id())->latest()->paginate(10);
+        $answers = Answer::with(['user','question'])->latest()->paginate(10);
         $credential = "";
         $data = "";
     
@@ -114,7 +114,7 @@ class HomeController extends Controller
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        '. $answer->text .'<br>
+                                        '. $answer->text .'<br><br>
                                         <small class="text-secondary">'. views($answer)->count() .' views</small>
                                     </div>
                                 </div>

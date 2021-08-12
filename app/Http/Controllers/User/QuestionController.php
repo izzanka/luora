@@ -12,9 +12,9 @@ use App\Http\Controllers\Controller;
 
 class QuestionController extends Controller
 {
-    public function edit_title($request){
-        //remove space
-       $removeSpace = str_replace(' ','-',$request->title);
+    public function edit_title($title){
+       //remove space
+       $removeSpace = str_replace(' ','-',$title);
        //remove special char
        $removeChar = preg_replace('/[^A-Za-z0-9\-]/', '',$removeSpace);
        //add space
@@ -37,48 +37,51 @@ class QuestionController extends Controller
             views($answer)
             ->cooldown(86400)
             ->record();
+            if($answer->user->credential){
+                $credential = $answer->user->credential;
+            }else{
+                $answer->user->load(['employment','education','location']);
+                if($answer->user->employment){
+                    $end = $answer->user->employment->currently ? 'present' : $answer->user->employment->end_year;
+                    $credential = $answer->user->employment->position . ' at ' . $answer->user->employment->company . ' (' . $answer->user->employment->start_year . '-' . $end . ')';
+                }else{
+                    if($answer->user->education){
+                        $end2 = $answer->user->education->graduation_year ? ' (Graduated ' . $answer->user->education->graduation_year . ')' : null;
+                        $credential = $answer->user->education->degree_type . ' in ' . $answer->user->education->primary . ', ' . $answer->user->education->school . $end2;
+                    }else{
+                        if($answer->user->location){
+                            $end3 = $answer->user->location->currently ? 'present' : $answer->user->location->end_year;
+                            $credential = 'Lives in ' . $answer->user->location->location . ' (' . $answer->user->location->start_year . '-' . $end3 . ')';
+                        }
+                    }
+                }
+            }
         }
 
         $link = route('question.show',$question);
         $facebook = \Share::page($link)->facebook()->getRawLinks();
         $twitter = \Share::page($link)->twitter()->getRawLinks();
 
-        if($answer->user->credential){
-            $credential = $answer->user->credential;
-        }else{
-            $answer->user->load(['employment','education','location']);
-            if($answer->user->employment){
-                $end = $answer->user->employment->currently ? 'present' : $answer->user->employment->end_year;
-                $credential = $answer->user->employment->position . ' at ' . $answer->user->employment->company . ' (' . $answer->user->employment->start_year . '-' . $end . ')';
-            }else{
-                if($answer->user->education){
-                    $end2 = $answer->user->education->graduation_year ? ' (Graduated ' . $answer->user->education->graduation_year . ')' : null;
-                    $credential = $answer->user->education->degree_type . ' in ' . $answer->user->education->primary . ', ' . $answer->user->education->school . $end2;
-                }else{
-                    if($answer->user->location){
-                        $end3 = $answer->user->location->currently ? 'present' : $answer->user->location->end_year;
-                        $credential = 'Lives in ' . $answer->user->location->location . ' (' . $answer->user->location->start_year . '-' . $end3 . ')';
-                    }
-                }
-            }
-        }
-
         return view('user.question.show',compact('question','answers','topics','facebook','twitter','credential'));
     }
 
     public function store(Request $request){
+     
+        $request->replace(['title' => $request->title . '?','topic_id' => $request->topic_id]);
+        $user = auth()->user();
 
         $request->validate([
-            'title' => 'required',
+            'title' => 'required|unique:questions,title',
         ]);
 
-        $user = auth()->user();
-        $title = $this->edit_title($request);
+        $title = $this->edit_title($request->title);
   
         $question = $user->questions()->create([
             'title' => $title,
             'title_slug' => Str::of($title)->slug('-'),
         ]);
+
+        $title_slug = Str::of($title)->slug('-');
 
         if($request->topic_id){
             $check = 0;
@@ -94,10 +97,9 @@ class QuestionController extends Controller
                     'topic_id' => $request->topic_id[$i]
                 ]);
             }
-            
         }
 
-        return back()->with('message',['text' => 'Question added successfully!', 'class' => 'success']);
+        return redirect()->route('question.show',$title_slug)->with('message',['text' => 'Question added successfully!', 'class' => 'success']);
     }
 
     public function update(Question $question,Request $request){

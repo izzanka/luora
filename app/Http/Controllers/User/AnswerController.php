@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 class AnswerController extends Controller
 {
     public function index(){
-        $questions = Question::where('user_id','!=',auth()->id())->latest()->get();
+        $questions = Question::where('user_id','!=',auth()->id())->latest()->take(5)->get();
         return view('user.answer.index',compact('questions'));
     }
 
