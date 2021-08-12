@@ -13,8 +13,7 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {   
-        $answers = Answer::with(['user','question'])->latest()->paginate(10);
-        $credential = "";
+        $answers = Answer::with(['user','question'])->where('user_id','!=',auth()->id())->latest()->paginate(10);
         $data = "";
     
         if($request->ajax()){
@@ -50,9 +49,12 @@ class HomeController extends Controller
                             if($answer->user->location){
                                 $end3 = $answer->user->location->currently ? 'present' : $answer->user->location->end_year;
                                 $credential = 'Lives in ' . $answer->user->location->location . ' (' . $answer->user->location->start_year . '-' . $end3 . ')';
+                            }else{
+                                $credential = '';
                             }
                         }
                     }
+
                 }
 
                 //set vote status
