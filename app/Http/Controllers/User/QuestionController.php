@@ -32,6 +32,12 @@ class QuestionController extends Controller
         ->cooldown(86400)
         ->record();
 
+        foreach($answers as $answer){
+            views($answer)
+            ->cooldown(86400)
+            ->record();
+        }
+
         $link = route('question.show',$question);
         $facebook = \Share::page($link)->facebook()->getRawLinks();
         $twitter = \Share::page($link)->twitter()->getRawLinks();

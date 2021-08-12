@@ -170,11 +170,6 @@
                 <div class="col-12">
                     @foreach ($answers as $answer)
                         @php
-                        
-                            views($answer)
-                            ->cooldown(86400)
-                            ->record();
-
                             $credential = "";
                             if($answer->user->credential){
                                 $credential = $answer->user->credential;
