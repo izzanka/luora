@@ -13,6 +13,7 @@ class StatController extends Controller
         return view('user.stat.index');
     }
 
+    //api get stats
     public function getStats(){
         
         $answers = Answer::where('user_id',auth()->id())->with('question')->get();

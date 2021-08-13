@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Vote;
-use App\Models\Topic;
 use App\Models\Answer;
 use Illuminate\Http\Request;
 
@@ -15,7 +12,8 @@ class HomeController extends Controller
     {   
         $answers = Answer::with(['user','question'])->where('user_id','!=',auth()->id())->latest()->paginate(10);
         $data = "";
-    
+        
+        //api get answers
         if($request->ajax()){
            
             foreach($answers as $answer){
@@ -54,7 +52,6 @@ class HomeController extends Controller
                             }
                         }
                     }
-
                 }
 
                 //set vote status
@@ -154,6 +151,7 @@ class HomeController extends Controller
         return view('home');
     }
 
+    //api search
     public function search(Request $request){
         
         $users = [];

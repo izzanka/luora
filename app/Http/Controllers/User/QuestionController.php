@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 
 class QuestionController extends Controller
 {
+    //function edit title 
     public function edit_title($title){
        //remove space
        $removeSpace = str_replace(' ','-',$title);
@@ -19,7 +20,7 @@ class QuestionController extends Controller
        $removeChar = preg_replace('/[^A-Za-z0-9\-]/', '',$removeSpace);
        //add space
        $addSpace = str_replace('-',' ',$removeChar);
-       //make uppper case to first string and add ? in last string
+       //make uppper case first letter title and add ? in last title
        return ucfirst($addSpace) . '?';
     }
 
@@ -89,7 +90,6 @@ class QuestionController extends Controller
                 $check++;
                 //check if added topics more than 8
                 if($check > 8){
-                    // return back()->with('message',['text' => 'Topics cant more than 8!', 'class' => 'danger']);
                     break;
                 }
                 QuestionTopic::create([

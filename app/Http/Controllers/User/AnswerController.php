@@ -36,7 +36,8 @@ class AnswerController extends Controller
 
         return back()->with('message',['text' => 'Answer added successfully!', 'class' => 'success']);;
     }
-
+    
+    //api vote
     public function vote(Question $question,Answer $answer,$vote){
 
         $authUser = auth()->user();

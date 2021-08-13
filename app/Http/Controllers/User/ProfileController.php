@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 
 class ProfileController extends Controller
 {
+    //function set credential
     public function employment_credential($user){
         $year_or_current = $user->employment->currently ? 'present' : $user->employment->end_year;
         return 
@@ -256,21 +257,6 @@ class ProfileController extends Controller
         return back()->with('message',['text' => $credentials . ' credential deleted successfully!', 'class' => 'success']);
     }
 
-    public function show_topics(User $user){
-        $show_topics = $user->topics()->orderBy('qty','desc')->get();
-        return response()->json(['data' => $show_topics]);
-    }
-
-    public function show_questions(User $user){
-        $show_questions = $user->questions()->latest()->get();
-        return response()->json(['data' => $show_questions]);
-    }
-
-    public function show_answers(User $user){
-        $show_answers = $user->answers()->with('question')->latest()->get();
-        return response()->json(['data' => $show_answers]);
-    }
-
     public function show(User $user){
         
         $employment_credential = [];
@@ -310,4 +296,21 @@ class ProfileController extends Controller
        
         return back();
     }
+
+    //api show user contents
+    public function show_topics(User $user){
+        $show_topics = $user->topics()->orderBy('qty','desc')->get();
+        return response()->json(['data' => $show_topics]);
+    }
+
+    public function show_questions(User $user){
+        $show_questions = $user->questions()->latest()->get();
+        return response()->json(['data' => $show_questions]);
+    }
+
+    public function show_answers(User $user){
+        $show_answers = $user->answers()->with('question')->latest()->get();
+        return response()->json(['data' => $show_answers]);
+    }
+
 }
