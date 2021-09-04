@@ -56,7 +56,7 @@
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-12">
-                                                <input type="text" name="name" class="form-control" value="{{ $user->name }}">
+                                                <input type="text" name="name" class="form-control" value="{{ $user->name }}" autocomplete="off">
                                                 @include('layouts.error', ['name' => 'name'])
                                             </div>
                                         </div>
@@ -86,7 +86,7 @@
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-12">
-                                                <input type="text" name="credential" class="form-control" placeholder="librarian in New York, reads constanty (60)" value="{{ $user->credential }}"> 
+                                                <input type="text" name="credential" class="form-control" placeholder="librarian in New York, reads constanty (60)" value="{{ $user->credential }}" autocomplete="off"> 
                                                 @include('layouts.error', ['name' => 'credential'])
                                             </div>
                                         </div>
@@ -118,7 +118,7 @@
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <textarea name="description" cols="10" rows="10" class="form-control" placeholder="">{{ $user->description }}</textarea>    
+                                            <textarea name="description" cols="10" rows="10" class="form-control" autocomplete="off">{{ $user->description }}</textarea>    
                                             @include('layouts.error', ['name' => 'description'])
                                         </div>
                                     </div>
@@ -209,14 +209,14 @@
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <label for="">Position</label>
-                                                            <input type="text" name="position" class="form-control" value="{{ $user->employment->position ?? '' }}">
+                                                            <input type="text" name="position" class="form-control" value="{{ $user->employment->position ?? '' }}" autocomplete="off">
                                                             @include('layouts.error', ['name' => 'position'])
                                                         </div>
                                                     </div>
                                                     <div class="row mt-2">
                                                         <div class="col-12">
                                                             <label for="">Company / Organization</label>
-                                                            <input type="text" name="company" class="form-control" value="{{ $user->employment->company ?? '' }}">
+                                                            <input type="text" name="company" class="form-control" value="{{ $user->employment->company ?? '' }}" autocomplete="off">
                                                             @include('layouts.error', ['name' => 'company'])
                                                         </div>
                                                     </div>
@@ -316,21 +316,21 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <label for="">School</label>
-                                                        <input type="text" name="school" value="{{ $user->education->school ?? '' }}" class="form-control">
+                                                        <input type="text" name="school" value="{{ $user->education->school ?? '' }}" class="form-control" autocomplete="off">
                                                         @include('layouts.error', ['name' => 'school'])
                                                     </div>
                                                 </div>
                                                 <div class="row mt-2">
                                                     <div class="col-12">
                                                         <label for="">Primary</label>
-                                                        <input type="text" name="primary" value="{{ $user->education->primary ?? '' }}" class="form-control">
+                                                        <input type="text" name="primary" value="{{ $user->education->primary ?? '' }}" class="form-control" autocomplete="off">
                                                         @include('layouts.error', ['name' => 'primary'])
                                                     </div>
                                                 </div>
                                                 <div class="row mt-2">
                                                     <div class="col-12">
                                                         <label for="">Degree Type</label>
-                                                        <input type="text" name="degree_type" value="{{ $user->education->degree_type ?? '' }}" class="form-control">
+                                                        <input type="text" name="degree_type" value="{{ $user->education->degree_type ?? '' }}" class="form-control" autocomplete="off">
                                                         @include('layouts.error', ['name' => 'degree_type'])
                                                     </div>
                                                 </div>
@@ -398,7 +398,7 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <label for="">Location</label>
-                                                        <input type="text" name="location" class="form-control" value="{{ $user->location->location ?? '' }}">
+                                                        <input type="text" name="location" class="form-control" value="{{ $user->location->location ?? '' }}" autocomplete="off">
                                                         @include('layouts.error', ['name' => 'location'])
                                                     </div>
                                                 </div>
@@ -496,7 +496,7 @@
                                                             @foreach ($topics as $topic)
                                                             <div class="col-sm-3">
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" value="{{ $topic->id }}" name="topic_id[]" @php
+                                                                    <input class="form-check-input"  type="checkbox" value="{{ $topic->id }}" name="topic_id[]" @php
                                                                     $checked = "";
                                                                     foreach($user->topics as $utopic){
                                                                         if($utopic->name == $topic->name){
@@ -504,8 +504,8 @@
                                                                         }
                                                                     }
                                                                 @endphp 
-                                                                {{ $checked }}>
-                                                                    <label class="form-check-label" for="defaultCheck1">
+                                                                {{ $checked }} id="{{ $topic->name }}">
+                                                                    <label class="form-check-label" for="{{ $topic->name }}">
                                                                     {{ $topic->name }}
                                                                     </label>
                                                                 </div>
@@ -586,9 +586,9 @@
     }
     $("#currently").on('click',function(){
       if($(this).prop("checked") == true){
-          $("#endyear").hide();
+        $("#endyear").hide();
       }else if($(this).prop("checked") == false){
-          $("#endyear").show();
+        $("#endyear").show();
       }
     });
     $("#currently2").on('click',function(){
@@ -623,8 +623,5 @@
             currentYear -= 1;    
         }
     }
- 
-
-    
 </script>
 @endsection

@@ -21,17 +21,13 @@ Your Content
                     <div class="col-12">
                         <a href="{{ route('content.index') }}" class="{{ request()->route()->named('content.index') ? 'text-danger' : 'text-dark' }}">All Contents</a>
                     </div>
-                </div>
-                <div class="row mt-2">
                     <div class="col-12">
                         <a href="{{ route('content.questions.index') }}" class="{{ request()->route()->named('content.questions.index') ? 'text-danger' : 'text-dark' }}">Questions</a>
                     </div>
-                </div>
-                <div class="row mt-2">
                     <div class="col-12">
                         <a href="{{ route('content.answers.index') }}" class="{{ request()->route()->named('content.answers.index') ? 'text-danger' : 'text-dark' }}">Answers</a>
                     </div>
-                </div>
+                </div>  
             </div>
      
         </div>

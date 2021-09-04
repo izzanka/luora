@@ -15,7 +15,7 @@
                 </div>
             
                 <div class="modal-body">
-                    <textarea name="text" id="" cols="30" rows="10" class="form-control" placeholder="Write your answer"></textarea>
+                    <textarea name="text" id="" cols="30" rows="10" class="form-control" placeholder="Write your answer" autocomplete="off"></textarea>
                     @include('layouts.error', ['name' => 'text'])
                 </div>
             

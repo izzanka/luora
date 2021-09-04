@@ -24,7 +24,7 @@
                             <b>{{ Auth::user()->name }}</b>
                         </div>
                         <div class="col-sm-12 mt-3">
-                            <a href="" class="form-control" data-toggle="modal" data-target="#exampleModal">What is your question ?</a>
+                            <a href="" class="form-control" data-toggle="modal" data-target="#add-questionModal">What is your question ?</a>
                         </div>
                     </div>
                 </div>

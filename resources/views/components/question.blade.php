@@ -34,7 +34,7 @@
             
                     <div class="row mt-3">
                         <div class="col-sm-12">
-                            <input type="text" name="title" class="form-control" placeholder="Start your question with 'What', 'How', 'Why', etc.">
+                            <input type="text" name="title" class="form-control" placeholder="Start your question with 'What', 'How', 'Why', etc." autocomplete="off">
                             @include('layouts.error', ['name' => 'title'])
                         </div>
                     </div>
@@ -48,8 +48,8 @@
                                     @foreach ($topics as $topic)
                                     <div class="col-sm-3">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="{{ $topic->id }}" id="defaultCheck1" name="topic_id[]">
-                                            <label class="form-check-label" for="defaultCheck1">
+                                            <input class="form-check-input" type="checkbox" value="{{ $topic->id }}" name="topic_id[]" id="{{ $topic->id }}">
+                                            <label class="form-check-label" for="{{ $topic->id }}">
                                             {{ $topic->name }}
                                             </label>
                                         </div>
