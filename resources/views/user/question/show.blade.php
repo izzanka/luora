@@ -7,6 +7,72 @@
 @section('content')
 @include('layouts.answer')
 
+<!-- Report Answer Modal -->
+<form method="POST" id="report-answerForm">
+    @csrf
+    <div class="modal fade" id="report_answerModal" tabindex="-1" aria-labelledby="report_answerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="report_answerModalLabel">Report answer</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-check">
+                    @foreach ($report_answer_types as $report_answer_type)
+                        <input class="form-check-input" type="radio" name="type" id="{{ $report_answer_type['name'] }}" value="{{ $report_answer_type['name'] }}">
+                        <label class="form-check-label" for="{{ $report_answer_type['name'] }}">
+                            <b>{{ ucfirst($report_answer_type['name']) }}</b><br>
+                            <span class="text-secondary">{{ $report_answer_type['desc'] }}</span>
+                        </label>
+                        <br><br>
+                    @endforeach
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-text rounded-pill" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary rounded-pill" id="store-reportAnswer">Submit</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
+
+<!-- Report Question Modal -->
+<form action="{{ route('question.report',$question->title_slug) }}" method="POST">
+    @csrf
+    <div class="modal fade" id="report_questionModal" tabindex="-1" aria-labelledby="report_questionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="report_questionModalLabel">Report question</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-check">
+                    @foreach ($report_question_types as $report_question_type)
+                        <input class="form-check-input" type="radio" name="type" id="{{ $report_question_type['name'] }}" value="{{ $report_question_type['name'] }}">
+                        <label class="form-check-label" for="{{ $report_question_type['name'] }}">
+                            <b>{{ ucfirst($report_question_type['name']) }}</b><br>
+                            <span class="text-secondary">{{ $report_question_type['desc'] }}</span>
+                        </label>
+                        <br><br>
+                    @endforeach
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-text rounded-pill" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
+
 <!-- Modal Question-->
 <form action="{{ route('question.update',$question->title_slug) }}" method="POST">
     @csrf
@@ -23,7 +89,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
-                        <input type="text" name="title" value="{{ $question->title }}" class="form-control">
+                        <input type="text" name="title" value="{{ $question->title }}" class="form-control" autocomplete="off">
                         @include('layouts.error', ['name' => 'title'])
                     </div>
                 </div>
@@ -60,7 +126,7 @@
                                     @foreach ($topics as $topic)
                                     <div class="col-sm-3">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="{{ $topic->id }}" id="defaultCheck1" name="topic_id[]"
+                                            <input class="form-check-input" type="checkbox" value="{{ $topic->id }}" id="{{ $topic->id }}" name="topic_id[]"
                                             @php
                                                 $checked = "";
                                                 foreach($question->topics as $qtopic){
@@ -70,7 +136,7 @@
                                                 }
                                             @endphp 
                                             {{ $checked }}>
-                                            <label class="form-check-label" for="defaultCheck1">
+                                            <label class="form-check-label" for="{{ $topic->id }}">
                                             {{ $topic->name }}
                                             </label>
                                         </div>
@@ -144,9 +210,16 @@
                                         <a class="dropdown-item">
                                             Bookmark
                                             </a>
-                                            <a class="dropdown-item">
-                                                Report
-                                            </a>
+                                            @if ($reported_question == true)
+                                                <a class="dropdown-item text-danger">
+                                                    Reported
+                                                </a>
+                                            @elseif($reported_question == false)
+                                                <a href="#" class="dropdown-item text-dark" data-toggle="modal" data-target="#report_questionModal">
+                                                    Report
+                                                </a>
+                                            @endif
+                                           
                                             <a class="dropdown-item">
                                                 Hide
                                             </a>
@@ -185,7 +258,7 @@
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-12">
-                                                <textarea name="text" cols="10" rows="7" class="form-control" id="text"></textarea>
+                                                <textarea name="text" cols="10" rows="7" class="form-control" id="text" autocomplete="off"></textarea>
                                                 @include('layouts.error', ['name' => 'text'])
                                             </div>
                                         </div>
@@ -199,6 +272,30 @@
                             </div>
                         </form>
 
+                        @php
+                            if($answer->user->credential){
+                                $credential = $answer->user->credential;
+                            }else{
+                                $answer->user->load(['employment','education','location']);
+                                if($answer->user->employment){
+                                    $end = $answer->user->employment->currently ? 'present' : $answer->user->employment->end_year;
+                                    $credential = $answer->user->employment->position . ' at ' . $answer->user->employment->company . ' (' . $answer->user->employment->start_year . '-' . $end . ')';
+                                }else{
+                                    if($answer->user->education){
+                                        $end2 = $answer->user->education->graduation_year ? ' (Graduated ' . $answer->user->education->graduation_year . ')' : null;
+                                        $credential = $answer->user->education->degree_type . ' in ' . $answer->user->education->primary . ', ' . $answer->user->education->school . $end2;
+                                    }else{
+                                        if($answer->user->location){
+                                            $end3 = $answer->user->location->currently ? 'present' : $answer->user->location->end_year;
+                                            $credential = 'Lives in ' . $answer->user->location->location . ' (' . $answer->user->location->start_year . '-' . $end3 . ')';
+                                        }else{
+                                            $credential = "";
+                                        }
+                                    }
+                                }
+                            }
+                        @endphp
+
                         <div class="card mt-2" id="{{ $answer->user->name_slug }}">
                             <div class="card-body">
                                 <div class="row">
@@ -207,7 +304,7 @@
                                             <div class="col-sm-1">
                                                 <img src="{{$answer->user->avatar}}" alt="avatar" class="rounded-circle" width="42px" height="42px">
                                             </div>
-                                             
+                                            
                                             <div class="col-sm-11">
                                                 <b><a href="{{ route('profile.show',$answer->user->name_slug) }}" class="text-dark">{{ $answer->user->name  }}</a></b>, 
                                                 {{ $credential }} <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
@@ -224,9 +321,15 @@
                                                         <a class="dropdown-item">
                                                             Bookmark
                                                         </a>
-                                                        <a class="dropdown-item">
-                                                            Report
-                                                        </a>
+                                                        @if ($reported_answer == true)
+                                                            <a class="dropdown-item text-danger">
+                                                                Reported
+                                                            </a>
+                                                        @elseif($reported_answer == false)
+                                                            <a href="#" class="dropdown-item text-dark" data-toggle="modal" data-target="#report_answerModal" data-attr="{{ route('answer.report',$answer->id) }}" id="reportAnswer">
+                                                                Report
+                                                            </a>
+                                                        @endif
                                                         <a class="dropdown-item">
                                                             Hide
                                                         </a>
@@ -241,7 +344,7 @@
 
                                         <div class="row mt-3">
                                             <div class="col-12">
-                                                {{  $answer->text  }}<br>
+                                                {{  $answer->text  }}<br><br>
                                                 <small class="text-secondary">{{ views($answer)->count() }} views</small>
                                             </div>
                                         </div>
@@ -250,8 +353,8 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="btn-group" role="group">
-                                                    <a href="{{  route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'upvote'])}}" class="text-success mr-2" id="upvote"><i class="bi bi-arrow-up-circle{{ auth()->user()->hasUpVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->upVoters()->count() }}</a>
-                                                    <a href="{{  route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'downvote']) }}" class="text-danger mr-4" id="downvote"><i class="bi bi-arrow-down-circle{{ auth()->user()->hasDownVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->downVoters()->count() }}</a>
+                                                    <a href="{{  route('answer.vote',['answer' => $answer->id, 'vote' => 'upvote'])}}" class="text-success mr-2" id="upvote"><i class="bi bi-arrow-up-circle{{ auth()->user()->hasUpVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->upVoters()->count() }}</a>
+                                                    <a href="{{  route('answer.vote',['answer' => $answer->id, 'vote' => 'downvote']) }}" class="text-danger mr-4" id="downvote"><i class="bi bi-arrow-down-circle{{ auth()->user()->hasDownVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->downVoters()->count() }}</a>
                                                     <a href="" class="text-secondary"><i class="bi bi-chat"></i> 0</a>
                                                 </div>
                                             </div>
@@ -298,6 +401,15 @@
        
         $(document).on('click','.store', function(){
             $('#answerForm').attr('action',href);
+        });
+    });
+
+    //script for answer report form
+    $(document).on('click','#reportAnswer', function(){
+        let href = $(this).attr('data-attr');
+       
+        $(document).on('click','#store-reportAnswer', function(){
+            $('#report-answerForm').attr('action',href);
         });
     });
 

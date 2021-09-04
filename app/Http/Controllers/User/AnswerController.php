@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Topic;
 use App\Models\Answer;
 use App\Models\Question;
+use App\Models\ReportAnswer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -38,7 +39,7 @@ class AnswerController extends Controller
     }
     
     //api vote
-    public function vote(Question $question,Answer $answer,$vote){
+    public function vote(Answer $answer,$vote){
 
         $authUser = auth()->user();
         
@@ -57,6 +58,24 @@ class AnswerController extends Controller
         }
        
         return back();
+    }
+
+    public function report(Request $request,Answer $answer){
+        $user_id = auth()->id();
+        $report = ReportAnswer::where('user_id',$user_id)->where('answer_id',$answer->id)->first();
+
+        if($report){
+            return back()->with('message',['text' => 'Answer already reported!', 'class' => 'danger']);
+        }else{
+
+            ReportAnswer::create([
+                'user_id' => $user_id,
+                'answer_id' => $answer->id,
+                'type' => $request->type,
+            ]);
+
+            return back()->with('message',['text' => 'Answer reported successfully!', 'class' => 'success']);
+        }
     }
 
     public function update(Answer $answer,Request $request){

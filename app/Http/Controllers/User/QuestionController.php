@@ -6,8 +6,10 @@ use App\Models\Topic;
 use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Support\Str;
+use App\Models\ReportAnswer;
 use Illuminate\Http\Request;
 use App\Models\QuestionTopic;
+use App\Models\ReportQuestion;
 use App\Http\Controllers\Controller;
 
 class QuestionController extends Controller
@@ -26,44 +28,102 @@ class QuestionController extends Controller
 
     public function show(Question $question){
 
+        $reported_question = false;
+        $reported_answer = false;
+
         $answers = Answer::where('question_id',$question->id)->with('user')->latest()->get();
+        $report_question = ReportQuestion::where('question_id',$question->id)->where('user_id',auth()->id())->first();
         $topics = Topic::all();
-        $credential = "";
+
+        $report_question_types = [
+            [
+                'name' => 'harrasment',
+                'desc' => 'Disparaging or adversarial towards a person or group'
+            ],
+            [
+                'name' => 'spam',
+                'desc' => 'Undisclosed promotion for a link or product'
+            ],
+            [
+                'name' => 'insincere',
+                'desc' => 'Not seeking genuine answers'
+            ],
+            [
+                'name' => 'poorly written',
+                'desc' => 'Not in English or has very bad formatting, grammar, and spelling'
+            ],
+            [
+                'name' => 'incorrect topics',
+                'desc' => 'Topics are irrelevant to the content or overly broad'
+            ]
+        ];
+
+        $report_answer_types = [
+            [
+                'name' => 'harrasment',
+                'desc' => 'Disparaging or adversarial towards a person or group'
+            ],
+            [
+                'name' => 'spam',
+                'desc' => 'Undisclosed promotion for a link or product'
+            ],
+            [
+                'name' => 'doesnt answer the question',
+                'desc' => 'Does not address question that was asked'
+            ],
+            [
+                'name' => 'plagiarism',
+                'desc' => 'Reusing content without attribution'
+            ],
+            [
+                'name' => 'joke answer',
+                'desc' => 'Not a sincere answer'
+                
+            ],
+            [
+                'name' => 'poorly written',
+                'desc' => 'Not in English or has very bad formatting, grammar, and spelling'
+            ],
+            [
+                'name' => 'inappropriate credential',
+                'desc' => 'Authors credential is offensive, spam, or impersonation'
+            ],
+            [
+                'name' => 'factually incorrect',
+                'desc' => 'Substantially incorrect and/or incorrect primary conclusions'
+            ],
+            [
+                'name' => 'adult content',
+                'desc' => 'Sexually explicit, pornographic or otherwise inappropriate'
+            ]
+        ];
+
+
+        if($report_question){
+            $reported_question = true;
+        }
 
         views($question)
         ->cooldown(86400)
         ->record();
 
         foreach($answers as $answer){
+            $report_answer = ReportAnswer::where('answer_id',$answer->id)->where('user_id',auth()->id())->first();
+            
+            if($report_answer){
+                $reported_answer = true;
+            }
+
             views($answer)
             ->cooldown(86400)
             ->record();
-            if($answer->user->credential){
-                $credential = $answer->user->credential;
-            }else{
-                $answer->user->load(['employment','education','location']);
-                if($answer->user->employment){
-                    $end = $answer->user->employment->currently ? 'present' : $answer->user->employment->end_year;
-                    $credential = $answer->user->employment->position . ' at ' . $answer->user->employment->company . ' (' . $answer->user->employment->start_year . '-' . $end . ')';
-                }else{
-                    if($answer->user->education){
-                        $end2 = $answer->user->education->graduation_year ? ' (Graduated ' . $answer->user->education->graduation_year . ')' : null;
-                        $credential = $answer->user->education->degree_type . ' in ' . $answer->user->education->primary . ', ' . $answer->user->education->school . $end2;
-                    }else{
-                        if($answer->user->location){
-                            $end3 = $answer->user->location->currently ? 'present' : $answer->user->location->end_year;
-                            $credential = 'Lives in ' . $answer->user->location->location . ' (' . $answer->user->location->start_year . '-' . $end3 . ')';
-                        }
-                    }
-                }
-            }
         }
 
         $link = route('question.show',$question);
         $facebook = \Share::page($link)->facebook()->getRawLinks();
         $twitter = \Share::page($link)->twitter()->getRawLinks();
 
-        return view('user.question.show',compact('question','answers','topics','facebook','twitter','credential'));
+        return view('user.question.show',compact('question','answers','topics','facebook','twitter','reported_question','report_question_types','reported_answer','report_answer_types'));
     }
 
     public function store(Request $request){
@@ -72,7 +132,7 @@ class QuestionController extends Controller
         $user = auth()->user();
 
         $request->validate([
-            'title' => 'required|unique:questions,title',
+            'title' => 'required|min:10|unique:questions,title',
         ]);
 
         $title = $this->edit_title($request->title);
@@ -113,9 +173,9 @@ class QuestionController extends Controller
     
             $user = auth()->user();
     
-            $title = $this->edit_title($request);
+            $title = $this->edit_title($request->title);
             $title_slug = Str::of($title)->slug('-');
-        
+
             $question->update([
                 'title' => $title,
                 'title_slug' => $title_slug,
@@ -141,6 +201,24 @@ class QuestionController extends Controller
         }
 
         return redirect()->route('question.show',$title_slug)->with('message',['text' => 'Question updated successfully!', 'class' => 'success']);
+    }
+
+    public function report(Request $request,Question $question){
+
+        $user_id = auth()->id();
+        $report = ReportQuestion::where('user_id',$user_id)->where('question_id',$question->id)->first();
+
+        if($report){
+            return back()->with('message',['text' => 'Question already reported!', 'class' => 'danger']);
+        }else{
+            ReportQuestion::create([
+                'user_id' => $user_id,
+                'question_id' => $question->id,
+                'type' => $request->type,
+            ]);
+
+            return back()->with('message',['text' => 'Question reported successfully!', 'class' => 'success']);
+        }
     }
 
     public function destroy(Question $question){

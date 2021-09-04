@@ -10,6 +10,9 @@ use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\SettingController;
 use App\Http\Controllers\User\QuestionController;
 use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\Admin\CheckAnswerController;
+use App\Http\Controllers\Admin\CheckQuestionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +29,22 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
     Auth::routes();
 
     Route::group(['middleware' => 'auth'],function(){
+
+        Route::group(['middleware' => ['can:isAdmin']],function(){
+            Route::prefix('admin')->group(function(){
+                Route::name('admin.')->group(function(){
+                    //question
+                    Route::get('/questions/latest',[CheckQuestionController::class,'index'])->name('questions.latest');
+                    Route::get('/questions/most-reported',[CheckQuestionController::class,'reported'])->name('questions.most-reported');
+                    Route::get('/question/{question}/{status}',[CheckQuestionController::class,'update_status'])->name('question.status');
+                
+                    //answer
+                    Route::get('/answers/latest',[CheckAnswerController::class,'index'])->name('answers.latest');
+                    Route::get('/answers/most-reported',[CheckAnswerController::class,'reported'])->name('answers.most-reported');
+                    Route::get('/answer/{answer}/{status}',[CheckAnswerController::class,'update_status'])->name('answer.status');
+                });
+            });
+        });
     
         //home
         Route::get('/', [HomeController::class, 'index']);
@@ -46,7 +65,8 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         Route::put('/answer/{answer}/update',[AnswerController::class,'update'])->name('answer.update');
         Route::get('/answer/{answer}/destroy',[AnswerController::class,'destroy'])->name('answer.destroy');
         Route::post('/{question:title_slug}/answer',[AnswerController::class,'store'])->name('answer.store');
-        Route::get('/{question:title_slug}/answer/{answer}/{vote}',[AnswerController::class,'vote'])->name('answer.vote');
+        Route::get('/answer/{answer}/{vote}',[AnswerController::class,'vote'])->name('answer.vote');
+        Route::post('/answer/{answer}/report',[AnswerController::class,'report'])->name('answer.report');
     
         //profile
         Route::get('/{user:name_slug}/follow',[ProfileController::class,'follow'])->name('follow');
@@ -69,7 +89,7 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         Route::get('/{question:title_slug}',[QuestionController::class,'show'])->name('question.show');
         Route::put('/{question:title_slug}/update',[QuestionController::class,'update'])->name('question.update');
         Route::get('/{question:title_slug}/destroy',[QuestionController::class,'destroy'])->name('question.destroy');
-    
+        Route::post('/{question:title_slug}/report',[QuestionController::class,'report'])->name('question.report');
     });
     
     Route::get('/auth/redirect/{provider}',[SocialiteController::class,'redirect']);
