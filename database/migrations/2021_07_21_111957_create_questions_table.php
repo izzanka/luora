@@ -20,6 +20,7 @@ class CreateQuestionsTable extends Migration
             $table->string('title_slug');
             $table->string('status')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

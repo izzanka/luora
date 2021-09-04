@@ -21,6 +21,7 @@ class CreateAnswersTable extends Migration
             $table->string('images')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

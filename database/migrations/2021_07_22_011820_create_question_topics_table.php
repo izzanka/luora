@@ -15,8 +15,8 @@ class CreateQuestionTopicsTable extends Migration
     {
         Schema::create('question_topics', function (Blueprint $table) {
             $table->id();
-            $table->integer('question_id');
-            $table->integer('topic_id');
+            $table->foreignId('question_id')->constrained();
+            $table->foreignId('topic_id')->constrained();
         });
     }
 
