@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('provider_id')->nullable();
             $table->string('avatar')->nullable();
             $table->string('country')->nullable();
+            $table->enum('role',['user','admin'])->default('user');
             $table->rememberToken();
             $table->timestamps();
         });

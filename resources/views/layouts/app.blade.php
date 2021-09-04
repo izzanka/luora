@@ -50,26 +50,31 @@
                         @guest
                             
                         @else
-                        <li class="nav-item ml-4">
-                            <a href="{{ route('home') }}" class="{{ request()->route()->named('home') ? 'text-danger' : 'text-dark'}} "><i class="bi bi-house-door" style="font-size: 1.5rem;"></i></a>
-                        </li>
-                        <li class="nav-item ml-5">       
-                                <a href="#" class="text-dark"><i class="bi bi-newspaper" style="font-size: 1.5rem;"></i></a>
-                        </li>
-                        <li class="nav-item ml-5">       
-                                <a href="{{ route('answer.index') }}" class="{{ request()->route()->named('answer.index') || request()->route()->named('question.show')  ? 'text-danger' : 'text-dark'}}"><i class="bi bi-pencil-square" style="font-size: 1.5rem;"></i></a>
-                        </li>
-                        <li class="nav-item ml-5">       
-                                <a href="#" class="text-dark"><i class="bi bi-people" style="font-size: 1.5rem;"></i></a>
-                        </li>
-                        <li class="nav-item ml-5">
-                                <a href="#" class="text-dark"><i class="bi bi-bell" style="font-size: 1.5rem;"></i></a>
-                        </li>
-                        <li class="nav-item ml-4">
-                            <select name="livesearch" class="form-control livesearch" style="width: 375px">
-                            
-                            </select>
-                        </li>
+                            <li class="nav-item ml-4">
+                                <a href="{{ route('home') }}" class="{{ request()->route()->named('home') ? 'text-danger' : 'text-dark'}} "><i class="bi bi-house-door" style="font-size: 1.5rem;"></i></a>
+                            </li>
+
+                            @can('isAdmin')
+                                <x-admin-answers/>
+                                <x-admin-questions/>
+                            @else
+                                <li class="nav-item ml-5">       
+                                        <a href="#" class="text-dark"><i class="bi bi-newspaper" style="font-size: 1.5rem;"></i></a>
+                                </li>
+
+                                <li class="nav-item ml-5">       
+                                        <a href="{{ route('answer.index') }}" class="{{ request()->route()->named('answer.index') || request()->route()->named('question.show')  ? 'text-danger' : 'text-dark'}}"><i class="bi bi-pencil-square" style="font-size: 1.5rem;"></i></a>
+                                </li>
+                
+                                <li class="nav-item ml-5">       
+                                    <a href="#" class="text-dark"><i class="bi bi-people" style="font-size: 1.5rem;"></i></a>
+                                </li>
+
+                                <li class="nav-item ml-5">
+                                        <a href="#" class="text-dark"><i class="bi bi-bell" style="font-size: 1.5rem;"></i></a>
+                                </li>
+                        @endcan
+                        
                         @endguest
 
                     </ul>

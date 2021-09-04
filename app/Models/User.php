@@ -78,4 +78,12 @@ class User extends Authenticatable
     public function location(){
         return $this->hasOne(Location::class);
     }
+
+    public function report_questions(){
+        return $this->belongsToMany(Question::class,'report_questions');
+    }
+
+    public function report_answers(){
+        return $this->belongsToMany(Answer::class,'report_answers');
+    }
 }
