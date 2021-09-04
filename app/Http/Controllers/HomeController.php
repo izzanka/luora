@@ -10,7 +10,7 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {   
-        $answers = Answer::with(['user','question'])->where('user_id','!=',auth()->id())->latest()->paginate(10);
+        $answers = Answer::with(['user','question'])->where('user_id','!=',auth()->id())->where('status',null)->orWhere('status','viewed_by_admin')->orWhere('status','updated_by_user')->latest()->paginate(10);
         $data = "";
         
         //api get answers

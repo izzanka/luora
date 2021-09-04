@@ -15,12 +15,12 @@ class ContentController extends Controller
     }
 
     public function questions(){
-        $questions = Question::where('user_id',auth()->id())->get();
+        $questions = Question::where('user_id',auth()->id())->latest()->get();
         return view('user.content.index',compact('questions'));
     }
 
     public function answers(){
-        $answers = Answer::where('user_id',auth()->id())->with('question')->get();
+        $answers = Answer::where('user_id',auth()->id())->with('question')->latest()->get();
         return view('user.content.index',compact('answers'));
     }
 }
