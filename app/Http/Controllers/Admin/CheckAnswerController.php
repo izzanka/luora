@@ -15,7 +15,6 @@ class CheckAnswerController extends Controller
     }
 
     public function reported(){
-
         $answers = Answer::has('report_users')->with(['report_users' => function($q){$q->distinct()->get();}])->withCount('report_users')->orderBy('report_users_count','desc')->get();
         return view('admin.answer.index',compact('answers'));
     }
@@ -31,12 +30,11 @@ class CheckAnswerController extends Controller
             if($status == 'deleted_by_admin'){
                 $answer->delete();
             }
-
-            return back();
  
         }else{
 
             return back();
+            
         }
 
         return back()->with('message',['text' =>  'Answer status updated successfully!', 'class' => 'success']);

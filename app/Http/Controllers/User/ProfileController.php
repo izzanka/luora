@@ -41,6 +41,11 @@ class ProfileController extends Controller
     }
 
     public function index(User $user){
+        
+        $employment_credential = [];
+        $education_credential = [];
+        $location_credential = [];
+
         //redirect to show profile
         if($user->id != auth()->id()){
             return redirect()->route('profile.show',$user->name_slug);
@@ -48,10 +53,7 @@ class ProfileController extends Controller
 
         $topics = Topic::all();
         $user->load(['employment','education','location']);
-        $employment_credential = [];
-        $education_credential = [];
-        $location_credential = [];
-
+        
         //check employment credential
         if($user->employment){
             $employment_credential = $this->employment_credential($user);
@@ -84,6 +86,7 @@ class ProfileController extends Controller
         }
 
         if($request->topic_id){
+
             for ($i=0; $i < count($request->topic_id); $i++) {
     
                 UserTopic::create([
@@ -94,9 +97,10 @@ class ProfileController extends Controller
                 $topic = Topic::find($request->topic_id[$i]);
                 $topic->qty += 1;
                 $topic->update();
-        
             }
+
             return back()->with('message',['text' => 'Topics updated successfully!', 'class' => 'success']);
+        
         }else{
             return back()->with('message',['text' => 'Topics deleted successfully!', 'class' => 'success']);
         }
@@ -110,6 +114,7 @@ class ProfileController extends Controller
         }   
 
         if($credentials == "employment"){
+
             $request->validate([
                 'position' => 'required|max:60',
                 'company' => 'required|max:12',
@@ -118,6 +123,7 @@ class ProfileController extends Controller
             ]);
 
             if($user->employment){
+
                 $user->employment->update([
                     'position' => $request->position,
                     'company' => $request->company,
@@ -125,7 +131,9 @@ class ProfileController extends Controller
                     'end_year' => $request->end_year,
                     'currently' => $request->currently
                 ]);
+
             }else{
+
                 Employment::create([
                     'user_id' => $user->id,
                     'position' => $request->position,
@@ -193,6 +201,8 @@ class ProfileController extends Controller
                 ]);
 
             }
+        }else{
+            return back();
         }
 
         return back()->with('message',['text' => $credentials . ' credential updated successfully!', 'class' => 'success']);
@@ -206,15 +216,11 @@ class ProfileController extends Controller
 
         if($profile == "credential"){
 
-            $title = "Credential";
-
             $user->update([
                 'credential' => $request->credential
             ]);
 
         }else if($profile == "description"){
-
-            $title = "Description";
     
             $user->update([
                 'description' => $request->description
@@ -226,7 +232,6 @@ class ProfileController extends Controller
                 'name' => 'required|string',
             ]);
 
-            $title = "Name";
             $name_slug = Str::of($request->name)->slug('-');
 
             $user->update([
@@ -234,10 +239,14 @@ class ProfileController extends Controller
                 'name_slug' => $name_slug
             ]);
 
-            return redirect()->route('profile.index',$name_slug)->with('message',['text' =>  'Profile ' . $title . ' updated successfully!', 'class' => 'success']);
+            //has own redirect because name slug
+            return redirect()->route('profile.index',$name_slug)->with('message',['text' =>  'Profile ' . '(' .  $profile . ')' . ' updated successfully!', 'class' => 'success']);
+        
+        }else{
+            return back();
         }
 
-        return back()->with('message',['text' =>  'Profile ' . $profile . ' updated successfully!', 'class' => 'success']);
+        return back()->with('message',['text' =>  'Profile ' . '(' . $profile . ')' . ' updated successfully!', 'class' => 'success']);
     }
 
     public function destroy_credentials(Request $request,User $user,$credentials){
@@ -252,6 +261,8 @@ class ProfileController extends Controller
             $user->education->delete();
         }else if($credentials == "location"){
             $user->location->delete();
+        }else{
+            return back();
         }
 
         return back()->with('message',['text' => $credentials . ' credential deleted successfully!', 'class' => 'success']);
@@ -272,10 +283,12 @@ class ProfileController extends Controller
         if($user->employment){
             $employment_credential = $this->employment_credential($user);
         }
+
         //check education credential
         if($user->education){
            $education_credential = $this->education_credential($user);
         }
+
         //check location credential
         if($user->location){
             $location_credential = $this->location_credential($user);
@@ -285,6 +298,7 @@ class ProfileController extends Controller
     }
 
     public function follow(User $user){
+        
         $authUser = auth()->user();
         
         //check is auth user is following or not

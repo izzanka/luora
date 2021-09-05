@@ -15,17 +15,19 @@ class StatController extends Controller
 
     //api get stats
     public function getStats(){
-        
-        $answers = Answer::where('user_id',auth()->id())->with('question')->get();
-        $questions = Question::where('user_id',auth()->id())->get();
+
         $total_answers = 0;
         $total_questions = 0;
         $views = ['Answers' => 0,'Questions' => 0,'All' => 0];
-
+        
+        $answers = Answer::where('user_id',auth()->id())->with('question')->get();
+        $questions = Question::where('user_id',auth()->id())->get();
+        
         foreach ($answers as $answer) {
             $total_answers = views($answer)->count();
             $views['Answers'] = $total_answers;
         }
+        
         foreach($questions as $question){
             $total_questions = views($question)->count();
             $views['Questions'] = $total_questions;

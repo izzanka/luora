@@ -98,7 +98,6 @@ class QuestionController extends Controller
             ]
         ];
 
-
         if($report_question){
             $reported_question = true;
         }

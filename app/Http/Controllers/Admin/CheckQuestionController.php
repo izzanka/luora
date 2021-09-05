@@ -16,9 +16,7 @@ class CheckQuestionController extends Controller
     }
 
     public function reported(){
-        
         $questions = Question::has('report_users')->with(['report_users' => function($q){$q->distinct()->get();}])->withCount('report_users')->orderBy('report_users_count','desc')->get();
-
         return view('admin.question.index',compact('questions'));
     }
 
@@ -45,10 +43,10 @@ class CheckQuestionController extends Controller
                 $question->delete();
             }
 
-            return back();
- 
         }else{
+
             return back();
+            
         }
 
         return back()->with('message',['text' =>  'Question status updated successfully!', 'class' => 'success']);
