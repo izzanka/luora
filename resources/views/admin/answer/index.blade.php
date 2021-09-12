@@ -87,7 +87,6 @@ Answers
                                             <div class="card">
                                                 <span class="text-secondary text-center">
                                                     {{ $report_user->pivot->type }}
-                                                   
                                                 </span>
                                             </div>
                                         </div>

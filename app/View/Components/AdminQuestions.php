@@ -24,7 +24,7 @@ class AdminQuestions extends Component
      */
     public function render()
     {
-        $questions = Question::whereNull('status')->orWhere('status','updated_by_user')->count();
+        $questions = Question::whereNull('status')->orWhere('status','updated_by_user')->orWhereHas('report_users')->count();
         return view('components.admin-questions',compact('questions'));
     }
 }

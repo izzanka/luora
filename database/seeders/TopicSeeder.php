@@ -49,14 +49,12 @@ class TopicSeeder extends Seeder
             'Food'
         ];
 
-        for ($i=0; $i <count($topics) ; $i++) { 
+        for ($i=0; $i < count($topics); $i++) { 
             DB::table('topics')->insert([
                 'name' => $topics[$i],
             ]
             );
         }
 
-        
-        
     }
 }
