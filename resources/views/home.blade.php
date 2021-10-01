@@ -37,7 +37,6 @@
                 </div>
                 <div class="ajax-loading text mt-2"></div>
             </div>
-           
          
         </div>
         <div class="col-md-2">
@@ -59,13 +58,16 @@
     </div>
 </div>
 @endsection
+
 @section('script')
 <script>
 
-    //script for window loading scroll
-    var site_url = "{{ route('home') }}";   
+ 
+    var site_url = "{{ route('home') }}";
+    var env_url = "{{ env('APP_URL') }}";
     var page = 1;
    
+    //script for window loading scroll
     load_more(page);
 
     $(window).scroll(function() {
@@ -104,7 +106,7 @@
     function copy(){
         let dummy = document.createElement('input');
         let href = $('#copyLink').attr('data-attr');
-        let text = 'http://127.0.0.1:8000/' + href;
+        let text = env_url + href;
 
         document.body.appendChild(dummy);
         dummy.value = text;

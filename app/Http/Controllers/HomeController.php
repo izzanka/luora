@@ -94,10 +94,7 @@ class HomeController extends Controller
                                         <a href="" class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots" style="font-size: 20px"></i></a><br>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                                 <a class="dropdown-item">
-                                                Bookmark
-                                                </a>
-                                                <a class="dropdown-item">
-                                                    Report
+                                                    Bookmark
                                                 </a>
                                                 <a class="dropdown-item">
                                                     Hide

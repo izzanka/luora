@@ -43,13 +43,6 @@ Stats
                     backgroundColor: '#84B1E1',
                     borderWidth: 1
                 }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero:true
-                    }
-                }
             }
         });
     });
