@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\User\StatController;
 use App\Http\Controllers\User\ShareController;
 use App\Http\Controllers\User\AnswerController;
+use App\Http\Controllers\User\CommentController;
 use App\Http\Controllers\User\ContentController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\SettingController;
@@ -90,6 +91,10 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         Route::put('/{question:title_slug}/update',[QuestionController::class,'update'])->name('question.update');
         Route::get('/{question:title_slug}/destroy',[QuestionController::class,'destroy'])->name('question.destroy');
         Route::post('/{question:title_slug}/report',[QuestionController::class,'report'])->name('question.report');
+    
+        //comment
+        Route::post('/comment/store',[CommentController::class,'store'])->name('comment.store');
+        Route::post('/reply/store',[CommentController::class,'replyStore'])->name('reply.store');
     });
     
     Route::get('/auth/redirect/{provider}',[SocialiteController::class,'redirect']);

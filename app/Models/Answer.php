@@ -15,12 +15,7 @@ class Answer extends Model implements Viewable
 
     protected $removeViewsOnDelete = true;
 
-    protected $fillable = [
-        'user_id',
-        'question_id',
-        'text',
-        'images'
-    ];
+    protected $guarded = [];
 
     public function question(){
         return $this->belongsTo(Question::class);
@@ -32,6 +27,11 @@ class Answer extends Model implements Viewable
 
     public function report_users(){
         return $this->belongsToMany(User::class,'report_answers')->withPivot('type');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->whereNull('parent_id');
     }
 
 }
