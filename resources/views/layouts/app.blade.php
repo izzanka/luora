@@ -73,6 +73,12 @@
                                 <li class="nav-item ml-5">
                                         <a href="#" class="text-dark"><i class="bi bi-bell" style="font-size: 1.5rem;"></i></a>
                                 </li>
+
+                                <li class="nav-item ml-4 mt-1">
+                                    <select name="livesearch" class="form-control livesearch" style="width: 375px">
+        
+                                    </select>
+                                </li>
                         @endcan
                         
                         @endguest
