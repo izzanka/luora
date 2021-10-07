@@ -27,7 +27,7 @@
                     @foreach ($report_question_types as $report_question_type)
                         <input class="form-check-input" type="radio" name="type" id="{{ $report_question_type['name'] }}" value="{{ $report_question_type['name'] }}">
                         <label class="form-check-label" for="{{ $report_question_type['name'] }}">
-                            <b>{{ ucfirst($report_question_type['name']) }}</b><br>
+                            <b>{{ $report_question_type['name'] }}</b><br>
                             <span class="text-secondary">{{ $report_question_type['desc'] }}</span>
                         </label>
                         <br><br>
@@ -146,7 +146,6 @@
                                             </div>
                                         @endforeach
                                     </div>
-                                    
                                 </div>
                             </div>
                             <div class="row mt-4">
@@ -156,14 +155,15 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-12">
-                                 
-                                    @if ($question->user_id == auth()->id())
-                                        <span class="text-secondary"><i class="bi bi-pencil-square"></i> Answer</span>
-                                    @else
-                                        <a href="" data-toggle="modal" data-target="#answerModal" data-attr="{{ route('answer.store',$question->title_slug) }}" id="answer"><i class="bi bi-pencil-square"></i> Answer</a>                   
-                                    @endif
 
+                                    @if ($question->user_id != auth()->id())
+                                        @if ($answered == null)
+                                            <a href="" data-toggle="modal" data-target="#answerModal" data-attr="{{ route('answer.store',$question->title_slug) }}" id="answer"><i class="bi bi-pencil-square"></i> Answer</a>            
+                                        @endif
+                                    @endif
+                                
                                     <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
+                                    <br>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                         @if ($question->user_id == auth()->id())
                                         <a href="" class="dropdown-item" data-toggle="modal" data-target="#questionModal">
@@ -177,9 +177,7 @@
                                             Delete question
                                         </a>
                                         @else
-                                        <a class="dropdown-item">
-                                            Bookmark
-                                            </a>
+                                            
                                             @if ($reported_question == true)
                                                 <a class="dropdown-item text-danger">
                                                     Reported
@@ -189,7 +187,11 @@
                                                     Report
                                                 </a>
                                             @endif
-                                           
+                                            
+                                            <a class="dropdown-item">
+                                                Bookmark
+                                            </a>
+
                                             <a class="dropdown-item">
                                                 Hide
                                             </a>
@@ -266,7 +268,7 @@
                             }
                         @endphp
 
-                        <div class="card mt-2" id="{{ $answer->user->name_slug }}">
+                        <div class="card mt-4" id="{{ $answer->user->name_slug }}">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-12">
@@ -288,9 +290,6 @@
                                                             Delete answer
                                                         </a>
                                                     @else
-                                                        <a class="dropdown-item">
-                                                            Bookmark
-                                                        </a>
                                                         @if ($reported_answer == true)
                                                             <a class="dropdown-item text-danger">
                                                                 Reported
@@ -300,6 +299,9 @@
                                                                 Report
                                                             </a>
                                                         @endif
+                                                        <a class="dropdown-item">
+                                                            Bookmark
+                                                        </a>
                                                         <a class="dropdown-item">
                                                             Hide
                                                         </a>
@@ -323,9 +325,9 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="btn-group" role="group">
-                                                    <a href="{{  route('answer.vote',['answer' => $answer->id, 'vote' => 'upvote'])}}" class="text-success mr-2" id="upvote"><i class="bi bi-arrow-up-circle{{ auth()->user()->hasUpVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->upVoters()->count() }}</a>
-                                                    <a href="{{  route('answer.vote',['answer' => $answer->id, 'vote' => 'downvote']) }}" class="text-danger mr-4" id="downvote"><i class="bi bi-arrow-down-circle{{ auth()->user()->hasDownVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->downVoters()->count() }}</a>
-                                                    <a href="" class="text-secondary"><i class="bi bi-chat"></i> 0</a>
+                                                    <a href="{{ route('answer.vote',['answer' => $answer->id, 'vote' => 'upvote']) }}" class="text-success mr-2" id="upvote"><i class="bi bi-arrow-up-circle{{ auth()->user()->hasUpVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->upVoters()->count() }}</a>
+                                                    <a href="{{ route('answer.vote',['answer' => $answer->id, 'vote' => 'downvote']) }}" class="text-danger mr-4" id="downvote"><i class="bi bi-arrow-down-circle{{ auth()->user()->hasDownVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->downVoters()->count() }}</a>
+                                                    <a href="javascript: void(0)" class="text-secondary" id="comment"><i class="bi bi-chat"></i> {{ $answer->comments->count() }}</a>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -340,8 +342,28 @@
                                                 </div>
                                             </div>
                                         </div>
+                                      
+                                        <div id="show_comment">
+                                            <form action="{{ route('comment.store') }}" method="POST">
+                                                @csrf
+                                                <div class="row mt-3">
+                                                    <div class="col-1">
+                                                        <img src="{{$answer->user->avatar}}" alt="avatar" class="rounded-circle" width="42px" height="42px">
+                                                    </div>
+                                                    <div class="col-9">
+                                                        <input type="text" class="form-control" placeholder="Add a comment..." name="comment">
+                                                        <input type="hidden" name="answer_id" value="{{ $answer->id }}" id="answer_id">
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <button class="btn btn-primary rounded-pill btn-sm" type="submit">Add Comment</button>
+                                                    </div>
+                                                </div>
+                                                @include('layouts.comment',['comments' => $answer->comments,'answer_id' => $answer->id])
+                                            </form>
+                                        </div>
+                                        <script></script>
                                     </div>
-                                </div>
+                                </div> 
                             </div>
                         </div>
                     @endforeach
@@ -364,7 +386,17 @@
 </div>
 @endsection
 @section('script')
-<script> 
+<script>
+    // $('#show_comment').hide();
+
+    // //script for comment
+    // $(document).on('click','#comment', function(e){
+    //     e.preventDefault();
+    //     var $a = $(this);
+    //     $a.toggleClass('active').siblings().removeClass('active');
+    //     $('#show_comment').toggle($a.hasClass('active'));
+    // });
+
     //script for answer modal & form
     $(document).on('click','#answer', function(){
         let href = $(this).attr('data-attr');

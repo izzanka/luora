@@ -15,7 +15,7 @@
                     @foreach ($report_answer_types as $report_answer_type)
                         <input class="form-check-input" type="radio" name="type" id="{{ $report_answer_type['name'] }}" value="{{ $report_answer_type['name'] }}">
                         <label class="form-check-label" for="{{ $report_answer_type['name'] }}">
-                            <b>{{ ucfirst($report_answer_type['name']) }}</b><br>
+                            <b>{{ $report_answer_type['name'] }}</b><br>
                             <span class="text-secondary">{{ $report_answer_type['desc'] }}</span>
                         </label>
                         <br><br>

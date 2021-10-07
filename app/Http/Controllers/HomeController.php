@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Answer;
 use Illuminate\Http\Request;
 
@@ -11,8 +12,9 @@ class HomeController extends Controller
     public function index(Request $request)
     {   
         $answers = Answer::with(['user','question'])->where('user_id','!=',auth()->id())->whereNull('status')->orWhere('status','viewed_by_admin')->orWhere('status','updated_by_user')->latest()->paginate(10);
+        $report_answer_types = $this->report_answer_types();
+
         $data = "";
-        
         //api get answers
         if($request->ajax()){
            
@@ -71,11 +73,11 @@ class HomeController extends Controller
                 if(auth()->user()->isFollowing($answer->user)){
                     $status = '<a href="'. route('follow',$answer->user->name_slug) .'">Following</a>';
                 }else{
-                    if(auth()->id() == $answer->user->id){
-                        $status = '';
-                    }else{
-                        $status = '<a href="'. route('follow',$answer->user->name_slug) .'">Follow</a>';
-                    }
+                    // if(auth()->id() == $answer->user->id){
+                    //     $status = '';
+                    // }else{
+                    // }
+                    $status = '<a href="'. route('follow',$answer->user->name_slug) .'">Follow</a>';
                 }
                 
                 $data .= '
@@ -93,6 +95,9 @@ class HomeController extends Controller
                                         '. $status .'
                                         <a href="" class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots" style="font-size: 20px"></i></a><br>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                                <a class="dropdown-item">
+                                                    Report
+                                                </a>
                                                 <a class="dropdown-item">
                                                     Bookmark
                                                 </a>
@@ -120,7 +125,7 @@ class HomeController extends Controller
                                         <div class="btn-group" role="group">
                                             <a href="'.route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'upvote']).'" class="text-success mr-2" ><i class="bi bi-arrow-up-circle'.$upvoted.'"></i> '. $answer->upVoters()->count().'</a>
                                             <a href="'.route('answer.vote',['question' => $answer->question->title_slug,'answer' => $answer->id, 'vote' => 'downvote']).'" class="text-danger mr-4" ><i class="bi bi-arrow-down-circle'.$downvoted.'"></i> '. $answer->downVoters()->count().'</a>
-                                            <a href="" class="text-secondary"><i class="bi bi-chat"></i> 0</a>
+                                            <a href="'.route('question.show',$answer->question->title_slug).'" class="text-secondary"><i class="bi bi-chat"></i> ' . $answer->comments->count() .'</a>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">

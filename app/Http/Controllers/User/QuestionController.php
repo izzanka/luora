@@ -32,71 +32,34 @@ class QuestionController extends Controller
         $reported_answer = false;
 
         $answers = Answer::where('question_id',$question->id)->with('user')->latest()->get();
+        $answered = Answer::where('question_id',$question->id)->where('user_id',auth()->id())->first();
         $report_question = ReportQuestion::where('question_id',$question->id)->where('user_id',auth()->id())->first();
         $topics = Topic::all();
 
         $report_question_types = [
             [
-                'name' => 'harrasment',
+                'name' => 'Harrasment',
                 'desc' => 'Disparaging or adversarial towards a person or group'
-            ],
+            ],  
             [
-                'name' => 'spam',
+                'name' => 'Spam',
                 'desc' => 'Undisclosed promotion for a link or product'
             ],
             [
-                'name' => 'insincere',
+                'name' => 'Insincere',
                 'desc' => 'Not seeking genuine answers'
             ],
             [
-                'name' => 'poorly written',
+                'name' => 'Poorly written',
                 'desc' => 'Not in English or has very bad formatting, grammar, and spelling'
             ],
             [
-                'name' => 'incorrect topics',
+                'name' => 'Incorrect topics',
                 'desc' => 'Topics are irrelevant to the content or overly broad'
             ]
         ];
 
-        $report_answer_types = [
-            [
-                'name' => 'harrasment',
-                'desc' => 'Disparaging or adversarial towards a person or group'
-            ],
-            [
-                'name' => 'spam',
-                'desc' => 'Undisclosed promotion for a link or product'
-            ],
-            [
-                'name' => 'doesnt answer the question',
-                'desc' => 'Does not address question that was asked'
-            ],
-            [
-                'name' => 'plagiarism',
-                'desc' => 'Reusing content without attribution'
-            ],
-            [
-                'name' => 'joke answer',
-                'desc' => 'Not a sincere answer'
-                
-            ],
-            [
-                'name' => 'poorly written',
-                'desc' => 'Not in English or has very bad formatting, grammar, and spelling'
-            ],
-            [
-                'name' => 'inappropriate credential',
-                'desc' => 'Authors credential is offensive, spam, or impersonation'
-            ],
-            [
-                'name' => 'factually incorrect',
-                'desc' => 'Substantially incorrect and/or incorrect primary conclusions'
-            ],
-            [
-                'name' => 'adult content',
-                'desc' => 'Sexually explicit, pornographic or otherwise inappropriate'
-            ]
-        ];
+        $report_answer_types = $this->report_answer_types();
 
         if($report_question){
             $reported_question = true;
@@ -122,7 +85,7 @@ class QuestionController extends Controller
         $facebook = \Share::page($link)->facebook()->getRawLinks();
         $twitter = \Share::page($link)->twitter()->getRawLinks();
 
-        return view('user.question.show',compact('question','answers','topics','facebook','twitter','reported_question','report_question_types','reported_answer','report_answer_types'));
+        return view('user.question.show',compact('question','answers','answered','topics','facebook','twitter','reported_question','report_question_types','reported_answer','report_answer_types'));
     }
 
     public function store(Request $request){
