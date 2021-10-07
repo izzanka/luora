@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 class AnswerController extends Controller
 {
     public function index(){
-        $questions = Question::where('user_id','!=',auth()->id())->latest()->take(5)->get();
+        $questions = Question::where('user_id','!=',auth()->id())->latest()->paginate(5);
         return view('user.answer.index',compact('questions'));
     }
 
@@ -22,7 +22,7 @@ class AnswerController extends Controller
         $answer = Answer::where('question_id',$question->id)->where('user_id',auth()->id())->first();
 
         if($answer){
-            return back()->with('message',['text' => 'U can only answer once !', 'class' => 'warning']);;
+            return back();
         }
 
         $request->validate([
@@ -92,6 +92,11 @@ class AnswerController extends Controller
     }
 
     public function destroy(Answer $answer){
+
+        foreach($answer->comments as $comment){
+            $comment->delete();
+        }
+        
         $answer->delete();
         return back()->with('message',['text' => 'Answer deleted successfully!', 'class' => 'success']);
     }

@@ -35,29 +35,31 @@ Write Answers
                         </div>
                     </div>
                     @forelse ($questions as $question)
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <a href="{{ route('question.show',$question->title_slug) }}" class="text-dark"><h5><b>{{ $question->title }}</b></h5></a>
+                        <div id="questions">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a href="{{ route('question.show',$question->title_slug) }}" class="text-dark"><h5><b>{{ $question->title }}</b></h5></a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12"> 
-                                <a href="{{ route('question.show',$question->title_slug) }}"><b class="text-secondary">{{ $question->answers->count() ? $question->answers->count() . ' Answer' : 'No answer yet'}} </b></a> &#183; 
-                                <small>{{ 'last updated ' . $question->updated_at->diffForHumans() }}</small>
+                            <div class="row">
+                                <div class="col-sm-12"> 
+                                    <a href="{{ route('question.show',$question->title_slug) }}"><b class="text-secondary">{{ $question->answers->count() ? $question->answers->count() . ' Answer' : 'No answer yet'}} </b></a> &#183; 
+                                    <small>{{ 'last updated ' . $question->updated_at->diffForHumans() }}</small>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-sm-6">
-                                <a href="" data-toggle="modal" data-target="#answerModal" data-attr="{{ route('answer.store',$question->title_slug) }}" id="answer"><i class="bi bi-pencil-square"></i> Answer</a>
+                            <div class="row mt-2">
+                                <div class="col-sm-6">
+                                    <a href="" data-toggle="modal" data-target="#answerModal" data-attr="{{ route('answer.store',$question->title_slug) }}" id="answer"><i class="bi bi-pencil-square"></i> Answer</a>
+                                </div>
                             </div>
+                            <hr>
                         </div>
-                        <hr>
                     @empty
                         <div class="text-center mb-4">No Questions</div>
                     @endforelse
                     
                     <div class="text-center">
-                        <button class="btn btn-secondary btn-sm">More</button>
+                        <button class="btn btn-secondary btn-sm more" data-page="5" data-link="http://127.0.0.1:8000/answer?page=" data-div="#answers">More</button>
                     </div>
                 </div>
                 
@@ -82,6 +84,20 @@ Write Answers
         $(document).on('click','.store', function(){
             $('#answerForm').attr('action',href);
         });
+    });
+
+    $(".more").click(function() {
+        $div = $($(this).data('div')); //div to append
+        $link = $(this).data('link'); //current URL
+
+        $page = $(this).data('page'); //get the next page #
+        $href = $link + $page; //complete URL
+        $.get($href, function(response) { //append data
+            $html = $(response).find("#questions").html(); 
+            $div.append($html);
+        });
+
+        $(this).data('page', (parseInt($page) + 1)); //update page #
     });
   </script>
 @endsection
