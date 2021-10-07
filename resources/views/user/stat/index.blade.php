@@ -19,7 +19,6 @@ Stats
                 </div> 
            </div>
        </div>
-     
     </div>
 </div>
 @endsection
@@ -43,6 +42,9 @@ Stats
                     backgroundColor: '#84B1E1',
                     borderWidth: 1
                 }]
+            },
+            options: {
+                responsive: true,
             }
         });
     });
