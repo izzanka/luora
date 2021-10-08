@@ -162,7 +162,7 @@
                                         @endif
                                     @endif
                                 
-                                    <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
+                                    <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
                                     <br>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                         @if ($question->user_id == auth()->id())
@@ -183,7 +183,7 @@
                                                     Reported
                                                 </a>
                                             @elseif($reported_question == false)
-                                                <a href="#" class="dropdown-item text-dark" data-toggle="modal" data-target="#report_questionModal">
+                                                <a href="" class="dropdown-item text-dark" data-toggle="modal" data-target="#report_questionModal">
                                                     Report
                                                 </a>
                                             @endif
@@ -279,7 +279,7 @@
                                             
                                             <div class="col-sm-11">
                                                 <b><a href="{{ route('profile.show',$answer->user->name_slug) }}" class="text-dark">{{ $answer->user->name  }}</a></b>, 
-                                                {{ $credential }} <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
+                                                {{ $credential }} <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                                     @if ($answer->user_id == auth()->id())
                                                         <a href="" data-attr="{{ route('answer.update',$answer->id) }}" class="dropdown-item" data-toggle="modal" data-target="#answer-updateModal" id="answerUpdate" data-text="{{ $answer->text }}">
@@ -295,7 +295,7 @@
                                                                 Reported
                                                             </a>
                                                         @elseif($reported_answer == false)
-                                                            <a href="#" class="dropdown-item text-dark" data-toggle="modal" data-target="#report_answerModal" data-attr="{{ route('answer.report',$answer->id) }}" id="reportAnswer">
+                                                            <a href="" class="dropdown-item text-dark" data-toggle="modal" data-target="#report_answerModal" data-attr="{{ route('answer.report',$answer->id) }}" id="reportAnswer">
                                                                 Report
                                                             </a>
                                                         @endif
@@ -348,7 +348,7 @@
                                                 @csrf
                                                 <div class="row mt-3">
                                                     <div class="col-1">
-                                                        <img src="{{$answer->user->avatar}}" alt="avatar" class="rounded-circle" width="42px" height="42px">
+                                                        <img src="{{ auth()->user()->avatar }}" alt="avatar" class="rounded-circle" width="42px" height="42px">
                                                     </div>
                                                     <div class="col-9">
                                                         <input type="text" class="form-control" placeholder="Add a comment..." name="comment">

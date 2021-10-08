@@ -135,16 +135,16 @@
                     <hr>
                     <div class="row">
                         <div class="col-3">
-                            <a href="#" class="text-dark" id="showAnswers" data-href="{{ route('profile.answers.show',$user->name_slug) }}">{{ $user->answers->count() ?? 0}} Answers</a>
+                            <a href="" class="text-dark" id="showAnswers" data-href="{{ route('profile.answers.show',$user->name_slug) }}">{{ $user->answers->count() ?? 0}} Answers</a>
                         </div>
                         <div class="col-3">
-                            <a href="#" class="text-dark" id="showQuestions" data-href="{{ route('profile.questions.show',$user->name_slug) }}">{{ $user->questions->count() ?? 0}} Questions</a>
+                            <a href="" class="text-dark" id="showQuestions" data-href="{{ route('profile.questions.show',$user->name_slug) }}">{{ $user->questions->count() ?? 0}} Questions</a>
                         </div>
                         <div class="col-3">
                             0 Shares
                         </div>
                         <div class="col-3">
-                            <a href="#" class="text-dark" id="showTopics" data-href="{{ route('profile.topics.show',$user->name_slug) }}">{{ $user->topics->count() ?? 0 }} Topics</a>
+                            <a href="" class="text-dark" id="showTopics" data-href="{{ route('profile.topics.show',$user->name_slug) }}">{{ $user->topics->count() ?? 0 }} Topics</a>
                         </div>
                     </div>
                     <hr>
@@ -532,7 +532,7 @@
                     <div class="row">
                         @forelse ($user->topics as $topic)
                             <div class="col-sm-6">
-                                <li><b><a href="" class="text-dark">{{ $topic->name }}</a></b></li>
+                                <li><b><a href="javascript: void(0)" class="text-dark">{{ $topic->name }}</a></b></li>
                             </div>
                         @empty
                         <div class="row">

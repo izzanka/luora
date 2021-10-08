@@ -59,7 +59,7 @@
                                 <x-admin-questions/>
                             @else
                                 <li class="nav-item ml-5">       
-                                        <a href="#" class="text-dark"><i class="bi bi-newspaper" style="font-size: 1.5rem;"></i></a>
+                                        <a href="javascript: void(0)" class="text-dark"><i class="bi bi-newspaper" style="font-size: 1.5rem;"></i></a>
                                 </li>
 
                                 <li class="nav-item ml-5">       
@@ -67,11 +67,11 @@
                                 </li>
                 
                                 <li class="nav-item ml-5">       
-                                    <a href="#" class="text-dark"><i class="bi bi-people" style="font-size: 1.5rem;"></i></a>
+                                    <a href="javascript: void(0)" class="text-dark"><i class="bi bi-people" style="font-size: 1.5rem;"></i></a>
                                 </li>
 
                                 <li class="nav-item ml-5">
-                                        <a href="#" class="text-dark"><i class="bi bi-bell" style="font-size: 1.5rem;"></i></a>
+                                        <a href="javascript: void(0)" class="text-dark"><i class="bi bi-bell" style="font-size: 1.5rem;"></i></a>
                                 </li>
 
                                 <li class="nav-item ml-4 mt-1">
@@ -102,7 +102,7 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link" href="javascript: void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <img src="{{ Auth::user()->avatar }}" alt="avatar" class="rounded-circle" width="25px" height="25px">
                                 </a>
 
@@ -111,17 +111,17 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('stats.index') }}"><i class="bi bi-bar-chart mr-2"></i>Stats</a>
                                     <a class="dropdown-item" href="{{ route('content.index') }}"><i class="bi bi-journals mr-2"></i>Your Content</a>
-                                    <a class="dropdown-item" href="#"><i class="bi bi-bookmark mr-2"></i>Bookmarks</a>
+                                    <a class="dropdown-item" href="javascript: void(0)"><i class="bi bi-bookmark mr-2"></i>Bookmarks</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('settings.index') }}">Settings</a>
-                                    <a class="dropdown-item" href="#">Help</a>
+                                    <a class="dropdown-item" href="javascript: void(0)">Help</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <small class="dropdown-header"><a href="#" class="text-secondary">About &#183;</a></small>
+                                    <small class="dropdown-header"><a href="javascript: void(0)" class="text-secondary">About &#183;</a></small>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
@@ -130,7 +130,7 @@
                             </li>
 
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link" href="javascript: void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <img src="{{ asset('img/globe2.svg') }}" alt="" class="rounded-circle" width="25px" height="25px">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -189,8 +189,8 @@
             window.location.href = "/profile/" + e.params.data.name_slug + "/show";
         })
         
-
     </script>
+    
     @yield('script')
 
 </body>

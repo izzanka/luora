@@ -18,7 +18,7 @@ Write Answers
                 <hr>
                 <div class="row">
                     <div class="col-12">
-                        <a href="#" class="text-danger">Questions for you</a>
+                        <a href="javascript:void(0)" class="text-danger">Questions for you</a>
                     </div>
                 </div>
             </div>

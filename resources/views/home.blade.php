@@ -61,8 +61,7 @@
 
 @section('script')
 <script>
-
- 
+    
     var site_url = "{{ route('home') }}";
     var env_url = "{{ env('APP_URL') }}";
     var page = 1;
@@ -116,7 +115,6 @@
 
         alert('Link copied to clipboard');
     }
-    
 
 </script>
 @endsection

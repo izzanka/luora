@@ -46,12 +46,12 @@
                                         </a>
                                     </div>
                                     <div class="btn-group mr-2" role="group">
-                                        <a href="#" class="btn btn-secondary btn-sm rounded-pill"><i class="bi bi-bell mr-1"></i> Notify me</a>
+                                        <a href="javascript:void(0)" class="btn btn-secondary btn-sm rounded-pill"><i class="bi bi-bell mr-1"></i> Notify me</a>
                                     </div>
                                     <div class="btn-group mr-2" role="group">
-                                        <a href="#" class="btn btn-secondary btn-sm rounded-pill"><i class="bi bi-question-circle mr-1"></i> Ask Question</a>
+                                        <a href="javascript:void(0)" class="btn btn-secondary btn-sm rounded-pill"><i class="bi bi-question-circle mr-1"></i> Ask Question</a>
                                     </div>
-                                    <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots" style="font-size: 20px"> </i></a>
+                                    <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots" style="font-size: 20px"> </i></a>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item">
                                                 Mute {{ $user->name }}
@@ -77,16 +77,16 @@
                     <hr>
                     <div class="row">
                         <div class="col-3">
-                            <a href="#" class="text-dark" id="showAnswers" data-href="{{ route('profile.answers.show',$user->name_slug) }}">{{ $user->answers->count() ?? 0}} Answers</a>
+                            <a href="javascript:void(0)" class="text-dark" id="showAnswers" data-href="{{ route('profile.answers.show',$user->name_slug) }}">{{ $user->answers->count() ?? 0}} Answers</a>
                         </div>
                         <div class="col-3">
-                            <a href="#" class="text-dark" id="showQuestions" data-href="{{ route('profile.questions.show',$user->name_slug) }}">{{ $user->questions->count() ?? 0}} Questions</a>
+                            <a href="javascript:void(0)" class="text-dark" id="showQuestions" data-href="{{ route('profile.questions.show',$user->name_slug) }}">{{ $user->questions->count() ?? 0}} Questions</a>
                         </div>
                         <div class="col-3">
                             0 Shares
                         </div>
                         <div class="col-3">
-                            <a href="#" class="text-dark" id="showTopics" data-href="{{ route('profile.topics.show',$user->name_slug) }}">{{ $user->topics->count() ?? 0 }} Topics</a>
+                            <a href="javascript:void(0)" class="text-dark" id="showTopics" data-href="{{ route('profile.topics.show',$user->name_slug) }}">{{ $user->topics->count() ?? 0 }} Topics</a>
                         </div>
                     </div>
                     <hr>
@@ -157,7 +157,7 @@
                     <div class="row">
                         @forelse ($user->topics as $topic)
                             <div class="col-sm-6">
-                                <li><b><a href="#" class="text-dark">{{ $topic->name }}</a></b></li>
+                                <li><b><a href="javascript:void(0)" class="text-dark">{{ $topic->name }}</a></b></li>
                             </div>
                         @empty
                         <div class="row">

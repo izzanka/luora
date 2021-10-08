@@ -53,7 +53,7 @@ Account Settings
                             </div>
                             <div class="col-6">
                                 @if (auth()->user()->provider_id)
-                                    <a href="#" class="text-dark">Change Password</a>
+                                    <a href="javascript:void(0)" class="text-dark">Change Password</a>
                                 @else
                                     <a href="" data-toggle="modal" data-target="#passwordModal">Change Password</a>
                                 @endif
@@ -99,7 +99,7 @@ Account Settings
                                 Country
                             </div>
                             <div class="col-6">
-                                <a href="#">{{ auth()->user()->country ? auth()->user()->country : 'Select Country' }}</a>
+                                <a href="javascript:void(0)">{{ auth()->user()->country ? auth()->user()->country : 'Select Country' }}</a>
                             </div>
                         </div>
                     </div>
