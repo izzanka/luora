@@ -313,18 +313,18 @@ class ProfileController extends Controller
 
     //api show user contents
     public function show_topics(User $user){
-        $show_topics = $user->topics()->orderBy('qty','desc')->get();
-        return response()->json(['data' => $show_topics]);
+        $topics = $user->topics()->orderBy('qty','desc')->get();
+        return response()->json(['data' => $topics]);
     }
 
     public function show_questions(User $user){
-        $show_questions = $user->questions()->latest()->get();
-        return response()->json(['data' => $show_questions]);
+        $questions = $user->questions()->latest()->get();
+        return response()->json(['data' => $questions]);
     }
 
     public function show_answers(User $user){
-        $show_answers = $user->answers()->with('question')->latest()->get();
-        return response()->json(['data' => $show_answers]);
+        $answers = $user->answers()->with('question')->latest()->get();
+        return response()->json(['data' => $answers]);
     }
 
 }

@@ -51,6 +51,11 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         Route::get('/', [HomeController::class, 'index']);
         Route::get('/home', [HomeController::class, 'index'])->name('home');
         Route::get('/search',[HomeController::class,'search'])->name('search');
+
+        //about
+        Route::get('/about',function(){
+            return view('user.about.index');
+        });
     
         //setting
         Route::get('/settings',[SettingController::class,'index'])->name('settings.index');
@@ -95,6 +100,9 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         //comment
         Route::post('/comment/store',[CommentController::class,'store'])->name('comment.store');
         Route::post('/reply/store',[CommentController::class,'replyStore'])->name('reply.store');
+    
+    
+        
     });
     
     Route::get('/auth/redirect/{provider}',[SocialiteController::class,'redirect']);
