@@ -6,7 +6,7 @@
             <img src="{{ $comment->user->avatar }}" alt="avatar" class="rounded-circle" width="42px" height="42px">
         </div>
         <div class="col-11">
-            <b>{{ $comment->user->name }}</b>
+            <a href="{{ route('profile.show',$comment->user->name_slug) }}" class="text-dark"><b>{{ $comment->user->name }}</b></a>
             <div class="text-secondary mb-2">
                 {{ $comment->created_at->format('M d, Y')  }}
             </div>

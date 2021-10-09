@@ -21,6 +21,14 @@ class CommentController extends Controller
         return back();
     }
 
+    public function update(){
+
+    }
+
+    public function destroy(){
+        
+    }
+
     // public function replyStore(Request $request)
     // {
     //     $reply = new Comment();
