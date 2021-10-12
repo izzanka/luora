@@ -12,7 +12,6 @@ class HomeController extends Controller
     public function index(Request $request)
     {   
         $answers = Answer::with(['user','question'])->where('user_id','!=',auth()->id())->whereNull('status')->orWhere('status','viewed_by_admin')->orWhere('status','updated_by_user')->latest()->paginate(10);
-        $report_answer_types = $this->report_answer_types();
 
         $data = "";
         //api get answers
@@ -73,13 +72,9 @@ class HomeController extends Controller
                 if(auth()->user()->isFollowing($answer->user)){
                     $status = '<a href="'. route('follow',$answer->user->name_slug) .'">Following</a>';
                 }else{
-                    // if(auth()->id() == $answer->user->id){
-                    //     $status = '';
-                    // }else{
-                    // }
                     $status = '<a href="'. route('follow',$answer->user->name_slug) .'">Follow</a>';
                 }
-                
+
                 $data .= '
                 <div class="card mt-3" id="'. $answer->user->name_slug .'">
                     <div class="card-body">
@@ -94,16 +89,16 @@ class HomeController extends Controller
                                         <a href="'. route('profile.show',$answer->user->name_slug) .'" class="text-dark"><b>' . $answer->user->name .'</b></a> &#183; 
                                         '. $status .'
                                         <a href="" class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots" style="font-size: 20px"></i></a><br>
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                                <a class="dropdown-item">
-                                                    Report
-                                                </a>
-                                                <a class="dropdown-item">
-                                                    Bookmark
-                                                </a>
-                                                <a class="dropdown-item">
-                                                    Hide
-                                                </a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> 
+                                            <a class="dropdown-item">
+                                                Report
+                                            </a>
+                                            <a class="dropdown-item">
+                                                Bookmark
+                                            </a>
+                                            <a class="dropdown-item">
+                                                Hide
+                                            </a>
                                         </div>
                                             '. $credential .'  &#183; '. $answer->created_at->format('M d Y') .'
                                     </div>

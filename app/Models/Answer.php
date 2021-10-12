@@ -29,8 +29,7 @@ class Answer extends Model implements Viewable
         return $this->belongsToMany(User::class,'report_answers')->withPivot('type');
     }
 
-    public function comments()
-    {
+    public function comments(){
         return $this->morphMany(Comment::class, 'commentable')->whereNull('parent_id');
     }
 
