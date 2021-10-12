@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\ReportAnswer;
 use Illuminate\Http\Request;
 use App\Models\QuestionTopic;
+use App\Models\ReportComment;
 use App\Models\ReportQuestion;
 use App\Http\Controllers\Controller;
 
@@ -30,11 +31,14 @@ class QuestionController extends Controller
 
         $reported_question = false;
         $reported_answer = false;
+        $reported_comment = false;
 
+        $user_id = auth()->id();
         $answers = Answer::where('question_id',$question->id)->with('user')->latest()->get();
-        $answered = Answer::where('question_id',$question->id)->where('user_id',auth()->id())->first();
-        $report_question = ReportQuestion::where('question_id',$question->id)->where('user_id',auth()->id())->first();
+        $answered = Answer::where('question_id',$question->id)->where('user_id',$user_id)->first();
+        $report_question = ReportQuestion::where('question_id',$question->id)->where('user_id',$user_id)->first();
         $topics = Topic::all();
+
 
         $report_question_types = [
             [
@@ -59,8 +63,56 @@ class QuestionController extends Controller
             ]
         ];
 
-        $report_answer_types = $this->report_answer_types();
+        $report_answer_types = [
+            [
+                'name' => 'Harrasment',
+                'desc' => 'Disparaging or adversarial towards a person or group'
+            ],
+            [
+                'name' => 'Spam',
+                'desc' => 'Undisclosed promotion for a link or product'
+            ],
+            [
+                'name' => 'Doesnt answer the question',
+                'desc' => 'Does not address question that was asked'
+            ],
+            [
+                'name' => 'Plagiarism',
+                'desc' => 'Reusing content without attribution'
+            ],
+            [
+                'name' => 'Joke answer',
+                'desc' => 'Not a sincere answer'
+            ],
+            [
+                'name' => 'Poorly written',
+                'desc' => 'Not in English or has very bad formatting, grammar, and spelling'
+            ],
+            [
+                'name' => 'Inappropriate credential',
+                'desc' => 'Authors credential is offensive, spam, or impersonation'
+            ],
+            [
+                'name' => 'Factually incorrect',
+                'desc' => 'Substantially incorrect and/or incorrect primary conclusions'
+            ],
+            [
+                'name' => 'Adult content',
+                'desc' => 'Sexually explicit, pornographic or otherwise inappropriate'
+            ]
+        ];
 
+        $report_comment_types = [
+            [
+                'name' => 'Harrasment',
+                'desc' => 'Disparaging or adversarial towards a person or group'
+            ],  
+            [
+                'name' => 'Spam',
+                'desc' => 'Undisclosed promotion for a link or product'
+            ]
+        ];
+        
         if($report_question){
             $reported_question = true;
         }
@@ -70,7 +122,7 @@ class QuestionController extends Controller
         ->record();
 
         foreach($answers as $answer){
-            $report_answer = ReportAnswer::where('answer_id',$answer->id)->where('user_id',auth()->id())->first();
+            $report_answer = ReportAnswer::where('answer_id',$answer->id)->where('user_id',$user_id)->first();
             
             if($report_answer){
                 $reported_answer = true;
@@ -79,13 +131,22 @@ class QuestionController extends Controller
             views($answer)
             ->cooldown(86400)
             ->record();
+
+            foreach($answer->comments as $comment){
+                $report_comment = ReportComment::where('comment_id',$comment->id)->where('user_id',$user_id)->first();
+            
+                if($report_comment){
+                    $reported_comment = true;
+                }
+            }
+
         }
 
         $link = route('question.show',$question);
         $facebook = \Share::page($link)->facebook()->getRawLinks();
         $twitter = \Share::page($link)->twitter()->getRawLinks();
 
-        return view('user.question.show',compact('question','answers','answered','topics','facebook','twitter','reported_question','report_question_types','reported_answer','report_answer_types'));
+        return view('user.question.show',compact('question','answers','answered','topics','facebook','twitter','reported_question','report_question_types','report_comment_types','reported_answer','reported_comment','report_answer_types'));
     }
 
     public function store(Request $request){
@@ -170,6 +231,10 @@ class QuestionController extends Controller
         $user_id = auth()->id();
         $report = ReportQuestion::where('user_id',$user_id)->where('question_id',$question->id)->first();
 
+        if($question->user_id == $user_id){
+            return back();
+        }
+
         if($report){
             return back()->with('message',['text' => 'Question already reported!', 'class' => 'danger']);
         }else{
@@ -186,6 +251,11 @@ class QuestionController extends Controller
     public function destroy(Question $question){
 
         $qtopics = QuestionTopic::where('question_id',$question->id)->get();
+        $reports = ReportQuestion::where('question_id',$question->id)->get();
+
+        foreach($reports as $report){
+            $report->delete();
+        }
 
         foreach($qtopics as $qtopic){
             $qtopic->delete();

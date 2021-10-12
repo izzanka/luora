@@ -64,6 +64,10 @@ class AnswerController extends Controller
         $user_id = auth()->id();
         $report = ReportAnswer::where('user_id',$user_id)->where('answer_id',$answer->id)->first();
 
+        if($answer->user_id == $user_id){
+            return back();
+        }
+
         if($report){
             return back()->with('message',['text' => 'Answer already reported!', 'class' => 'danger']);
         }else{
@@ -92,6 +96,12 @@ class AnswerController extends Controller
     }
 
     public function destroy(Answer $answer){
+
+        $reports = ReportAnswer::where('answer_id',$answer->id)->get();
+
+        foreach($reports as $report){
+            $report->delete();
+        }
 
         foreach($answer->comments as $comment){
             $comment->delete();
