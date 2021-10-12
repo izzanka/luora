@@ -52,8 +52,7 @@ class TopicSeeder extends Seeder
         for ($i=0; $i < count($topics); $i++) { 
             DB::table('topics')->insert([
                 'name' => $topics[$i],
-            ]
-            );
+            ]);
         }
 
     }

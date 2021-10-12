@@ -18,21 +18,21 @@ class QuestionTopicsSeeder extends Seeder
 
         for ($i=1; $i <= $num ; $i++) { 
             DB::table('question_topics')->insert([
-                'question_id' => 5,
+                'question_id' => 11,
                 'topic_id' => $i
             ]);
         }
 
         for ($i=1; $i <= $num ; $i++) { 
             DB::table('question_topics')->insert([
-                'question_id' => 6,
+                'question_id' => 12,
                 'topic_id' => $i
             ]);
         }
 
         for ($i=1; $i <= $num ; $i++) { 
             DB::table('question_topics')->insert([
-                'question_id' => 7,
+                'question_id' => 13,
                 'topic_id' => $i
             ]);
         }
