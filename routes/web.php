@@ -100,9 +100,9 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         //comment
         Route::post('/comment/store',[CommentController::class,'store'])->name('comment.store');
         Route::post('/reply/store',[CommentController::class,'replyStore'])->name('reply.store');
-    
-    
-        
+        Route::put('/comment/{comment}/update',[CommentController::class,'update'])->name('comment.update');
+        Route::get('/comment/{comment}/destroy',[CommentController::class,'destroy'])->name('comment.destroy');
+        Route::post('/comment/{comment}/report',[CommentController::class,'report'])->name('comment.report');
     });
     
     Route::get('/auth/redirect/{provider}',[SocialiteController::class,'redirect']);
