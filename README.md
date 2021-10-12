@@ -5,9 +5,13 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-Luora is Quora (https://quora.com) clone.
+Luora is Quora (https://quora.com) clone
 
 ## Built With
+
+### Api
+
+* [UIAvatars](https://ui-avatars.com/)
 
 ### Framework
 
