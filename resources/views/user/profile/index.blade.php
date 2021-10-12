@@ -496,7 +496,8 @@
                                                             @foreach ($topics as $topic)
                                                             <div class="col-sm-3">
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input"  type="checkbox" value="{{ $topic->id }}" name="topic_id[]" @php
+                                                                    <input class="form-check-input" type="checkbox" value="{{ $topic->id }}" name="topic_id[]" 
+                                                                @php
                                                                     $checked = "";
                                                                     foreach($user->topics as $utopic){
                                                                         if($utopic->name == $topic->name){

@@ -188,6 +188,9 @@
         $q.on('select2:select',function(e){
             window.location.href = "/profile/" + e.params.data.name_slug + "/show";
         })
+
+        
+       
         
     </script>
     
