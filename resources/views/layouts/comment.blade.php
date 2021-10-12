@@ -17,8 +17,30 @@
                         <a href="javascript: void(0)" class="text-dark" id="reply"><i class="bi bi-reply"></i> Reply</a>
                     </span>
                 </div>
-                <div class="col-6">
-                    <i class="bi bi-three-dots float-right"></i>
+                <div class="col-6 dropup">
+                    <a class="text-dark float-right dropdown-toogle" id="editComment" href="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="editComment">
+                        @if ($comment->user->id == auth()->id())
+                            <a href="" data-attr="{{ route('comment.update',$comment->id) }}" data-text="{{ $comment->comment }}" class="dropdown-item" data-toggle="modal" data-target="#update_commentModal" id="updateComment">
+                                Edit comment
+                            </a>
+                            
+                            <a href="{{ route('comment.destroy',$comment->id) }}" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this comment?')">
+                                Delete comment
+                            </a>
+                        @else
+                            @if ($reported_comment)
+                                <a class="dropdown-item text-danger">
+                                    Reported
+                                </a>
+                            @else
+                                <a href="" data-attr="{{ route('comment.report',$comment->id) }}" class="dropdown-item" data-toggle="modal" data-target="#report_commentModal" id="reportComment">
+                                    Report
+                                </a>
+                            @endif
+                 
+                        @endif
+                    </div>
                 </div>
             </div>
            

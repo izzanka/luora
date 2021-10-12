@@ -8,27 +8,27 @@
 @include('layouts.answer')
 
 <!-- Report Answer Modal -->
-@include('layouts.report')
+@include('layouts.report-answer')
 
-<!-- Report Question Modal -->
-<form action="{{ route('question.report',$question->title_slug) }}" method="POST">
+{{-- Report Comment Modal --}}
+<form action="" method="POST" id="report-commentForm">
     @csrf
-    <div class="modal fade" id="report_questionModal" tabindex="-1" aria-labelledby="report_questionModalLabel" aria-hidden="true">
+    <div class="modal fade" id="report_commentModal" tabindex="-1" aria-labelledby="report_commentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="report_questionModalLabel">Report question</h5>
+            <h5 class="modal-title" id="report_commentModalLabel">Report comment</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
             <div class="modal-body">
                 <div class="form-check">
-                    @foreach ($report_question_types as $report_question_type)
-                        <input class="form-check-input" type="radio" name="type" id="{{ $report_question_type['name'] }}" value="{{ $report_question_type['name'] }}">
-                        <label class="form-check-label" for="{{ $report_question_type['name'] }}">
-                            <b>{{ $report_question_type['name'] }}</b><br>
-                            <span class="text-secondary">{{ $report_question_type['desc'] }}</span>
+                    @foreach ($report_comment_types as $report_comment_type)
+                        <input class="form-check-input" type="radio" name="type" id="{{ $report_comment_type['name'] }}" value="{{ $report_comment_type['name'] }}">
+                        <label class="form-check-label" for="{{ $report_comment_type['name'] }}">
+                            <b>{{ $report_comment_type['name'] }}</b><br>
+                            <span class="text-secondary">{{ $report_comment_type['desc'] }}</span>
                         </label>
                         <br><br>
                     @endforeach
@@ -36,12 +36,45 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-text rounded-pill" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
+                <button type="submit" class="btn btn-primary rounded-pill" id="store-reportComment">Submit</button>
             </div>
         </div>
         </div>
     </div>
 </form>
+
+<!-- Edit Comment -->
+<form action="" method="POST" id="comment-updateForm">
+    @csrf
+    @method('PUT')
+    <div class="modal fade" id="update_commentModal" tabindex="-1" aria-labelledby="update_commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="update_commentModalLabel"><b>Edit Comment</b></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <textarea type="text" name="comment" class="form-control" autocomplete="off" id="textComment"></textarea>
+                        @include('layouts.error', ['name' => 'comment'])
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-text rounded-pill" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary rounded-pill update-comment">Update</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
+
+<!-- Report Question Modal -->
+@include('layouts.report-question')
 
 <!-- Modal Question-->
 <form action="{{ route('question.update',$question->title_slug) }}" method="POST">
@@ -230,14 +263,14 @@
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-12">
-                                                <textarea name="text" cols="10" rows="7" class="form-control" id="text" autocomplete="off"></textarea>
+                                                <textarea name="text" cols="10" rows="7" class="form-control" id="textAnswer" autocomplete="off"></textarea>
                                                 @include('layouts.error', ['name' => 'text'])
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary store-update rounded-pill">Update</button>
+                                    <button type="submit" class="btn btn-primary answer-update rounded-pill">Update</button>
                                     </div>
                                 </div>
                                 </div>
@@ -397,7 +430,16 @@
     //     $('#show_comment').toggle($a.hasClass('active'));
     // });
 
-    //script for answer modal & form
+    //script for answer report form
+    $(document).on('click','#reportAnswer', function(){
+        let href = $(this).attr('data-attr');
+    
+        $(document).on('click','#store-reportAnswer', function(){
+            $('#report-answerForm').attr('action',href);
+        });
+    });
+
+    //script for answer edit modal & form
     $(document).on('click','#answer', function(){
         let href = $(this).attr('data-attr');
        
@@ -406,24 +448,38 @@
         });
     });
 
-    //script for answer report form
-    $(document).on('click','#reportAnswer', function(){
-        let href = $(this).attr('data-attr');
-       
-        $(document).on('click','#store-reportAnswer', function(){
-            $('#report-answerForm').attr('action',href);
-        });
-    });
-
     //script for update answer
     $(document).on('click','#answerUpdate', function(){
         let href = $(this).attr('data-attr');
         let text = $(this).attr('data-text');
-        $('#text').val(text);
-        $(document).on('click','.store-update', function(){
+        $('#textAnswer').val(text);
+        
+        $(document).on('click','.answer-update', function(){
             $('#answer-updateForm').attr('action',href);
         });
     });
+
+    //script for comment report form
+    $(document).on('click','#reportComment', function(){
+        let href = $(this).attr('data-attr');
+
+        $(document).on('click','#store-reportComment', function(){
+            $('#report-commentForm').attr('action',href);
+        });
+    });
+
+    //script for comment update form
+    $(document).on('click','#updateComment', function(){
+        let href = $(this).attr('data-attr');
+        let text = $(this).attr('data-text');
+        console.log(text);
+        $('#textComment').val(text);
+        $(document).on('click','.update-comment', function(){
+            $('#comment-updateForm').attr('action',href);
+        });
+    });
+
+    
 
     //script for copy link to clipboard
     function copy(){
