@@ -11,13 +11,15 @@ class Comment extends Model
     
     protected $guarded = [];
     
-    public function user()
-    {
+    public function user(){
         return $this->belongsTo(User::class);
     }
     
-    public function replies()
-    {
+    public function replies(){
         return $this->hasMany(Comment::class, 'parent_id');
+    }
+
+    public function report_users(){
+        return $this->belongsToMany(User::class,'report_comments')->withPivot('type');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Comment;
 use Jcc\LaravelVote\Traits\Voter;
 use Overtrue\LaravelFollow\Followable;
 use Illuminate\Notifications\Notifiable;
@@ -85,5 +86,9 @@ class User extends Authenticatable
 
     public function report_answers(){
         return $this->belongsToMany(Answer::class,'report_answers');
+    }
+
+    public function report_comments(){
+        return $this->belongsToMany(Comment::class,'report_comments');
     }
 }
