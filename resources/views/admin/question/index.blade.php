@@ -43,7 +43,6 @@ Questions
                     @forelse ($questions as $question)
                         <div class="card mt-2">
                             <div class="card-body">
-                                <small><a href="{{ route('profile.show',$question->user->name_slug) }}">{{ $question->user->name }}</a></small><br>
                                 <b>{{ $question->title }}</b>
                                 <span class="float-right">  
                                     <a href="{{ route('admin.question.status',['question' => $question->id,'status' => 'viewed_by_admin']) }}" class="mr-2" onclick="return confirm('Are you sure?')"><i class="bi bi-check-circle text-success"></i></a>
@@ -68,7 +67,6 @@ Questions
                     @forelse ($questions as $question)
                         <div class="card mt-2">
                             <div class="card-body">
-                                <small><a href="{{ route('profile.show',$question->user->name_slug) }}">{{ $question->user->name }}</a></small>
                                 <span class="float-right badge badge-danger badge-pill">{{ $question->report_users_count }}</span>
                                 <br>
                                 <b>{{ $question->title }}</b>
@@ -99,7 +97,6 @@ Questions
                     @endforelse
             
                 @endif
-
                
             </div>
         </div>

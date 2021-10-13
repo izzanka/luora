@@ -57,6 +57,7 @@
                             @can('isAdmin')
                                 <x-admin-answers/>
                                 <x-admin-questions/>
+                                <x-admin-comments/>
                             @else
                                 <li class="nav-item ml-5">       
                                         <a href="javascript: void(0)" class="text-dark"><i class="bi bi-newspaper" style="font-size: 1.5rem;"></i></a>
@@ -158,8 +159,8 @@
             
             @yield('content')
         </main>
-
     </div>
+
     <script>
 
         let $q = $('.livesearch');
@@ -189,9 +190,6 @@
             window.location.href = "/profile/" + e.params.data.name_slug + "/show";
         })
 
-        
-       
-        
     </script>
     
     @yield('script')

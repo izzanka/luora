@@ -43,8 +43,6 @@ Answers
                     @forelse ($answers as $answer)
                         <div class="card mt-2">
                             <div class="card-body">
-                                <small><a href="{{ route('profile.show',$answer->user->name_slug) }}">{{ $answer->user->name }}</a></small><br>
-                                {{ $answer->question->title }}<br>
                                 <b>{{ $answer->text }}</b>
                                 <span class="float-right">  
                                     <a href="{{ route('admin.answer.status',['answer' => $answer->id,'status' => 'viewed_by_admin']) }}" class="mr-2" onclick="return confirm('Are you sure?')"><i class="bi bi-check-circle text-success"></i></a>
@@ -69,10 +67,9 @@ Answers
                     @forelse ($answers as $answer)
                         <div class="card mt-2">
                             <div class="card-body">
-                                <small><a href="{{ route('profile.show',$answer->user->name_slug) }}">{{ $answer->user->name }}</a></small>
                                 <span class="float-right badge badge-danger badge-pill">{{ $answer->report_users_count }}</span><br>
-                                
-                                <b>{{ $answer->question->title }}</b><br>{{ $answer->text }}
+
+                                <b>{{ $answer->text }}</b>
 
                                 <span class="float-right">  
                                     <a href="{{ route('admin.answer.status',['answer' => $answer->id,'status' => 'viewed_by_admin']) }}" class="mr-2" onclick="return confirm('Are you sure?')"><i class="bi bi-check-circle text-success"></i></a>
@@ -82,7 +79,6 @@ Answers
                                 
                                 <div class="row">
                                     @foreach ($answer->report_users as $report_user)
-                                    
                                         <div class="col-4 mt-3">
                                             <div class="card">
                                                 <span class="text-secondary text-center">
