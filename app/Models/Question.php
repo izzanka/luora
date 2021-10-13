@@ -14,16 +14,14 @@ class Question extends Model implements Viewable
 
     protected $removeViewsOnDelete = true;
 
-    protected $fillable = [
-        'user_id',
-        'title',
-        'title_slug',
-        'link',
-        'status'
-    ];
+    protected $guarded = [];
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function answers(){
+        return $this->hasMany(Answer::class);
     }
 
     public function topics(){
@@ -34,8 +32,6 @@ class Question extends Model implements Viewable
         return $this->belongsToMany(User::class,'report_questions')->withPivot('type');
     }
 
-    public function answers(){
-        return $this->hasMany(Answer::class);
-    }
+    
 
 }

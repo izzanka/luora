@@ -9,14 +9,7 @@ class Employment extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'position',
-        'company',
-        'start_year',
-        'end_year',
-        'currently'
-    ];
+    protected $guarded = [];
 
     public function user(){
         return $this->belongsTo(User::class);

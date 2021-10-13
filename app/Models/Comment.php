@@ -14,12 +14,18 @@ class Comment extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
-    
-    public function replies(){
-        return $this->hasMany(Comment::class, 'parent_id');
-    }
 
     public function report_users(){
         return $this->belongsToMany(User::class,'report_comments')->withPivot('type');
     }
+    
+    // public function replies(){
+    //     return $this->hasMany(Comment::class, 'parent_id');
+    // }
+
+    // public function answer(){
+    //     return $this->belongsTo(Answer::class);
+    // }
+
+    
 }

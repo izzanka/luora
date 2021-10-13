@@ -9,9 +9,5 @@ class ReportAnswer extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'answer_id',
-        'type',
-    ];
+    protected $guarded = [];
 }

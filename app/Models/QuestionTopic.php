@@ -9,10 +9,8 @@ class QuestionTopic extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public $timestamps = false;
 
-    protected $fillable = [
-        'question_id',
-        'topic_id'
-    ];
 }

@@ -11,10 +11,7 @@ class Topic extends Model
 
     public $timestamps = false;
     
-    protected $fillable = [
-        'name',
-        'qty'
-    ];
+    protected $guarded = [];
 
     public function questions(){
         return $this->belongsToMany(Question::class,'question_topics');

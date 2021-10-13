@@ -9,13 +9,7 @@ class Education extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'school',
-        'primary',
-        'degree_type',
-        'graduation_year'
-    ];
+    protected $guarded = [];
 
     public function user(){
         return $this->belongsTo(User::class);
