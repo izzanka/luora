@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class CheckQuestionController extends Controller
 {
     public function index(){
-        $questions = Question::doesnthave('report_users')->whereNull('status')->orWhere('status','updated_by_user')->with('user')->latest()->get();
+        $questions = Question::doesnthave('report_users')->whereNull('status')->orWhere('status','updated_by_user')->latest()->get();
         return view('admin.question.index',compact('questions'));
     }
 

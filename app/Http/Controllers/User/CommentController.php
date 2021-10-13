@@ -19,7 +19,7 @@ class CommentController extends Controller
         $answer = Answer::find($request->answer_id);
         $answer->comments()->save($comment);
 
-        return back();
+        return back()->with('message',['text' => 'Comment added succesfully!', 'class' => 'success']);
     }
 
     // public function replyStore(Request $request)
@@ -56,7 +56,7 @@ class CommentController extends Controller
         $comment->delete();
 
         return back()->with('message',['text' => 'Comment deleted successfully!', 'class' => 'success']);
-
+    
     }
 
     public function report(Request $request,Comment $comment){
@@ -79,10 +79,8 @@ class CommentController extends Controller
             ]);
 
             return back()->with('message',['text' => 'Comment reported successfully!', 'class' => 'success']);
+        
         }
- 
-
+    
     }
-
-
 }

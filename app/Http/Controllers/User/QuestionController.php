@@ -30,8 +30,6 @@ class QuestionController extends Controller
     public function show(Question $question){
 
         $reported_question = false;
-        $reported_answer = false;
-        $reported_comment = false;
 
         $user_id = auth()->id();
         $answers = Answer::where('question_id',$question->id)->with('user')->latest()->get();
@@ -122,31 +120,16 @@ class QuestionController extends Controller
         ->record();
 
         foreach($answers as $answer){
-            $report_answer = ReportAnswer::where('answer_id',$answer->id)->where('user_id',$user_id)->first();
-            
-            if($report_answer){
-                $reported_answer = true;
-            }
-
             views($answer)
             ->cooldown(86400)
             ->record();
-
-            foreach($answer->comments as $comment){
-                $report_comment = ReportComment::where('comment_id',$comment->id)->where('user_id',$user_id)->first();
-            
-                if($report_comment){
-                    $reported_comment = true;
-                }
-            }
-
         }
 
         $link = route('question.show',$question);
         $facebook = \Share::page($link)->facebook()->getRawLinks();
         $twitter = \Share::page($link)->twitter()->getRawLinks();
 
-        return view('user.question.show',compact('question','answers','answered','topics','facebook','twitter','reported_question','report_question_types','report_comment_types','reported_answer','reported_comment','report_answer_types'));
+        return view('user.question.show',compact('question','answers','answered','topics','facebook','twitter','reported_question','report_question_types','report_comment_types','report_answer_types'));
     }
 
     public function store(Request $request){
@@ -262,6 +245,9 @@ class QuestionController extends Controller
         }
 
         foreach($question->answers as $answer){
+            foreach($answer->comments as $comment){
+                $comment->delete();
+            }
             $answer->delete();
         }
 

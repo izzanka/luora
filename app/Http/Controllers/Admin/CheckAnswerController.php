@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 class CheckAnswerController extends Controller
 {
     public function index(){
-        $answers = Answer::doesnthave('report_users')->whereNull('status')->orWhere('status','updated_by_user')->with('user')->latest()->get();
+        $answers = Answer::doesnthave('report_users')->whereNull('status')->orWhere('status','updated_by_user')->latest()->get();
         return view('admin.answer.index',compact('answers'));
     }
 
