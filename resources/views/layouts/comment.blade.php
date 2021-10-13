@@ -29,6 +29,9 @@
                                 Delete comment
                             </a>
                         @else
+                            @php
+                                $reported_comment = App\Models\ReportComment::where('comment_id',$comment->id)->where('user_id',auth()->id())->first();
+                            @endphp
                             @if ($reported_comment)
                                 <a class="dropdown-item text-danger">
                                     Reported

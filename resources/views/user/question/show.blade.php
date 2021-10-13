@@ -211,11 +211,11 @@
                                         </a>
                                         @else
                                             
-                                            @if ($reported_question == true)
+                                            @if ($reported_question)
                                                 <a class="dropdown-item text-danger">
                                                     Reported
                                                 </a>
-                                            @elseif($reported_question == false)
+                                            @else
                                                 <a href="" class="dropdown-item text-dark" data-toggle="modal" data-target="#report_questionModal">
                                                     Report
                                                 </a>
@@ -263,7 +263,7 @@
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-12">
-                                                <textarea name="text" cols="10" rows="7" class="form-control" id="textAnswer" autocomplete="off"></textarea>
+                                                <textarea name="text" class="form-control" id="textAnswer" autocomplete="off"></textarea>
                                                 @include('layouts.error', ['name' => 'text'])
                                             </div>
                                         </div>
@@ -323,11 +323,14 @@
                                                             Delete answer
                                                         </a>
                                                     @else
-                                                        @if ($reported_answer == true)
+                                                        @php
+                                                            $reported_answer = App\Models\ReportAnswer::where('answer_id',$answer->id)->where('user_id',auth()->id())->first();
+                                                        @endphp
+                                                        @if ($reported_answer)
                                                             <a class="dropdown-item text-danger">
                                                                 Reported
                                                             </a>
-                                                        @elseif($reported_answer == false)
+                                                        @else
                                                             <a href="" class="dropdown-item text-dark" data-toggle="modal" data-target="#report_answerModal" data-attr="{{ route('answer.report',$answer->id) }}" id="reportAnswer">
                                                                 Report
                                                             </a>
@@ -479,8 +482,6 @@
         });
     });
 
-    
-
     //script for copy link to clipboard
     function copy(){
         let dummy = document.createElement('input');
@@ -493,7 +494,7 @@
         document.execCommand('copy');
         document.body.removeChild(dummy);
 
-        alert('Link copied to clipboard');
+        alert('Share link copied to clipboard');
     }
 
 </script>

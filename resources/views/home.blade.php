@@ -24,7 +24,7 @@
                             <b>{{ Auth::user()->name }}</b>
                         </div>
                         <div class="col-sm-12 mt-3">
-                            <a href="" class="form-control" data-toggle="modal" data-target="#add-questionModal">What is your question ?</a>
+                            <a href="" class="form-control text-dark" data-toggle="modal" data-target="#add-questionModal">What is your question ?</a>
                         </div>
                     </div>
                 </div>
@@ -71,8 +71,8 @@
 
     $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-        page++;
-        load_more(page);
+            page++;
+            load_more(page);
         }
     });
 
@@ -97,7 +97,7 @@
 
         .fail(function(jqXHR, ajaxOptions, thrownError)
         {
-          alert('No response from server');
+          console.log('No response from server');
         });
     }
     
