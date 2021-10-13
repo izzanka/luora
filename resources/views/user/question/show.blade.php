@@ -387,7 +387,7 @@
                                                         <img src="{{ auth()->user()->avatar }}" alt="avatar" class="rounded-circle" width="42px" height="42px">
                                                     </div>
                                                     <div class="col-9">
-                                                        <input type="text" class="form-control" placeholder="Add a comment..." name="comment">
+                                                        <input type="text" class="form-control" placeholder="Add a comment..." name="comment" autocomplete="off">
                                                         <input type="hidden" name="answer_id" value="{{ $answer->id }}" id="answer_id">
                                                     </div>
                                                     <div class="col-2">
