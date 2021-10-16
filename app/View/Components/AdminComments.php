@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\Comment;
 use Illuminate\View\Component;
 
 class AdminComments extends Component
@@ -23,6 +24,7 @@ class AdminComments extends Component
      */
     public function render()
     {
-        return view('components.admin-comments');
+        $comments = Comment::whereNull('status')->orWhere('status','updated_by_user')->orWhereHas('report_users')->count();
+        return view('components.admin-comments',compact('comments'));
     }
 }

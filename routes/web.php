@@ -12,6 +12,7 @@ use App\Http\Controllers\User\SettingController;
 use App\Http\Controllers\User\QuestionController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Admin\CheckAnswerController;
+use App\Http\Controllers\Admin\CheckCommentController;
 use App\Http\Controllers\Admin\CheckQuestionController;
 
 
@@ -43,6 +44,12 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
                     Route::get('/answers/latest',[CheckAnswerController::class,'index'])->name('answers.latest');
                     Route::get('/answers/most-reported',[CheckAnswerController::class,'reported'])->name('answers.most-reported');
                     Route::get('/answer/{answer}/{status}',[CheckAnswerController::class,'update_status'])->name('answer.status');
+
+                    //comment
+                    Route::get('/comments/latest',[CheckCommentController::class,'index'])->name('comments.latest');
+                    Route::get('/comments/most-reported',[CheckCommentController::class,'reported'])->name('comments.most-reported');
+                    Route::get('/comment/{comment}/{status}',[CheckCommentController::class,'update_status'])->name('comment.status');
+
                 });
             });
         });

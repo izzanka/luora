@@ -22,18 +22,16 @@ class CheckCommentController extends Controller
         
         if($status == 'viewed_by_admin' || 'deleted_by_admin'){
 
-            $comment->update([
-                'status' => $status
-            ]);
-
             if($status == 'deleted_by_admin'){
                 $comment->delete();
+            }else{
+                $comment->update([
+                    'status' => $status
+                ]);
             }
  
         }else{
-
             return back();
-            
         }
 
         return back()->with('message',['text' =>  'Comment status updated successfully!', 'class' => 'success']);

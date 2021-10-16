@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Answer;
-use App\Models\ReportAnswer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -23,18 +22,16 @@ class CheckAnswerController extends Controller
 
         if($status == 'viewed_by_admin' || 'deleted_by_admin'){
 
-            $answer->update([
-                'status' => $status
-            ]);
-
             if($status == 'deleted_by_admin'){
                 $answer->delete();
+            }else{
+                $answer->update([
+                    'status' => $status
+                ]);
             }
- 
-        }else{
 
+        }else{
             return back();
-            
         }
 
         return back()->with('message',['text' =>  'Answer status updated successfully!', 'class' => 'success']);

@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Question;
 use Illuminate\Http\Request;
-use App\Models\QuestionTopic;
-use App\Models\ReportQuestion;
 use App\Http\Controllers\Controller;
 
 class CheckQuestionController extends Controller
@@ -24,10 +22,6 @@ class CheckQuestionController extends Controller
 
         if($status == 'viewed_by_admin' || 'deleted_by_admin'){
 
-            $question->update([
-                'status' => $status
-            ]);
-
             if($status == 'deleted_by_admin'){
 
                 $qtopics = QuestionTopic::where('question_id',$question->id)->get();
@@ -41,12 +35,15 @@ class CheckQuestionController extends Controller
                 }
         
                 $question->delete();
+
+            }else{
+                $question->update([
+                    'status' => $status
+                ]);
             }
 
         }else{
-
             return back();
-            
         }
 
         return back()->with('message',['text' =>  'Question status updated successfully!', 'class' => 'success']);
