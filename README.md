@@ -4,8 +4,8 @@
 </p>
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
-Luora is Quora (https://quora.com) clone
+## About 
+a Quora (https://quora.com) website clone 
 
 ## Built With
 
@@ -59,7 +59,7 @@ php artisan serve
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-* Website : 
+* Website : https://luora.ferdirns.com/public/
 
 
 
