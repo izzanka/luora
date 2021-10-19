@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Answer;
+use App\Models\ReportAnswer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -23,7 +24,19 @@ class CheckAnswerController extends Controller
         if($status == 'viewed_by_admin' || 'deleted_by_admin'){
 
             if($status == 'deleted_by_admin'){
+
+                $reports = ReportAnswer::where('answer_id',$answer->id)->get();
+
+                foreach($reports as $report){
+                    $report->delete();
+                }
+
+                foreach($answer->comments as $comment){
+                    $comment->delete();
+                }
+
                 $answer->delete();
+                
             }else{
                 $answer->update([
                     'status' => $status

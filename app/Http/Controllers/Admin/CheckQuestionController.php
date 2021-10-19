@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Question;
 use Illuminate\Http\Request;
+use App\Models\ReportQuestion;
 use App\Http\Controllers\Controller;
 
 class CheckQuestionController extends Controller
@@ -25,6 +26,7 @@ class CheckQuestionController extends Controller
             if($status == 'deleted_by_admin'){
 
                 $qtopics = QuestionTopic::where('question_id',$question->id)->get();
+                $reports = ReportQuestion::where('question_id',$question->id)->get();
 
                 foreach($qtopics as $qtopic){
                     $qtopic->delete();
@@ -32,6 +34,10 @@ class CheckQuestionController extends Controller
         
                 foreach($question->answers as $answer){
                     $answer->delete();
+                }
+
+                foreach($reports as $report){
+                    $report->delete();
                 }
         
                 $question->delete();
