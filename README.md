@@ -60,7 +60,7 @@ php artisan serve
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-* Website : https://luora.ferdirns.com/public/
+* Website : https://luora.ferdirns.com
 
 
 
