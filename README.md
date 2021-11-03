@@ -9,11 +9,6 @@ a Quora (https://quora.com) website clone
 
 ## Built With
 
-### Api
-
-* [UIAvatars](https://ui-avatars.com/)
-* [Google](https://console.developers.google.com)
-
 ### Framework
 
 * [Laravel](https://laravel.com)
@@ -23,6 +18,11 @@ a Quora (https://quora.com) website clone
 
 * [JQuery](https://jquery.com)
 * [Select2](https://select2.org)
+
+### Api
+
+* [UIAvatars](https://ui-avatars.com/)
+* [Google](https://console.developers.google.com)
 
 ### Package
 
