@@ -12,6 +12,7 @@ a Quora (https://quora.com) website clone
 ### Api
 
 * [UIAvatars](https://ui-avatars.com/)
+* [Google](https://console.developers.google.com)
 
 ### Framework
 
