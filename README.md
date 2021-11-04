@@ -18,6 +18,7 @@ a Quora (https://quora.com) website clone
 
 * [JQuery](https://jquery.com)
 * [Select2](https://select2.org)
+* [Chartjs](https://github.com/chartjs/Chart.js)
 
 ### Api
 
