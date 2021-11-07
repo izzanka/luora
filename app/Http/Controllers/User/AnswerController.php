@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 class AnswerController extends Controller
 {
     public function index(){
-        $questions = Question::where('user_id','!=',auth()->id())->latest()->paginate(5);
+        $questions = Question::where('user_id','!=',auth()->id())->latest()->paginate(4);
         return view('user.answer.index',compact('questions'));
     }
 

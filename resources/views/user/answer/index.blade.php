@@ -24,7 +24,6 @@ Write Answers
             </div>
         </div>
         <div class="col-7 ml-1">
-            
             @include('layouts.success')
             <div class="card">
                 <div class="card-body">
@@ -34,8 +33,8 @@ Write Answers
                             <hr>
                         </div>
                     </div>
-                    @forelse ($questions as $question)
-                        <div id="questions">
+                    <div id="questions">
+                        @forelse ($questions as $question)
                             <div class="row">
                                 <div class="col-sm-12">
                                     <a href="{{ route('question.show',$question->title_slug) }}" class="text-dark"><h5><b>{{ $question->title }}</b></h5></a>
@@ -47,22 +46,22 @@ Write Answers
                                     <small>{{ 'last updated ' . $question->updated_at->diffForHumans() }}</small>
                                 </div>
                             </div>
+                
                             <div class="row mt-2">
                                 <div class="col-sm-6">
                                     <a href="" data-toggle="modal" data-target="#answerModal" data-attr="{{ route('answer.store',$question->title_slug) }}" id="answer"><i class="bi bi-pencil-square"></i> Answer</a>
                                 </div>
                             </div>
                             <hr>
-                        </div>
-                    @empty
-                        <div class="text-center mb-4">No Questions</div>
-                    @endforelse
+                        @empty
+                            <div class="text-center mb-4">No More Questions</div>
+                        @endforelse
+                    </div>
                     
                     <div class="text-center">
-                        <button class="btn btn-secondary btn-sm more" data-page="5" data-link="http://127.0.0.1:8000/answer?page=" data-div="#answers">More</button>
+                        <button class="btn btn-secondary btn-sm more" data-page="2" data-link="/answer?page=" data-div="#questions">More</button>
                     </div>
                 </div>
-                
             </div>
         </div>
         <div class="col-md-2">
