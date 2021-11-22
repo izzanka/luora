@@ -174,11 +174,11 @@
                 processResults: function (data) {
                     return {
                         results: $.map(data, function (item) {
-                           return {
-                               id: item.id,
-                               text: item.name,
-                               name_slug : item.name_slug,
-                           }
+                            return {
+                                id: item.id,
+                                text: item.name,
+                                name_slug: item.name_slug,
+                            }
                         })
                     };
                 },
@@ -186,7 +186,7 @@
             }
         });
 
-        $q.on('select2:select',function(e){
+        $q.on('select2:select', function (e) {
             window.location.href = "/profile/" + e.params.data.name_slug + "/show";
         })
 

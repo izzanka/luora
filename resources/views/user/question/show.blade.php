@@ -434,56 +434,56 @@
     // });
 
     //script for answer report form
-    $(document).on('click','#reportAnswer', function(){
+    $(document).on('click', '#reportAnswer', function () {
         let href = $(this).attr('data-attr');
-    
-        $(document).on('click','#store-reportAnswer', function(){
-            $('#report-answerForm').attr('action',href);
+
+        $(document).on('click', '#store-reportAnswer', function () {
+            $('#report-answerForm').attr('action', href);
         });
     });
 
     //script for answer edit modal & form
-    $(document).on('click','#answer', function(){
+    $(document).on('click', '#answer', function () {
         let href = $(this).attr('data-attr');
-       
-        $(document).on('click','.store', function(){
-            $('#answerForm').attr('action',href);
+
+        $(document).on('click', '.store', function () {
+            $('#answerForm').attr('action', href);
         });
     });
 
     //script for update answer
-    $(document).on('click','#answerUpdate', function(){
+    $(document).on('click', '#answerUpdate', function () {
         let href = $(this).attr('data-attr');
         let text = $(this).attr('data-text');
         $('#textAnswer').val(text);
-        
-        $(document).on('click','.answer-update', function(){
-            $('#answer-updateForm').attr('action',href);
+
+        $(document).on('click', '.answer-update', function () {
+            $('#answer-updateForm').attr('action', href);
         });
     });
 
     //script for comment report form
-    $(document).on('click','#reportComment', function(){
+    $(document).on('click', '#reportComment', function () {
         let href = $(this).attr('data-attr');
 
-        $(document).on('click','#store-reportComment', function(){
-            $('#report-commentForm').attr('action',href);
+        $(document).on('click', '#store-reportComment', function () {
+            $('#report-commentForm').attr('action', href);
         });
     });
 
     //script for comment update form
-    $(document).on('click','#updateComment', function(){
+    $(document).on('click', '#updateComment', function () {
         let href = $(this).attr('data-attr');
         let text = $(this).attr('data-text');
         console.log(text);
         $('#textComment').val(text);
-        $(document).on('click','.update-comment', function(){
-            $('#comment-updateForm').attr('action',href);
+        $(document).on('click', '.update-comment', function () {
+            $('#comment-updateForm').attr('action', href);
         });
     });
 
     //script for copy link to clipboard
-    function copy(){
+    function copy() {
         let dummy = document.createElement('input');
         let href = $('#copyLink').attr('data-attr');
         let text = window.location.href + href;

@@ -559,45 +559,45 @@
     $("#btneditCredential").hide();
     $("#btneditDesc").hide();
 
-    $("#name").mouseenter(function(){
+    $("#name").mouseenter(function () {
         $("#btneditName").show();
     });
-    $("#name").mouseleave(function(){
+    $("#name").mouseleave(function () {
         $("#btneditName").hide();
     });
-    $("#credential").mouseenter(function(){
+    $("#credential").mouseenter(function () {
         $("#btneditCredential").show();
     });
-    $("#credential").mouseleave(function(){
+    $("#credential").mouseleave(function () {
         $("#btneditCredential").hide();
     });
-    $("#desc").mouseenter(function(){
+    $("#desc").mouseenter(function () {
         $("#btneditDesc").show();
     });
-    $("#desc").mouseleave(function(){
+    $("#desc").mouseleave(function () {
         $("#btneditDesc").hide();
     });
 
     //script for currently checkbox
-    if($("#currently").prop("checked") == true){
+    if ($("#currently").prop("checked") == true) {
         $("#endyear").hide();
     }
-    if($("#currently2").prop("checked") == true){
+    if ($("#currently2").prop("checked") == true) {
         $("#endyear2").hide();
     }
-    $("#currently").on('click',function(){
-      if($(this).prop("checked") == true){
-        $("#endyear").hide();
-      }else if($(this).prop("checked") == false){
-        $("#endyear").show();
-      }
+    $("#currently").on('click', function () {
+        if ($(this).prop("checked") == true) {
+            $("#endyear").hide();
+        } else if ($(this).prop("checked") == false) {
+            $("#endyear").show();
+        }
     });
-    $("#currently2").on('click',function(){
-      if($(this).prop("checked") == true){
-          $("#endyear2").hide();
-      }else if($(this).prop("checked") == false){
-          $("#endyear2").show();
-      }
+    $("#currently2").on('click', function () {
+        if ($(this).prop("checked") == true) {
+            $("#endyear2").hide();
+        } else if ($(this).prop("checked") == false) {
+            $("#endyear2").show();
+        }
     });
 
     //script for show years in dropdown
@@ -613,15 +613,15 @@
     yeardropdown(endyearDropdown2);
     yeardropdown(gradyearDropdown);
 
-    function yeardropdown(dropdown){
-        let currentYear = new Date().getFullYear();    
-        let earliestYear = 2000;     
-        while (currentYear >= earliestYear) {      
-            let dateOption = document.createElement('option');          
-            dateOption.text = currentYear;      
-            dateOption.value = currentYear;        
-            dropdown.add(dateOption);      
-            currentYear -= 1;    
+    function yeardropdown(dropdown) {
+        let currentYear = new Date().getFullYear();
+        let earliestYear = 2000;
+        while (currentYear >= earliestYear) {
+            let dateOption = document.createElement('option');
+            dateOption.text = currentYear;
+            dateOption.value = currentYear;
+            dropdown.add(dateOption);
+            currentYear -= 1;
         }
     }
 </script>

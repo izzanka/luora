@@ -62,47 +62,45 @@
 @section('script')
 <script>
     
-    var site_url = "{{ route('home') }}";
-    var env_url = "{{ env('APP_URL') }}";
-    var page = 1;
-   
+    let site_url = "{{ route('home') }}";
+    let env_url = "{{ env('APP_URL') }}";
+    let page = 1;
+
     //script for window loading scroll
     load_more(page);
 
-    $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+    $(window).scroll(function () {
+        if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
             page++;
             load_more(page);
         }
     });
 
-    function load_more(page){
+    function load_more(page) {
         $.ajax({
-          url: site_url + "?page=" + page,
-          type: "get",
-          datatype: "html",
-          beforeSend: function()
-          {
-            $('.ajax-loading').show();
-          }
-        })
-        .done(function(data){          
-          if(data.length == 0){
-          $('.ajax-loading.text').html("No more answers");
-          return;
-        }
-          $('.ajax-loading').hide();
-          $("#results").append(data);
-        })
+                url: site_url + "?page=" + page,
+                type: "get",
+                datatype: "html",
+                beforeSend: function () {
+                    $('.ajax-loading').show();
+                }
+            })
+            .done(function (data) {
+                if (data.length == 0) {
+                    $('.ajax-loading.text').html("No more answers");
+                    return;
+                }
+                $('.ajax-loading').hide();
+                $("#results").append(data);
+            })
 
-        .fail(function(jqXHR, ajaxOptions, thrownError)
-        {
-          console.log('No response from server');
-        });
+            .fail(function (jqXHR, ajaxOptions, thrownError) {
+                console.log('No response from server');
+            });
     }
-    
+
     //script for copy link to clipboard
-    function copy(){
+    function copy() {
         let dummy = document.createElement('input');
         let href = $('#copyLink').attr('data-attr');
         let text = env_url + href;

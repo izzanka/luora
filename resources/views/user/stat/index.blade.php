@@ -24,30 +24,32 @@ Stats
 @endsection
 @section('script')
 <script>
-    var url = "{{route('stats.show')}}";
-    var Views = new Array();
+    
+    let url = "{{route('stats.show')}}";
+    let Views = new Array();
+
     $.ajax({
-        url: url,
-        type: 'get',
-        dataType: 'json',
-    })
-    .done(function(data){
-        var ctx = document.getElementById("canvas").getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                datasets: [{
-                    label: 'Total Views',
-                    data: data,
-                    backgroundColor: '#84B1E1',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-            }
+            url: url,
+            type: 'get',
+            dataType: 'json',
+        })
+        .done(function (data) {
+            var ctx = document.getElementById("canvas").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: 'Total Views',
+                        data: data,
+                        backgroundColor: '#84B1E1',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                }
+            });
         });
-    });
 
 </script>
 @endsection

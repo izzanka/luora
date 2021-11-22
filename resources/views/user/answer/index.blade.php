@@ -77,22 +77,22 @@ Write Answers
 @section('script')
 <script>
     //script for answer modal
-    $(document).on('click','#answer', function(){
+    $(document).on('click', '#answer', function () {
         let href = $(this).attr('data-attr');
-       
-        $(document).on('click','.store', function(){
-            $('#answerForm').attr('action',href);
+
+        $(document).on('click', '.store', function () {
+            $('#answerForm').attr('action', href);
         });
     });
 
-    $(".more").click(function() {
+    $(".more").click(function () {
         $div = $($(this).data('div')); //div to append
         $link = $(this).data('link'); //current URL
 
         $page = $(this).data('page'); //get the next page #
         $href = $link + $page; //complete URL
-        $.get($href, function(response) { //append data
-            $html = $(response).find("#questions").html(); 
+        $.get($href, function (response) { //append data
+            $html = $(response).find("#questions").html();
             $div.append($html);
         });
 
