@@ -17,7 +17,7 @@ class CreateReportQuestionsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('question_id')->constrained();
-            $table->enum('type',['harrasment','spam','insincere','poorly writte','incorrect topics']);
+            $table->string('type',30);
             $table->timestamps();
         });
     }

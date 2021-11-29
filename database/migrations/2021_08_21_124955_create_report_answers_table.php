@@ -17,7 +17,7 @@ class CreateReportAnswersTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('answer_id')->constrained();
-            $table->enum('type',['harrasment','spam','doesnt answer the question','plagiarism','joke answer','poorly written','inappropriate credential','factually incorrect','adult content']);
+            $table->string('type',30);
             $table->timestamps();
         });
     }

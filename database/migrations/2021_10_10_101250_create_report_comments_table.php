@@ -17,7 +17,7 @@ class CreateReportCommentsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('comment_id')->constrained();
-            $table->enum('type',['harrasment','spam']);
+            $table->string('type',30);
             $table->timestamps();
         });
     }
