@@ -12,6 +12,7 @@
                 </div>
             
                 <div class="modal-body">
+                    
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="alert alert-primary alert-dismissible fade show" role="alert">
@@ -25,6 +26,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-12">
                                <textarea name="text" cols="30" rows="10" class="form-control" placeholder="Write your answer" autocomplete="off" autofocus id="text"></textarea>
@@ -32,12 +34,14 @@
                                <input id="images" type="file" name="images[]" accept="image/*" class="form-control mt-2" multiple> 
                         </div>
                     </div>
-                 
+
+
                 </div>
+
             
                 <div class="modal-footer">
-                <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal" id="close">Close</button>
-                <button type="submit" class="btn btn-primary store rounded-pill">Post</button>
+                    <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal" id="close">Close</button>
+                    <button type="submit" class="btn btn-primary store rounded-pill">Add Answer</button>
                 </div>
             </div>
             </div>

@@ -161,7 +161,6 @@
     </div>
 
     <script>
-
         let $q = $('.livesearch');
 
         $q.select2({

@@ -5,9 +5,6 @@
         <div class="modal-content">
             <div class="modal-header">
             <h5 class="modal-title" id="add-questionModalLabel">Add question</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -34,7 +31,7 @@
             
                     <div class="row mt-3">
                         <div class="col-sm-12">
-                            <input type="text" name="title" class="form-control" placeholder="Start your question with 'What', 'How', 'Why', etc." autocomplete="off">
+                            <input type="text" name="title" class="form-control" placeholder="Start your question with 'What', 'How', 'Why', etc." autocomplete="off" id="q-title">
                             @include('layouts.error', ['name' => 'title'])
                         </div>
                     </div>
@@ -48,7 +45,7 @@
                                     @foreach ($topics as $topic)
                                     <div class="col-sm-3">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="{{ $topic->id }}" name="topic_id[]" id="{{ $topic->id }}">
+                                            <input class="form-check-input" type="checkbox" value="{{ $topic->id }}" name="topic_id[]" id="{{ $topic->id }}" id="q-topic">
                                             <label class="form-check-label" for="{{ $topic->id }}">
                                             {{ $topic->name }}
                                             </label>
@@ -63,7 +60,7 @@
                 
             </div>  
             <div class="modal-footer">
-                <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-light rounded-pill q-cancel" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-primary rounded-pill">Add question</button>
             </div>
         </div>

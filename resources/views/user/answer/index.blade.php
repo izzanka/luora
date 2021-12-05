@@ -34,7 +34,7 @@ Write Answers
                         </div>
                     </div>
                     <div id="questions">
-                        @forelse ($questions as $question)
+                        @foreach ($questions as $question)
                             <div class="row">
                                 <div class="col-sm-12">
                                     <a href="{{ route('question.show',$question->title_slug) }}" class="text-dark"><h5><b>{{ $question->title }}</b></h5></a>
@@ -53,9 +53,7 @@ Write Answers
                                 </div>
                             </div>
                             <hr>
-                        @empty
-                            <div class="text-center mb-4">No More Questions</div>
-                        @endforelse
+                        @endforeach
                     </div>
                     
                     <div class="text-center">
