@@ -1,6 +1,6 @@
 <form action="{{ route('question.store') }}" method="POST">
     @csrf
-    <div class="modal fade" id="add-questionModal" tabindex="-1" aria-labelledby="add-questionModalLabel" aria-hidden="true">
+    <div class="modal fade" id="add-questionModal" aria-labelledby="add-questionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">

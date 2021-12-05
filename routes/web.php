@@ -112,6 +112,7 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         Route::post('/comment/{comment}/report',[CommentController::class,'report'])->name('comment.report');
     });
     
+    //api login provider
     Route::get('/auth/redirect/{provider}',[SocialiteController::class,'redirect']);
     Route::get('/auth/callback/{provider}',[SocialiteController::class,'callback']);
     

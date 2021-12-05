@@ -107,7 +107,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            Credentials & Highlights <i class="bi bi-pencil-square float-right"></i>      
+                            Credentials & Highlights   
                         </div>
                     </div>
                     <hr>
@@ -140,7 +140,7 @@
 
                     <div class="row mt-2">
                         <div class="col-12">
-                            <i class="bi bi-calendar mr-2" style="font-size: 15px"></i> Joined {{ $user->created_at->format('M Y') }}
+                            <i class="bi bi-calendar mr-2" style="font-size: 15px"></i> Joined {{ $user->created_at->format('d M Y') }}
                         </div>
                     </div>
                 </div>
@@ -162,7 +162,7 @@
                         @empty
                         <div class="row">
                             <div class="col-sm-12">
-                                You haven't added any topics yet.
+                                This user haven't added any topics yet.
                             </div>
                         </div>
                         @endforelse

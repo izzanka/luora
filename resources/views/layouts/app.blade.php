@@ -28,7 +28,6 @@
     <style>
         .dmenu a {
             width: 250px;
-        
         }
     </style>
 </head>

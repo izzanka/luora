@@ -44,7 +44,7 @@
                         <form action="{{ route('profile.update',['user' => $user->name_slug,'profile' => 'name']) }}" method="POST">
                             @csrf
                             @method('PUT')
-                            <div class="modal fade" id="nameModal" tabindex="-1" aria-labelledby="nameModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="nameModal" aria-labelledby="nameModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -74,7 +74,7 @@
                         <form action="{{ route('profile.update',['user' => $user->name_slug,'profile' => 'credential']) }}" method="POST">
                             @csrf
                             @method('PUT')
-                            <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="profileModal" aria-labelledby="profileModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -106,7 +106,7 @@
                         <form action="{{ route('profile.update',['user' => $user->name_slug,'profile' => 'description']) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <div class="modal fade" id="descModal" tabindex="-1" aria-labelledby="descModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="descModal" aria-labelledby="descModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -165,7 +165,6 @@
                     <div class="row">
                         <div class="col-12">
                             Credentials & Highlights
-                            <i class="bi bi-pencil-square text-dark float-right"></i>
                         </div>
                     </div>
                     <hr>
@@ -175,7 +174,7 @@
                             @if ($employment_credential)
                                 <a href="" class="text-dark" data-toggle="modal" data-target="#employmentModal"> {{ $employment_credential['credential'] }}<small class="text-secondary">{{  $employment_credential['year']}}</small></a>
                             @else
-                                <a href="" data-toggle="modal" data-target="#employmentModal"> Add employment credential</a>
+                                <a href="" data-toggle="modal" data-target="#employmentModal" id="btnEmployment"> Add employment credential</a>
                             @endif
                         </div>
                     </div>
@@ -184,7 +183,7 @@
                     <form action="{{ route('profile.credentials.update', ['user' => $user->name_slug,'credentials' => 'employment']) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <div class="modal fade" id="employmentModal" tabindex="-1" aria-labelledby="employmentModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="employmentModal" aria-labelledby="employmentModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -294,7 +293,7 @@
                         <form action="{{ route('profile.credentials.update',['user' => $user->name_slug, 'credentials' => 'education']) }}" method="POST">
                             @csrf
                             @method('PUT')
-                            <div class="modal fade" id="educationModal" tabindex="-1" aria-labelledby="educationModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="educationModal" aria-labelledby="educationModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -376,7 +375,7 @@
                         <form action="{{ route('profile.credentials.update',['user' => $user->name_slug,'credentials' => 'location']) }}" method="POST">
                             @csrf
                             @method('PUT')
-                            <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="locationModal" aria-labelledby="locationModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -462,7 +461,7 @@
 
                     <div class="row mt-2">
                         <div class="col-12">
-                            <i class="bi bi-calendar mr-2"></i> Joined {{ $user->created_at->format('M Y') }}
+                            <i class="bi bi-calendar mr-2"></i> Joined {{ $user->created_at->format('d M Y') }}
                         </div>
                     </div>
                 </div>
@@ -477,7 +476,7 @@
                     <form action="{{ route('profile.topics.update',$user->name_slug) }}" method="POST">
                         @csrf
                         @method('PUT')
-                            <div class="modal fade" id="topicModal" tabindex="-1" aria-labelledby="topicModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="topicModal" aria-labelledby="topicModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -554,6 +553,7 @@
 @section('script')
 <script src="{{ asset('js/profile.js') }}"></script>
 <script>
+
     //script for hide & show button edit profile name
     $("#btneditName").hide();
     $("#btneditCredential").hide();

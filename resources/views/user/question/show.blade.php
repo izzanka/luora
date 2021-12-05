@@ -300,8 +300,8 @@
                                 }
                             }
                         @endphp
-
-                        <div class="card mt-4" id="{{ $answer->user->name_slug }}">
+                        <div id="{{ $answer->user->name_slug }}">
+                        <div class="card mt-4">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-12">
@@ -353,6 +353,14 @@
                                         <div class="row mt-3">
                                             <div class="col-12">
                                                 {{  $answer->text  }}<br><br>
+                                                @php
+                                                    $images = json_decode($answer->images);
+                                                @endphp
+                                                @if ($answer->images)
+                                                    @foreach ($images as $image)
+                                                        <img src="{{ asset('img/' . $image) }}" class="img-fluid mt-2 mb-2 ">
+                                                    @endforeach
+                                                @endif
                                                 <small class="text-secondary">{{ views($answer)->count() }} views</small>
                                             </div>
                                         </div>
@@ -401,6 +409,7 @@
                                     </div>
                                 </div> 
                             </div>
+                        </div>
                         </div>
                     @endforeach
                     
