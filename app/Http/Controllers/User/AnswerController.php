@@ -37,7 +37,7 @@ class AnswerController extends Controller
         if($request->hasFile('images')){
             
             if(count($request->file('images')) > 8){
-                return back()->with('message',['text' => 'Image upload cant more then 8!','class' => 'danger']);;
+                return back()->with('message',['text' => 'Maximum allowed image is 8','class' => 'danger']);;
             }
 
             $num = 0;
@@ -148,9 +148,8 @@ class AnswerController extends Controller
             $comment->delete();
         }
 
-        
-        
         $answer->delete();
+        
         return back()->with('message',['text' => 'Answer deleted successfully!', 'class' => 'success']);
     }
 
