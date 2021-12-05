@@ -9,6 +9,8 @@ use App\Models\Question;
 use App\Models\ReportAnswer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
 class AnswerController extends Controller
 {
@@ -22,17 +24,48 @@ class AnswerController extends Controller
         $answer = Answer::where('question_id',$question->id)->where('user_id',auth()->id())->first();
 
         if($answer){
-            return back();
+            return back()->with('message',['text' => 'You already answer the question!','class' => 'danger']);
         }
 
         $request->validate([
-            'text' => 'required'
+            'text' => 'required',
+            'images.*' => 'image|max:2048',
         ]);
+
+        $images = [];
+
+        if($request->hasFile('images')){
+            
+            if(count($request->file('images')) > 8){
+                return back()->with('message',['text' => 'Image upload cant more then 8!','class' => 'danger']);;
+            }
+
+            $num = 0;
+            foreach($request->file('images') as $image){
+                $num += 1;
+                $imageName = time() . '-' . $num . '.' . $image->getClientOriginalExtension();
+                $img_edit = Image::make($image);
+                $img_edit->resize(700,500);
+                $img_edit->text('luora.ferdirns.com', 600, 470, function ($font) {
+                    $font->file(public_path('img/coco-sharp-bold.ttf'));
+                    $font->size(20);
+                    $font->color('#808080');
+                    $font->align('center');
+                    $font->valign('top');
+                    $font->angle(0);
+                })->save(public_path('/img') . '/' . $imageName);
+                $images[] = $imageName;
+            }
+        }
+
+        $image = $images ? json_encode($images) : null;
+        dd($image);
 
         Answer::create([
             'user_id' => auth()->id(),
             'question_id' => $question->id,
             'text' => $request->text,
+            'images' => $image,
         ]);
 
         return back()->with('message',['text' => 'Answer added successfully!', 'class' => 'success']);;
@@ -99,6 +132,14 @@ class AnswerController extends Controller
 
         $reports = ReportAnswer::where('answer_id',$answer->id)->get();
 
+        if($answer->images){
+            $images = json_decode($answer->images);
+
+            foreach($images as $image){
+                File::delete('img/' . $image);
+            }
+        }
+        
         foreach($reports as $report){
             $report->delete();
         }
@@ -106,6 +147,8 @@ class AnswerController extends Controller
         foreach($answer->comments as $comment){
             $comment->delete();
         }
+
+        
         
         $answer->delete();
         return back()->with('message',['text' => 'Answer deleted successfully!', 'class' => 'success']);
