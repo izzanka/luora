@@ -164,6 +164,7 @@ return [
         CyrildeWit\EloquentViewable\EloquentViewableServiceProvider::class,
         Jcc\LaravelVote\VoteServiceProvider::class,
         Jorenvh\Share\Providers\ShareServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -232,6 +233,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Share' => Jorenvh\Share\ShareFacade::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];
