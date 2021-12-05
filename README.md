@@ -1,6 +1,6 @@
 <!-- PROJECT LOGO -->
 <p align="center">
-  <h3 align="center">LUORA</h3>
+  <h3 align="center">LUORA (https://luora.ferdirns.com)</h3>
 </p>
 
 <!-- ABOUT THE PROJECT -->
