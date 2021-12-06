@@ -16,27 +16,27 @@ class ProfileController extends Controller
 {
     //function set credential
     public function employment_credential($user){
-        $year_or_current = $user->employment->currently ? 'present' : $user->employment->end_year;
+        $year_or_currently = $user->employment->currently ? 'now' : $user->employment->end_year;
         return 
         [
             'credential' => $user->employment->position . ' at ' . $user->employment->company,
-            'year' => ' (' . $user->employment->start_year . '-' . $year_or_current . ')'
+            'year' => ' (' . $user->employment->start_year . ' - ' . $year_or_currently . ')'
         ];
     }
 
     public function education_credential($user){
-        $year_or_current = $user->education->graduation_year ? ' (Graduated ' . $user->education->graduation_year . ')' : null;
+        $year_or_currently = $user->education->graduation_year ? ' (Graduated ' . $user->education->graduation_year . ')' : null;
         return [
             'credential' => $user->education->degree_type . ' in ' . $user->education->primary . ', ' . $user->education->school,
-            'year' => $year_or_current,
+            'year' => $year_or_currently,
         ]; 
     }
 
     public function location_credential($user){
-        $year_or_current = $user->location->currently ? 'present' : $user->location->end_year;
+        $year_or_currently = $user->location->currently ? 'now' : $user->location->end_year;
         return [
             'credential' => 'Lives in ' . $user->location->location,
-            'year' => ' (' . $user->location->start_year . '-' . $year_or_current . ')',
+            'year' => ' (' . $user->location->start_year . ' - ' . $year_or_currently . ')',
         ]; 
     }
 
@@ -205,7 +205,7 @@ class ProfileController extends Controller
             return back();
         }
 
-        return back()->with('message',['text' => $credentials . ' credential updated successfully!', 'class' => 'success']);
+        return back()->with('message',['text' => ucfirst($credentials) . ' credential updated successfully!', 'class' => 'success']);
     }
 
     public function update_profile(Request $request,User $user,$profile){
@@ -274,7 +274,7 @@ class ProfileController extends Controller
         $education_credential = [];
         $location_credential = [];
 
-        //redirect to profile if want to show logged account
+        //redirect to profile if want to show current user
         if($user->id == auth()->id()){
             return redirect()->route('profile.index',auth()->user()->name_slug);
         }
@@ -301,7 +301,7 @@ class ProfileController extends Controller
         
         $authUser = auth()->user();
         
-        //check is auth user is following or not
+        //check if current user is following or not
         if($authUser->isFollowing($user)){
             $authUser->unfollow($user);
         }else{
