@@ -121,7 +121,7 @@
                                         {{ __('Logout') }}
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <small class="dropdown-header"><a href="javascript: void(0)" class="text-secondary">About &#183;</a></small>
+                                    <small class="dropdown-header"><a href="https://github.com/izzanka/luora" class="text-secondary">About &#183;</a></small>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
@@ -164,7 +164,7 @@
         let $q = $('.livesearch');
 
         $q.select2({
-            placeholder: 'Search',
+            placeholder: 'Search user',
             ajax: {
                 url: "/search",
                 dataType: 'json',

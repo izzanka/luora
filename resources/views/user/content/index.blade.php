@@ -18,13 +18,13 @@ Your Content
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 mb-2">
                         <a href="{{ route('content.index') }}" class="{{ request()->route()->named('content.index') ? 'text-danger' : 'text-dark' }}">All Contents</a>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 mb-2">
                         <a href="{{ route('content.questions.index') }}" class="{{ request()->route()->named('content.questions.index') ? 'text-danger' : 'text-dark' }}">Questions</a>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 mb-2">
                         <a href="{{ route('content.answers.index') }}" class="{{ request()->route()->named('content.answers.index') ? 'text-danger' : 'text-dark' }}">Answers</a>
                     </div>
                 </div>  

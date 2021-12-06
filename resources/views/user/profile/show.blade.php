@@ -149,7 +149,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        Knows about <i class="bi bi-pencil-square float-right"></i>      
+                        Knows about     
                     </div>
                 </div>
                 <hr>
