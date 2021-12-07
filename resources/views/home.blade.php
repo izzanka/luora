@@ -131,8 +131,9 @@
                                                 @endphp
                                                 @if ($answer->images)
                                                     @foreach ($images as $image)
-                                                        <img src="{{ asset('img/' . $image) }}" class="img-fluid mt-2 mb-2 ">
+                                                        <img src="{{ asset('img/' . $image) }}" class="img-fluid mt-2 mb-2" alt="image not found!">
                                                     @endforeach
+                                                    <br><br>
                                                 @endif
                                                 <small class="text-secondary">{{ views($answer)->count() }} views</small>
                                             </div>
