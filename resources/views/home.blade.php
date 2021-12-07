@@ -53,7 +53,7 @@
                         }else{
                             $answer->user->load(['employment','education','location']);
                             if($answer->user->employment){
-                                $year_or_current_employment = $answer->user->employment->currently ? 'now' : $answer->user->employment->end_year;
+                                $year_or_current_employment = $answer->user->employment->currently ? 'present' : $answer->user->employment->end_year;
                                 $credential = $answer->user->employment->position . ' at ' . $answer->user->employment->company . ' (' . $answer->user->employment->start_year . ' - ' . $year_or_current_employment . ')';
                             }else{
                                 if($answer->user->education){
@@ -61,7 +61,7 @@
                                     $credential = $answer->user->education->degree_type . ' in ' . $answer->user->education->primary . ', ' . $answer->user->education->school . $year_or_current_education;
                                 }else{
                                     if($answer->user->location){
-                                        $year_or_current_location = $answer->user->location->currently ? 'now' : $answer->user->location->end_year;
+                                        $year_or_current_location = $answer->user->location->currently ? 'present' : $answer->user->location->end_year;
                                         $credential = 'Lives in ' . $answer->user->location->location . ' (' . $answer->user->location->start_year . ' - ' . $year_or_current_location . ')';
                                     }else{
                                         $credential = '';

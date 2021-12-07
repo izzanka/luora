@@ -16,7 +16,7 @@ class ProfileController extends Controller
 {
     //function set credential
     public function employment_credential($user){
-        $year_or_currently = $user->employment->currently ? 'now' : $user->employment->end_year;
+        $year_or_currently = $user->employment->currently ? 'present' : $user->employment->end_year;
         return 
         [
             'credential' => $user->employment->position . ' at ' . $user->employment->company,
@@ -33,7 +33,7 @@ class ProfileController extends Controller
     }
 
     public function location_credential($user){
-        $year_or_currently = $user->location->currently ? 'now' : $user->location->end_year;
+        $year_or_currently = $user->location->currently ? 'present' : $user->location->end_year;
         return [
             'credential' => 'Lives in ' . $user->location->location,
             'year' => ' (' . $user->location->start_year . ' - ' . $year_or_currently . ')',
