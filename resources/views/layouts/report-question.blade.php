@@ -1,6 +1,6 @@
 <form action="{{ route('question.report',$question->title_slug) }}" method="POST">
     @csrf
-    <div class="modal fade" id="report_questionModal" tabindex="-1" aria-labelledby="report_questionModalLabel" aria-hidden="true">
+    <div class="modal fade" id="report_questionModal" aria-labelledby="report_questionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">

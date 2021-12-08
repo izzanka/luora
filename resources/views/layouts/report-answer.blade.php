@@ -1,7 +1,7 @@
 <!-- Report Answer Modal -->
 <form method="POST" id="report-answerForm">
     @csrf
-    <div class="modal fade" id="report_answerModal" tabindex="-1" aria-labelledby="report_answerModalLabel" aria-hidden="true">
+    <div class="modal fade" id="report_answerModal" aria-labelledby="report_answerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">

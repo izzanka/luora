@@ -13,7 +13,7 @@
 {{-- Report Comment Modal --}}
 <form action="" method="POST" id="report-commentForm">
     @csrf
-    <div class="modal fade" id="report_commentModal" tabindex="-1" aria-labelledby="report_commentModalLabel" aria-hidden="true">
+    <div class="modal fade" id="report_commentModal" aria-labelledby="report_commentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -47,7 +47,7 @@
 <form action="" method="POST" id="comment-updateForm">
     @csrf
     @method('PUT')
-    <div class="modal fade" id="update_commentModal" tabindex="-1" aria-labelledby="update_commentModalLabel" aria-hidden="true">
+    <div class="modal fade" id="update_commentModal" aria-labelledby="update_commentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -80,7 +80,7 @@
 <form action="{{ route('question.update',$question->title_slug) }}" method="POST">
     @csrf
     @method('PUT')
-    <div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="questionModalLabel" aria-hidden="true">
+    <div class="modal fade" id="questionModal" aria-labelledby="questionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -110,7 +110,7 @@
 <form action="{{ route('question.update',$question->title_slug) }}" method="POST">
     @csrf
     @method('PUT')
-    <div class="modal fade" id="topicModal" tabindex="-1" aria-labelledby="topicModalLabel" aria-hidden="true">
+    <div class="modal fade" id="topicModal" aria-labelledby="topicModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -203,7 +203,11 @@
                                             Edit question
                                         </a>
                                         <a href="" class="dropdown-item" data-toggle="modal" data-target="#topicModal">
-                                            Edit topics
+                                            @if (count($question->topics))
+                                                Edit topics
+                                            @else
+                                                Add topics
+                                            @endif
                                         </a>
 
                                         <a href="{{ route('question.destroy',$question->title_slug) }}" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this question?')">
@@ -251,7 +255,7 @@
                         <form action="" method="POST" id="answer-updateForm">
                             @csrf
                             @method('PUT')
-                            <div class="modal fade" id="answer-updateModal" tabindex="-1" aria-labelledby="answer-updateModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="answer-updateModal" aria-labelledby="answer-updateModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -300,6 +304,7 @@
                                 }
                             }
                         @endphp
+
                         <div id="{{ $answer->user->name_slug }}">
                         <div class="card mt-4">
                             <div class="card-body">
