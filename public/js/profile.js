@@ -33,7 +33,7 @@ $(document).on("click", "#showTopics", function (e) {
                         "</b>" +
                         '<span class="float-right">' +
                         "(" +
-                        value[i].qty +
+                        value[i].follower +
                         " Followers)" +
                         "</span>" +
                         "<hr>" +
