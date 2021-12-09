@@ -435,8 +435,6 @@
                                                             @if ($user->location->currently ?? '')
                                                                 @if ($user->location->currently == true)
                                                                     {{ 'checked' }}
-                                                                @else
-                                                                
                                                                 @endif>
                                                             @endif
                        

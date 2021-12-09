@@ -7,9 +7,17 @@
         <div class="col-md-2">
             <div class="card">
                 <div class="card-header">
-                    Create Topics
+                    Create Topic
                 </div>
                 <div class="card-body">
+                    <form action="{{ route('create.topic') }}" method="POST">
+                        @csrf
+                        <div class="input-group input-group-sm">
+                            <input type="text" name="name" class="form-control" autocomplete="off">
+                            @include('layouts.error', ['name' => 'name'])
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary mt-2">Add topic</button>
+                    </form>
                 </div>
             </div>
         </div>
