@@ -17,10 +17,11 @@ class ProfileController extends Controller
     //function set credential
     public function employment_credential($user){
         $year_or_currently = $user->employment->currently ? 'present' : $user->employment->end_year;
-        return 
-        [
+        $year_or_null = $year_or_currently ? ' (' . $user->location->start_year . ' - ' . $year_or_currently . ')' : ' (' . $user->location->start_year . ')';
+
+        return [
             'credential' => $user->employment->position . ' at ' . $user->employment->company,
-            'year' => ' (' . $user->employment->start_year . ' - ' . $year_or_currently . ')'
+            'year' => $year_or_null,
         ];
     }
 
@@ -33,10 +34,13 @@ class ProfileController extends Controller
     }
 
     public function location_credential($user){
+    
         $year_or_currently = $user->location->currently ? 'present' : $user->location->end_year;
+        $year_or_null = $year_or_currently ? ' (' . $user->location->start_year . ' - ' . $year_or_currently . ')' : ' (' . $user->location->start_year . ')';
+
         return [
             'credential' => 'Lives in ' . $user->location->location,
-            'year' => ' (' . $user->location->start_year . ' - ' . $year_or_currently . ')',
+            'year' => $year_or_null,
         ]; 
     }
 
@@ -80,7 +84,7 @@ class ProfileController extends Controller
 
         foreach($utopics as $utopic){
             $topic = Topic::find($utopic->topic_id);
-            $topic->qty -= 1;
+            $topic->follower -= 1;
             $topic->update();
             $utopic->delete();
         }
@@ -95,7 +99,7 @@ class ProfileController extends Controller
                 ]);
                 
                 $topic = Topic::find($request->topic_id[$i]);
-                $topic->qty += 1;
+                $topic->follower += 1;
                 $topic->update();
             }
 
@@ -116,17 +120,20 @@ class ProfileController extends Controller
         if($credentials == "employment"){
 
             $request->validate([
-                'position' => 'required|max:60',
-                'company' => 'required|max:12',
+                'position' => 'required|max:40',
+                'company' => 'required|max:20',
                 'start_year' => 'required|max:4',
                 'end_year' => 'max:4',
             ]);
 
+            $position = ucwords($request->position);
+            $company = ucwords($request->company);
+
             if($user->employment){
 
                 $user->employment->update([
-                    'position' => $request->position,
-                    'company' => $request->company,
+                    'position' => $position,
+                    'company' => $company,
                     'start_year' => $request->start_year,
                     'end_year' => $request->end_year,
                     'currently' => $request->currently
@@ -136,8 +143,8 @@ class ProfileController extends Controller
 
                 Employment::create([
                     'user_id' => $user->id,
-                    'position' => $request->position,
-                    'company' => $request->company,
+                    'position' => $position,
+                    'company' => $company,
                     'start_year' => $request->start_year,
                     'end_year' => $request->end_year,
                     'currently' => $request->currently
@@ -147,18 +154,22 @@ class ProfileController extends Controller
         }else if($credentials == "education"){
             
             $request->validate([
-                'school' => 'required',
-                'primary' => 'required',
-                'degree_type' => 'required',
+                'school' => 'required|max:40',
+                'primary' => 'required|max:40',
+                'degree_type' => 'required|max:40',
                 'graduation_year' => 'max:4'
             ]);
+
+            $school = ucwords($request->school);
+            $primary = ucwords($request->primary);
+            $degree_type = ucwords($request->degree_type);
 
             if($user->education){
 
                 $user->education->update([
-                    'school' => $request->school,
-                    'primary' => $request->primary,
-                    'degree_type' => $request->degree_type,
+                    'school' => $school,
+                    'primary' => $primary,
+                    'degree_type' => $degree,
                     'graduation_year' => $request->graduation_year
                 ]);
 
@@ -166,9 +177,9 @@ class ProfileController extends Controller
              
                 Education::create([
                     'user_id' => $user->id,
-                    'school' => $request->school,
-                    'primary' => $request->primary,
-                    'degree_type' => $request->degree_type,
+                    'school' => $school,
+                    'primary' => $primary,
+                    'degree_type' => $degreetype,
                     'graduation_year' => $request->graduation_year
                 ]);
             }
@@ -176,15 +187,25 @@ class ProfileController extends Controller
         }else if($credentials == "location"){
             
             $request->validate([
-                'location' => 'required',
+                'location' => 'required|max:40',
                 'start_year' => 'required|max:4',
                 'end_year' => 'max:4',
             ]);
 
+            $location_name = ucwords($request->location);
+
+            if($request->end_year != null){
+                if($request->end_year >= $request->start_year){
+
+                }else{
+                    return back()->with('message',['text' => ' The end year location credential is invalid!', 'class' => 'danger']);
+                }
+            }
+            
             if($user->location){
 
                 $user->location->update([
-                    'location' => $request->location,
+                    'location' => $location_name,
                     'start_year' => $request->start_year,
                     'end_year' => $request->end_year,
                     'currently' => $request->currently
@@ -194,7 +215,7 @@ class ProfileController extends Controller
 
                 Location::create([
                     'user_id' => $user->id,
-                    'location' => $request->location,
+                    'location' => $location_name,
                     'start_year' => $request->start_year,
                     'end_year' => $request->end_year,
                     'currently' => $request->currently
@@ -265,7 +286,7 @@ class ProfileController extends Controller
             return back();
         }
 
-        return back()->with('message',['text' => $credentials . ' credential deleted successfully!', 'class' => 'success']);
+        return back()->with('message',['text' => ucfirst($credentials) . ' credential deleted successfully!', 'class' => 'success']);
     }
 
     public function show(User $user){
@@ -313,7 +334,7 @@ class ProfileController extends Controller
 
     //api show user contents
     public function show_topics(User $user){
-        $topics = $user->topics()->orderBy('qty','desc')->get();
+        $topics = $user->topics()->orderBy('follower','desc')->get();
         return response()->json(['data' => $topics]);
     }
 

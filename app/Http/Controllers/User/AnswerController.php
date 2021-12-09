@@ -59,7 +59,6 @@ class AnswerController extends Controller
         }
 
         $image = $images ? json_encode($images) : null;
-        dd($image);
 
         Answer::create([
             'user_id' => auth()->id(),
@@ -68,7 +67,7 @@ class AnswerController extends Controller
             'images' => $image,
         ]);
 
-        return back()->with('message',['text' => 'Answer added successfully!', 'class' => 'success']);;
+        return back()->with('message',['text' => 'Answer added successfully!', 'class' => 'success']);
     }
     
     //api vote
