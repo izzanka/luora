@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\User\StatController;
 use App\Http\Controllers\User\ShareController;
+use App\Http\Controllers\User\TopicController;
 use App\Http\Controllers\User\AnswerController;
 use App\Http\Controllers\User\CommentController;
 use App\Http\Controllers\User\ContentController;
@@ -58,6 +59,7 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         Route::get('/', [HomeController::class, 'index']);
         Route::get('/home', [HomeController::class, 'index'])->name('home');
         Route::get('/search',[HomeController::class,'search'])->name('search');
+        Route::post('/add-topic',[TopicController::class,'store'])->name('create.topic');
     
         //setting
         Route::get('/settings',[SettingController::class,'index'])->name('settings.index');
