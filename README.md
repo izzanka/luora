@@ -58,10 +58,5 @@ php artisan migrate
 php artisan serve
 ```
 
-<!-- USAGE EXAMPLES -->
-## Usage
-
-* Website : https://luora.ferdirns.com
-
 
 
