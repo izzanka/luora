@@ -27,12 +27,13 @@ a Quora (https://quora.com) website clone
 
 ### Package
 
+* [laravel/socialite](https://github.com/laravel/socialite)
+* [laravel/ui](https://github.com/laravel/ui)
 * [cyrildewit/eloquent-viewable](https://github.com/cyrildewit/eloquent-viewable)
 * [jcc/laravel-vote](https://github.com/jcc/laravel-vote)
 * [jorenvanhocht/laravel-share](https://github.com/jorenvanhocht/laravel-share)
-* [laravel/socialite](https://github.com/laravel/socialite)
-* [laravel/ui](https://github.com/laravel/ui)
 * [overtrue/laravel-follow](https://github.com/overtrue/laravel-follow)
+* [intervention/image](https://github.com/Intervention/image)
 
 <!-- GETTING STARTED -->
 ## Getting Started
