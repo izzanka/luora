@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-2">
+        {{-- <div class="col-md-2">
             <div class="card">
                 <div class="card-header">
                     Create Topic
@@ -16,19 +16,19 @@
                             <input type="text" name="name" class="form-control" autocomplete="off">
                             @include('layouts.error', ['name' => 'name'])
                         </div>
-                        <button type="submit" class="btn btn-sm btn-primary mt-2">Add topic</button>
+                        <button type="submit" class="btn btn-sm btn-primary mt-2 rounded-pill">Add topic</button>
                     </form>
                 </div>
             </div>
-        </div>
-        <div class="col-7 ml-1">
+        </div> --}}
+        <div class="col-8">
             @include('layouts.success')
             
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            <img src="{{ Auth::user()->avatar }}" alt="avatar" class="rounded-circle mr-2" width="42px" height="42px">
+                            <img src="{{ Auth::user()->avatar }}" alt="avatar" class="rounded-circle" width="42px" height="42px">
                             <b>{{ Auth::user()->name }}</b>
                         </div>
                         <div class="col-sm-12 mt-3">
@@ -59,23 +59,7 @@
                         if($answer->user->credential){
                             $credential = $answer->user->credential;
                         }else{
-                            $answer->user->load(['employment','education','location']);
-                            if($answer->user->employment){
-                                $year_or_current_employment = $answer->user->employment->currently ? 'present' : $answer->user->employment->end_year;
-                                $credential = $answer->user->employment->position . ' at ' . $answer->user->employment->company . ' (' . $answer->user->employment->start_year . ' - ' . $year_or_current_employment . ')';
-                            }else{
-                                if($answer->user->education){
-                                    $year_or_current_education= $answer->user->education->graduation_year ? ' (Graduated ' . $answer->user->education->graduation_year . ')' : null;
-                                    $credential = $answer->user->education->degree_type . ' in ' . $answer->user->education->primary . ', ' . $answer->user->education->school . $year_or_current_education;
-                                }else{
-                                    if($answer->user->location){
-                                        $year_or_current_location = $answer->user->location->currently ? 'present' : $answer->user->location->end_year;
-                                        $credential = 'Lives in ' . $answer->user->location->location . ' (' . $answer->user->location->start_year . ' - ' . $year_or_current_location . ')';
-                                    }else{
-                                        $credential = '';
-                                    }
-                                }
-                            }
+                            $credential = \App\Http\Controllers\User\ProfileController::set_credential($answer->user);
                         }
 
                         //set vote status
@@ -104,11 +88,11 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="row mb-3">
-                                            <div class="col-sm-1">
+                                            <div class="col-1">
                                                 <img src="{{ $answer->user->avatar }}" alt="avatar" class="rounded-circle" width="42px" height="42px">
                                             </div>
                                         
-                                            <div class="col-sm-11">
+                                            <div class="col-11">
                                                 <a href="{{ route('profile.show',$answer->user->name_slug) }}" class="text-dark"><b>{{  $answer->user->name }} </b></a> &#183; 
                                                 <a href="{{ route('follow',$answer->user->name_slug) }}">{{ $status }}</a>
                                                 <a href="" class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots" style="font-size: 20px"></i></a><br>
@@ -175,24 +159,32 @@
             </div>
 
             <div class="text-center">
-                <button class="btn btn-secondary btn-sm more mt-2" data-page="5" data-link="/home?page=" data-div="#answers">More</button>
+                <button class="btn btn-secondary btn-sm more mt-2 rounded-pill" data-page="5" data-link="/home?page=" data-div="#answers">More</button>
             </div>
 
         </div>
 
-        <div class="col-md-2">
-            <div class="card mb-3">
-                <div class="card-header">
-                    Improve your feed
-                </div>
-                <div class="card-body">
-                </div>
-            </div>
+        <div class="col-4">
             <div class="card">
                 <div class="card-header">
                     Topics to follow
+                    <button class="btn btn-sm btn-outline-secondary float-right" id="btnTopic"><i class="bi bi-plus"></i> Create topic</button>
                 </div>
                 <div class="card-body">
+                    <div id="formTopic">
+                        <form action="{{ route('create.topic') }}" method="POST">
+                            @csrf
+                            <div class="input-group input-group-sm">
+                                <input type="text" name="name" class="form-control" autocomplete="off">
+                                @include('layouts.error', ['name' => 'name'])
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-primary mt-2 rounded-pill">Create</button>
+                        </form>
+                        <hr>
+                    </div>
+                    @foreach($topics as $topic)
+                        <a href="{{ route('topic.show',$topic->name_slug) }}" class="text-dark">{{ $topic->name }}</a><hr>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -218,6 +210,12 @@
 
         $(this).data('page', (parseInt($page) + 1)); //update page #
     });
+
+    $('#formTopic').hide();
+
+    $("#btnTopic").click(function(){
+        $('#formTopic').show();
+    })
     
     // let site_url = "{{ route('home') }}";
     // let page = 1;
