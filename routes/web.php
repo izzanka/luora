@@ -100,7 +100,10 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         Route::put('/{question:title_slug}/update',[QuestionController::class,'update'])->name('question.update');
         Route::get('/{question:title_slug}/destroy',[QuestionController::class,'destroy'])->name('question.destroy');
         Route::post('/{question:title_slug}/report',[QuestionController::class,'report'])->name('question.report');
-    
+
+        //topic
+        Route::get('/topic/{topic:name_slug}',[TopicController::class,'show'])->name('topic.show');
+
         //comment
         Route::post('/comment/store',[CommentController::class,'store'])->name('comment.store');
         Route::post('/reply/store',[CommentController::class,'replyStore'])->name('reply.store');

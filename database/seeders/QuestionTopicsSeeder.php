@@ -14,28 +14,6 @@ class QuestionTopicsSeeder extends Seeder
      */
     public function run()
     {
-        $num = 8;
-
-        for ($i=1; $i <= $num ; $i++) { 
-            DB::table('question_topics')->insert([
-                'question_id' => 11,
-                'topic_id' => $i
-            ]);
-        }
-
-        for ($i=1; $i <= $num ; $i++) { 
-            DB::table('question_topics')->insert([
-                'question_id' => 12,
-                'topic_id' => $i
-            ]);
-        }
-
-        for ($i=1; $i <= $num ; $i++) { 
-            DB::table('question_topics')->insert([
-                'question_id' => 13,
-                'topic_id' => $i
-            ]);
-        }
 
     }
 }

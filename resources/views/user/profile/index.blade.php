@@ -530,7 +530,7 @@
                     <div class="row">
                         @forelse ($user->topics as $topic)
                             <div class="col-sm-6">
-                                <li><b><a href="javascript: void(0)" class="text-dark">{{ $topic->name }}</a></b></li>
+                                <li><b><a href="{{ route('topic.show',$topic->name_slug) }}" class="text-dark">{{ $topic->name }}</a></b></li>
                             </div>
                         @empty
                         <div class="row">

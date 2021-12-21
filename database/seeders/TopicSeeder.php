@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +16,7 @@ class TopicSeeder extends Seeder
     public function run()
     {
         $topics = [
+            'Web Programming',
             'Studying',
             'Fine Art',
             'Actor',
@@ -46,12 +48,14 @@ class TopicSeeder extends Seeder
             'English',
             'Literature',
             'Facts',
-            'Food'
+            'Food',
+            'Data Science'
         ];
 
         for ($i=0; $i < count($topics); $i++) { 
             DB::table('topics')->insert([
                 'name' => $topics[$i],
+                'name_slug' => Str::of($topics[$i])->slug('-'),
             ]);
         }
 
