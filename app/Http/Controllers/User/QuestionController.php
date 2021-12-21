@@ -37,7 +37,6 @@ class QuestionController extends Controller
         $report_question = ReportQuestion::where('question_id',$question->id)->where('user_id',$user_id)->first();
         $topics = Topic::all();
 
-
         $report_question_types = [
             [
                 'name' => 'Harrasment',

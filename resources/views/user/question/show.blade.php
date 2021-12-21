@@ -174,7 +174,7 @@
                                         @foreach ($question->topics as $topic)
                                             <div class="col-3 mt-2">
                                                 <div class="card">
-                                                    <a href="javascript:void(0)" class="text-secondary text-center">{{ $topic->name }}</a>
+                                                    <a href="{{ route('topic.show',$topic->name_slug) }}" class="text-secondary text-center">{{ $topic->name }}</a>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -282,27 +282,7 @@
                         </form>
 
                         @php
-                            if($answer->user->credential){
-                                $credential = $answer->user->credential;
-                            }else{
-                                $answer->user->load(['employment','education','location']);
-                                if($answer->user->employment){
-                                    $end = $answer->user->employment->currently ? 'present' : $answer->user->employment->end_year;
-                                    $credential = $answer->user->employment->position . ' at ' . $answer->user->employment->company . ' (' . $answer->user->employment->start_year . '-' . $end . ')';
-                                }else{
-                                    if($answer->user->education){
-                                        $end2 = $answer->user->education->graduation_year ? ' (Graduated ' . $answer->user->education->graduation_year . ')' : null;
-                                        $credential = $answer->user->education->degree_type . ' in ' . $answer->user->education->primary . ', ' . $answer->user->education->school . $end2;
-                                    }else{
-                                        if($answer->user->location){
-                                            $end3 = $answer->user->location->currently ? 'present' : $answer->user->location->end_year;
-                                            $credential = 'Lives in ' . $answer->user->location->location . ' (' . $answer->user->location->start_year . '-' . $end3 . ')';
-                                        }else{
-                                            $credential = "";
-                                        }
-                                    }
-                                }
-                            }
+                        $credential = \App\Http\Controllers\User\ProfileController::set_credential($answer->user);
                         @endphp
 
                         <div id="{{ $answer->user->name_slug }}">
@@ -316,7 +296,7 @@
                                             </div>
                                             
                                             <div class="col-sm-11">
-                                                <b><a href="{{ route('profile.show',$answer->user->name_slug) }}" class="text-dark">{{ $answer->user->name  }}</a></b>, 
+                                                <b><a href="{{ route('profile.show',$answer->user->name_slug) }}" class="text-dark">{{ $answer->user->name  }}</a></b> &#183; 
                                                 {{ $credential }} <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                                     @if ($answer->user_id == auth()->id())

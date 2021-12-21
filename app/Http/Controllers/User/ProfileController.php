@@ -14,10 +14,39 @@ use App\Http\Controllers\Controller;
 
 class ProfileController extends Controller
 {
-    //function set credential
+
+    //set credential on blade
+    public static function set_credential($user){
+        if($user->credential){
+            return $user->credential;
+        }else{
+            $user->load(['employment','education','location']);
+            if($user->employment){
+                $year_or_currently = $user->employment->currently ? 'present' : $user->employment->end_year;
+                $year_or_null = $year_or_currently ? ' (' . $user->employment->start_year . ' - ' . $year_or_currently . ')' : ' (' . $user->employment->start_year . ')';
+                return $user->employment->position . ' at ' . $user->employment->company . $year_or_null;
+            }else{
+                if($user->education){
+                    $year = $user->education->graduation_year ? ' (Graduated ' . $user->education->graduation_year . ')' : null;
+                    return $user->education->degree_type . ' in ' . $user->education->primary . ', ' . $user->education->school . $year;
+                }else{
+                    if($user->location){
+                        $year_or_currently = $user->location->currently ? 'present' : $user->location->end_year;
+                        $year_or_null = $year_or_currently ? ' (' . $user->location->start_year . ' - ' . $year_or_currently . ')' : ' (' . $user->location->start_year . ')';
+
+                        return 'Lives in ' . $user->location->location . $year_or_null;
+                    }else{
+                        return "";
+                    }
+                }
+            }
+        }
+    }
+
+    //set credential
     public function employment_credential($user){
         $year_or_currently = $user->employment->currently ? 'present' : $user->employment->end_year;
-        $year_or_null = $year_or_currently ? ' (' . $user->location->start_year . ' - ' . $year_or_currently . ')' : ' (' . $user->location->start_year . ')';
+        $year_or_null = $year_or_currently ? ' (' . $user->employment->start_year . ' - ' . $year_or_currently . ')' : ' (' . $user->employment->start_year . ')';
 
         return [
             'credential' => $user->employment->position . ' at ' . $user->employment->company,
@@ -34,7 +63,6 @@ class ProfileController extends Controller
     }
 
     public function location_credential($user){
-    
         $year_or_currently = $user->location->currently ? 'present' : $user->location->end_year;
         $year_or_null = $year_or_currently ? ' (' . $user->location->start_year . ' - ' . $year_or_currently . ')' : ' (' . $user->location->start_year . ')';
 
