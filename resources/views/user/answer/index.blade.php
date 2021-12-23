@@ -57,7 +57,7 @@ Write Answers
                     </div>
                     
                     <div class="text-center">
-                        <button class="btn btn-secondary btn-sm more rounded-pill" data-page="8" data-link="/answer?page=" data-div="#questions">More</button>
+                        <button class="btn btn-secondary btn-sm more rounded-pill" data-page="4" data-link="/answer?page=" data-div="#questions">More</button>
                     </div>
                 </div>
             </div>
