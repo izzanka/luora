@@ -59,7 +59,6 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         Route::get('/', [HomeController::class, 'index']);
         Route::get('/home', [HomeController::class, 'index'])->name('home');
         Route::get('/search',[HomeController::class,'search'])->name('search');
-        Route::post('/add-topic',[TopicController::class,'store'])->name('create.topic');
     
         //setting
         Route::get('/settings',[SettingController::class,'index'])->name('settings.index');
@@ -69,7 +68,11 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         Route::get('/content',[ContentController::class,'index'])->name('content.index');
         Route::get('/content/answers',[ContentController::class,'answers'])->name('content.answers.index');
         Route::get('/content/questions',[ContentController::class,'questions'])->name('content.questions.index');
-    
+        
+        //topic
+        Route::post('/topic/store',[TopicController::class,'store'])->name('create.topic');
+        Route::get('/topic/{topic:name_slug}',[TopicController::class,'show'])->name('topic.show');
+
         //answer
         Route::get('/answer',[AnswerController::class,'index'])->name('answer.index');
         Route::put('/answer/{answer}/update',[AnswerController::class,'update'])->name('answer.update');
@@ -79,7 +82,7 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         Route::post('/answer/{answer}/report',[AnswerController::class,'report'])->name('answer.report');
     
         //profile
-        Route::get('/{user:name_slug}/follow',[ProfileController::class,'follow'])->name('follow');
+        Route::get('/user/{user:name_slug}/follow',[ProfileController::class,'follow'])->name('follow');
         Route::get('/profile/{user:name_slug}/show',[ProfileController::class,'show'])->name('profile.show');
         Route::get('/profile/{user:name_slug}',[ProfileController::class,'index'])->name('profile.index');
         Route::put('/profile/{user:name_slug}/update/topics',[ProfileController::class,'update_topics'])->name('profile.topics.update');
@@ -100,9 +103,6 @@ Route::group(['middleware'=>'HtmlMinifier'], function(){
         Route::put('/{question:title_slug}/update',[QuestionController::class,'update'])->name('question.update');
         Route::get('/{question:title_slug}/destroy',[QuestionController::class,'destroy'])->name('question.destroy');
         Route::post('/{question:title_slug}/report',[QuestionController::class,'report'])->name('question.report');
-
-        //topic
-        Route::get('/topic/{topic:name_slug}',[TopicController::class,'show'])->name('topic.show');
 
         //comment
         Route::post('/comment/store',[CommentController::class,'store'])->name('comment.store');
