@@ -31,11 +31,12 @@ class TopicController extends Controller
         $answers = [];
         $topic_id = $topic->id;
         $questions = Question::whereHas('topics',function($query)use($topic_id){$query->where('topic_id',$topic_id);})->get();
+        $topics = Topic::orderBy('follower','desc')->take(8)->get();
         
         foreach($questions as $question){
-            $answers = Answer::with('question')->where('question_id',$question->id)->get();
+            $answers = Answer::with(['user','question'])->where('question_id',$question->id)->latest()->get();
         }
   
-        return view('user.topic.show',compact('topic','questions','answers'));
+        return view('user.topic.show',compact('topic','questions','answers','topics'));
     }
 }
