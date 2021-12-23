@@ -197,7 +197,7 @@ class ProfileController extends Controller
                 $user->education->update([
                     'school' => $school,
                     'primary' => $primary,
-                    'degree_type' => $degree,
+                    'degree_type' => $degree_type,
                     'graduation_year' => $request->graduation_year
                 ]);
 
@@ -207,7 +207,7 @@ class ProfileController extends Controller
                     'user_id' => $user->id,
                     'school' => $school,
                     'primary' => $primary,
-                    'degree_type' => $degreetype,
+                    'degree_type' => $degree_type,
                     'graduation_year' => $request->graduation_year
                 ]);
             }
