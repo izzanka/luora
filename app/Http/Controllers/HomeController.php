@@ -14,7 +14,7 @@ class HomeController extends Controller
     {   
         $answers = Answer::with(['user','question'])->where('user_id','!=',auth()->id())
                    ->whereNull('status')->orWhere('status','viewed_by_admin')->orWhere('status','updated_by_user')
-                   ->latest()->paginate(5);
+                   ->latest()->paginate(8);
 
 
         // $data = "";
