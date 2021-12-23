@@ -32,11 +32,11 @@ class QuestionController extends Controller
         $reported_question = false;
 
         $user_id = auth()->id();
-        $answers = Answer::where('question_id',$question->id)->with('user')->latest()->get();
+        $answers = Answer::with(['question','user'])->where('question_id',$question->id)->latest()->get();
         $answered = Answer::where('question_id',$question->id)->where('user_id',$user_id)->first();
         $report_question = ReportQuestion::where('question_id',$question->id)->where('user_id',$user_id)->first();
         $topics = Topic::all();
-
+    
         $report_question_types = [
             [
                 'name' => 'Harrasment',
