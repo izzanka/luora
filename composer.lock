@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f8e1427739f57ca992c862bc3bf102d5",
+    "content-hash": "ac8e8258aef840f657d109b24c84ca4f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -430,6 +430,64 @@
                 }
             ],
             "time": "2020-11-24T19:55:57+00:00"
+        },
+        {
+            "name": "dz-id/laravel-html-minifier",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dz-id/laravel-html-minifier.git",
+                "reference": "0f016d1a7b6ec8b2d7a8696e26c2b8ecf4dac0ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dz-id/laravel-html-minifier/zipball/0f016d1a7b6ec8b2d7a8696e26c2b8ecf4dac0ac",
+                "reference": "0f016d1a7b6ec8b2d7a8696e26c2b8ecf4dac0ac",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "^6.0 || ^7.0 || ^8.0",
+                "illuminate/support": "^6.0 || ^7.0 || ^8.0",
+                "illuminate/view": "^6.0 || ^7.0 || ^8.0",
+                "php": "^7.2.5 || ^8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DzId\\LaravelHtmlMinifier\\HtmlMinifierServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DzId\\LaravelHtmlMinifier\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "DulLah",
+                    "email": "dulah755@gmail.com"
+                }
+            ],
+            "description": "Html Minifier adalah paket simpel untuk minify output Html, Css style, dan Javascript sebelum dirender ke browser untuk aplikasi Laravel anda.",
+            "keywords": [
+                "HTML minify",
+                "Laravel-Html-Minifier",
+                "laravel",
+                "laravel html minifier",
+                "minify"
+            ],
+            "support": {
+                "issues": "https://github.com/dz-id/laravel-html-minifier/issues",
+                "source": "https://github.com/dz-id/laravel-html-minifier/tree/master"
+            },
+            "time": "2021-07-10T18:53:53+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -7989,7 +8047,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "dz-id/laravel-html-minifier": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
