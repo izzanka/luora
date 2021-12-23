@@ -172,7 +172,7 @@
                         <div class="col-12">
                             <i class="bi bi-briefcase mr-2"></i>
                             @if ($employment_credential)
-                                <a href="" class="text-dark" data-toggle="modal" data-target="#employmentModal"> {{ $employment_credential['credential'] }}<small class="text-secondary">{{  $employment_credential['year']}}</small></a>
+                                <a href="" class="text-dark" data-toggle="modal" data-target="#employmentModal"> {{ $employment_credential['credential'] }} <small class="text-secondary">{{  $employment_credential['year'] }}</small></a>
                             @else
                                 <a href="" data-toggle="modal" data-target="#employmentModal" id="btnEmployment"> Add employment credential</a>
                             @endif
