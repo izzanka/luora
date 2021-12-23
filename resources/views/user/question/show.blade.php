@@ -292,12 +292,21 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <div class="col-sm-1">
-                                                <img src="{{$answer->user->avatar}}" alt="avatar" class="rounded-circle" width="42px" height="42px">
+                                                <img src="{{$answer->user->avatar}}" alt="avatar" class="rounded-circle" width="45px" height="45px">
                                             </div>
                                             
                                             <div class="col-sm-11">
-                                                <b><a href="{{ route('profile.show',$answer->user->name_slug) }}" class="text-dark">{{ $answer->user->name  }}</a></b> &#183; 
-                                                {{ $credential }} <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
+                                                <b><a href="{{ route('profile.show',$answer->user->name_slug) }}" class="text-dark">{{ $answer->user->name  }}</a></b> &#183;
+                                                @php
+                                                    //set follow status
+                                                    if(auth()->user()->isFollowing($answer->user)){
+                                                        $status = "Following";
+                                                    }else{
+                                                        $status = "Follow";
+                                                    }
+                                                @endphp     
+                                                <a href="{{ route('follow',$answer->user->name_slug) }}">{{ $status }}</a>
+                                                 <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                                     @if ($answer->user_id == auth()->id())
                                                         <a href="" data-attr="{{ route('answer.update',$answer->id) }}" class="dropdown-item" data-toggle="modal" data-target="#answer-updateModal" id="answerUpdate" data-text="{{ $answer->text }}">
@@ -330,21 +339,18 @@
                                                 </div>
                                                 <br>
                                                 <div class="text-secondary">
-                                                    Answered {{ $answer->created_at->format('M d, Y')  }}
+                                                    {{ $credential }} &#183; {{ $answer->created_at->format('M d Y')  }}
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="row mt-3">
+                                        <div class="row mt-4">
                                             <div class="col-12">
-                                                {{  $answer->text  }}<br><br>
-                                                @php
-                                                    $images = json_decode($answer->images);
-                                                @endphp
-                                                @if ($answer->images)
-                                                    @foreach ($images as $image)
-                                                        <img src="{{ asset('img/' . $image) }}" class="img-fluid mt-2 mb-2 ">
-                                                    @endforeach
+                                                {{  $answer->text  }}<br>
+                                                @if ($answer->image)
+                                                    <img src="{{ asset('img/' . $answer->image) }}" class="img-fluid mt-2 mb-2">
+                                                @else
+                                                    <div class="mb-2"></div>
                                                 @endif
                                                 <small class="text-secondary">{{ views($answer)->count() }} views</small>
                                             </div>
@@ -377,7 +383,7 @@
                                                 @csrf
                                                 <div class="row mt-3">
                                                     <div class="col-1">
-                                                        <img src="{{ auth()->user()->avatar }}" alt="avatar" class="rounded-circle" width="42px" height="42px">
+                                                        <img src="{{ auth()->user()->avatar }}" alt="avatar" class="rounded-circle" width="45px" height="45px">
                                                     </div>
                                                     <div class="col-9">
                                                         <input type="text" class="form-control" placeholder="Add a comment..." name="comment" autocomplete="off">

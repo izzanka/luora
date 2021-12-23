@@ -18,7 +18,6 @@
                             <div class="alert alert-primary alert-dismissible fade show" role="alert">
                                 <div class="container">
                                     <li>The image will be placed under the text of your answer</li>
-                                    <li>Maximum allowed image is 8</li>
                                 </div>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -31,7 +30,7 @@
                         <div class="col-12">
                                <textarea name="text" cols="30" rows="10" class="form-control" placeholder="Write your answer" autocomplete="off" autofocus id="text"></textarea>
                                @include('layouts.error', ['name' => 'text'])
-                               <input id="images" type="file" name="images[]" accept="image/*" class="form-control mt-2" multiple> 
+                               <input type="file" name="image" accept="image/*" class="form-control mt-2"> 
                         </div>
                     </div>
 

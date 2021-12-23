@@ -13,21 +13,14 @@
             <div class="card">
                 <div class="card-body">
                     <div>
-                        <b>{{ $topic->name }}</b>
-                        @php
-                            $status = 'Follow';
-                            if(auth()->user()->topics->contains('id',$topic->id)){
-                               $status = 'Following';
-                            }
-                        @endphp
-                        
-                        <button class="btn btn-secondary float-right btn-sm rounded-pill">
-                         {{ $status }} ({{ $topic->follower }})</button>
+                        <b>{{ $topic->name }}</b>               
+                        <span class="btn btn-secondary float-right btn-sm rounded-pill">
+                         {{ $topic->follower }} Followers</span>
                     </div>
                 </div>
             </div>
             <div id="answers">
-                @foreach ($answers as $answer)
+                @forelse ($answers as $answer)
                     
                     @php
                         //count view
@@ -78,7 +71,7 @@
                                     <div class="col-sm-12">
                                         <div class="row mb-3">
                                             <div class="col-sm-1">
-                                                <img src="{{ $answer->user->avatar }}" alt="avatar" class="rounded-circle" width="42px" height="42px">
+                                                <img src="{{ $answer->user->avatar }}" alt="avatar" class="rounded-circle" width="45px" height="45px">
                                             </div>
                                         
                                             <div class="col-sm-11">
@@ -96,7 +89,9 @@
                                                         Hide
                                                     </a>
                                                 </div>
+                                                <div class="text-secondary">
                                                     {{ $credential }} &#183; {{ $answer->created_at->format('M d Y') }}
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -144,24 +139,27 @@
                                 </div>
                             </div>
                         </div>
-                @endforeach
+                @empty
+                <div class="text-center mt-2"><b>No Question</b></div>
+                @endforelse
             </div>
 
             <div class="text-center">
                 <button class="btn btn-secondary btn-sm more mt-2 rounded-pill" data-page="5" data-link="/home?page=" data-div="#answers">More</button>
             </div>
 
+
         </div>
 
         <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    Topics to follow
-                </div>
-                <div class="card-body">
-                </div>
-            </div>
+            <x-popular-topic/>
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    
+</script>
 @endsection

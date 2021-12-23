@@ -28,7 +28,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            <img src="{{ Auth::user()->avatar }}" alt="avatar" class="rounded-circle" width="42px" height="42px">
+                            <img src="{{ Auth::user()->avatar }}" alt="avatar" class="rounded-circle mr-2" width="45px" height="45px">
                             <b>{{ Auth::user()->name }}</b>
                         </div>
                         <div class="col-sm-12 mt-3">
@@ -86,13 +86,13 @@
                         <div class="card mt-3" id="{{ $answer->user->name_slug }}">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-12">
                                         <div class="row mb-3">
                                             <div class="col-1">
-                                                <img src="{{ $answer->user->avatar }}" alt="avatar" class="rounded-circle" width="42px" height="42px">
+                                                <img src="{{ $answer->user->avatar }}" alt="avatar" class="rounded-circle" width="45px" height="45px">
                                             </div>
                                         
-                                            <div class="col-11">
+                                            <div class="col-11 ">
                                                 <a href="{{ route('profile.show',$answer->user->name_slug) }}" class="text-dark"><b>{{  $answer->user->name }} </b></a> &#183; 
                                                 <a href="{{ route('follow',$answer->user->name_slug) }}">{{ $status }}</a>
                                                 <a href="" class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots" style="font-size: 20px"></i></a><br>
@@ -107,7 +107,9 @@
                                                         Hide
                                                     </a>
                                                 </div>
+                                                <div class="text-secondary">
                                                     {{ $credential }} &#183; {{ $answer->created_at->format('M d Y') }}
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -115,17 +117,13 @@
                                                 <a href="{{ route('question.show',$answer->question->title_slug) }}" class="text-dark"><h5><b>{{ $answer->question->title }}</b></h5></a>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                {{ $answer->text }}<br><br>
-                                                @php
-                                                    $images = json_decode($answer->images);
-                                                @endphp
-                                                @if ($answer->images)
-                                                    @foreach ($images as $image)
-                                                        <img src="{{ asset('img/' . $image) }}" class="img-fluid mt-2 mb-2" alt="image not found!">
-                                                    @endforeach
-                                                    <br><br>
+                                        <div class="row mt-2">
+                                            <div class="col-12">
+                                                {{ $answer->text }}<br>
+                                                @if ($answer->image)
+                                                    <img src="{{ asset('img/' . $answer->image) }}" class="img-fluid mt-2 mb-2" alt="image not found!">
+                                                @else
+                                                    <div class="mb-2"></div>
                                                 @endif
                                                 <small class="text-secondary">{{ views($answer)->count() }} views</small>
                                             </div>
@@ -165,28 +163,7 @@
         </div>
 
         <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    Topics to follow
-                    <button class="btn btn-sm btn-outline-secondary float-right" id="btnTopic"><i class="bi bi-plus"></i> Create topic</button>
-                </div>
-                <div class="card-body">
-                    <div id="formTopic">
-                        <form action="{{ route('create.topic') }}" method="POST">
-                            @csrf
-                            <div class="input-group input-group-sm">
-                                <input type="text" name="name" class="form-control" autocomplete="off">
-                                @include('layouts.error', ['name' => 'name'])
-                            </div>
-                            <button type="submit" class="btn btn-sm btn-primary mt-2 rounded-pill">Create</button>
-                        </form>
-                        <hr>
-                    </div>
-                    @foreach($topics as $topic)
-                        <a href="{{ route('topic.show',$topic->name_slug) }}" class="text-dark">{{ $topic->name }}</a><hr>
-                    @endforeach
-                </div>
-            </div>
+            <x-popular-topic/>
         </div>
     </div>
 </div>
@@ -210,12 +187,6 @@
 
         $(this).data('page', (parseInt($page) + 1)); //update page #
     });
-
-    $('#formTopic').hide();
-
-    $("#btnTopic").click(function(){
-        $('#formTopic').show();
-    })
     
     // let site_url = "{{ route('home') }}";
     // let page = 1;

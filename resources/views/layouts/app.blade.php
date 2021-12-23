@@ -188,6 +188,11 @@
             window.location.href = "/profile/" + e.params.data.name_slug + "/show";
         })
 
+        $('#formTopic').hide();
+        $("#btnTopic").click(function(){
+            $('#formTopic').toggle();
+        })
+
     </script>
     
     @yield('script')
