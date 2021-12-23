@@ -29,42 +29,50 @@ class AnswerController extends Controller
 
         $request->validate([
             'text' => 'required',
-            'images.*' => 'image|max:2048',
+            'image' => 'image|max:2048',
         ]);
 
-        $images = [];
-
-        if($request->hasFile('images')){
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $imageName = time() . '-' . $image->getClientOriginalExtension();
+            $img_edit = Image::make($image);
+            $img_edit->resize(700,500);
+            $img_edit->text('luora.ferdirns.com', 600, 470, function ($font) {
+                $font->file(public_path('img/coco-sharp-bold.ttf'));
+                $font->size(20);
+                $font->color('#808080');
+                $font->align('center');
+                $font->valign('top');
+                $font->angle(0);
+            })->save(public_path('/img') . '/' . $imageName);
             
-            if(count($request->file('images')) > 8){
-                return back()->with('message',['text' => 'Maximum allowed image is 8','class' => 'danger']);;
-            }
+            // if(count($request->file('images')) > 8){
+            //     return back()->with('message',['text' => 'Maximum allowed image is 8','class' => 'danger']);;
+            // }
 
-            $num = 0;
-            foreach($request->file('images') as $image){
-                $num += 1;
-                $imageName = time() . '-' . $num . '.' . $image->getClientOriginalExtension();
-                $img_edit = Image::make($image);
-                $img_edit->resize(700,500);
-                $img_edit->text('luora.ferdirns.com', 600, 470, function ($font) {
-                    $font->file(public_path('img/coco-sharp-bold.ttf'));
-                    $font->size(20);
-                    $font->color('#808080');
-                    $font->align('center');
-                    $font->valign('top');
-                    $font->angle(0);
-                })->save(public_path('/img') . '/' . $imageName);
-                $images[] = $imageName;
-            }
+            // $num = 0;
+            // foreach($request->file('images') as $image){
+            //     $num += 1;
+                // $imageName = time() . '-' . $num . '.' . $image->getClientOriginalExtension();
+                // $img_edit = Image::make($image);
+                // $img_edit->resize(700,500);
+                // $img_edit->text('luora.ferdirns.com', 600, 470, function ($font) {
+                //     $font->file(public_path('img/coco-sharp-bold.ttf'));
+                //     $font->size(20);
+                //     $font->color('#808080');
+                //     $font->align('center');
+                //     $font->valign('top');
+                //     $font->angle(0);
+                // })->save(public_path('/img') . '/' . $imageName);
+            //     $images[] = $imageName;
+            // }
         }
-
-        $image = $images ? json_encode($images) : null;
 
         Answer::create([
             'user_id' => auth()->id(),
             'question_id' => $question->id,
             'text' => $request->text,
-            'images' => $image,
+            'image' => $imageName,
         ]);
 
         return back()->with('message',['text' => 'Answer added successfully!', 'class' => 'success']);
