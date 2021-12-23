@@ -27,15 +27,13 @@ $(document).on("click", "#showTopics", function (e) {
                     html +=
                         '<div class="col-12">' +
                         "<b>" +
-                        '<a href="#" class="text-dark">' +
+                        '<a href="/topic/'+ value[i].name_slug +'" class="text-dark">' +
                         value[i].name +
-                        "</a>" +
-                        "</b>" +
-                        '<span class="float-right">' +
-                        "(" +
+                        '<span class="btn btn-secondary float-right btn-sm rounded-pill">' +
                         value[i].follower +
-                        " Followers)" +
-                        "</span>" +
+                        ' Followers</span>' +
+                        "</a>" +
+                        "</b>" + 
                         "<hr>" +
                         "</div>";
                 }
