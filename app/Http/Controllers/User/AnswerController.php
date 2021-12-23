@@ -15,7 +15,7 @@ use Intervention\Image\Facades\Image;
 class AnswerController extends Controller
 {
     public function index(){
-        $questions = Question::where('user_id','!=',auth()->id())->latest()->paginate(4);
+        $questions = Question::where('user_id','!=',auth()->id())->latest()->paginate(8);
         return view('user.answer.index',compact('questions'));
     }
 
