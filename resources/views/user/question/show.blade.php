@@ -344,7 +344,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-4">
+                                        <div class="row mt-3">
                                             <div class="col-12">
                                                 {{  $answer->text  }}<br>
                                                 @if ($answer->image)
@@ -405,6 +405,7 @@
                     @endforeach
                     
                 </div>
+                
             </div>
            
         </div>

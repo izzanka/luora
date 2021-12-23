@@ -157,7 +157,7 @@
             </div>
 
             <div class="text-center">
-                <button class="btn btn-secondary btn-sm more mt-2 rounded-pill" data-page="5" data-link="/home?page=" data-div="#answers">More</button>
+                <button class="btn btn-secondary btn-sm more mt-2 rounded-pill" data-page="8" data-link="/home?page=" data-div="#answers">More</button>
             </div>
 
         </div>

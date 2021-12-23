@@ -57,13 +57,16 @@ Write Answers
                     </div>
                     
                     <div class="text-center">
-                        <button class="btn btn-secondary btn-sm more rounded-pill" data-page="2" data-link="/answer?page=" data-div="#questions">More</button>
+                        <button class="btn btn-secondary btn-sm more rounded-pill" data-page="8" data-link="/answer?page=" data-div="#questions">More</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-2">
             <div class="card">
+                <div class="card-header">
+                    Topics you know
+                </div>
                 <div class="card-body">
                     
                 </div>

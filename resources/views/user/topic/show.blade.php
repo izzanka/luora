@@ -100,20 +100,17 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-sm-12">
-                                                {{ $answer->text }}<br><br>
-                                                @php
-                                                    $images = json_decode($answer->images);
-                                                @endphp
-                                                @if ($answer->images)
-                                                    @foreach ($images as $image)
-                                                        <img src="{{ asset('img/' . $image) }}" class="img-fluid mt-2 mb-2" alt="image not found!">
-                                                    @endforeach
-                                                    <br><br>
+                                            <div class="col-12">
+                                                {{  $answer->text  }}<br>
+                                                @if ($answer->image)
+                                                    <img src="{{ asset('img/' . $answer->image) }}" class="img-fluid mt-2 mb-2">
+                                                @else
+                                                    <div class="mb-2"></div>
                                                 @endif
                                                 <small class="text-secondary">{{ views($answer)->count() }} views</small>
                                             </div>
                                         </div>
+                                           
                                         <hr>
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -140,15 +137,9 @@
                             </div>
                         </div>
                 @empty
-                <div class="text-center mt-2"><b>No Question</b></div>
+                <div class="text-center mt-4"><b>No Question</b></div>
                 @endforelse
             </div>
-
-            <div class="text-center">
-                <button class="btn btn-secondary btn-sm more mt-2 rounded-pill" data-page="5" data-link="/home?page=" data-div="#answers">More</button>
-            </div>
-
-
         </div>
 
         <div class="col-4">
@@ -156,10 +147,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('script')
-<script>
-    
-</script>
 @endsection
