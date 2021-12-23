@@ -18,7 +18,7 @@ class CreateAnswersTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('question_id')->constrained();
             $table->text('text');
-            $table->json('images')->nullable();
+            $table->string('image')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
             $table->softDeletes();
