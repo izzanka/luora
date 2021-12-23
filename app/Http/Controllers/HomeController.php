@@ -15,7 +15,7 @@ class HomeController extends Controller
         $answers = Answer::with(['user','question'])->where('user_id','!=',auth()->id())
                    ->whereNull('status')->orWhere('status','viewed_by_admin')->orWhere('status','updated_by_user')
                    ->latest()->paginate(5);
-        $topics = Topic::orderBy('follower','desc')->take(8)->get();
+
 
         // $data = "";
         // //api get answers
@@ -155,7 +155,7 @@ class HomeController extends Controller
         //     return ['data' => $data,'images' => $images];
         // }
 
-        return view('home',compact('answers','topics'));
+        return view('home',compact('answers'));
     }
 
     //api search
