@@ -4,23 +4,6 @@
 
 <div class="container">
     <div class="row">
-        {{-- <div class="col-md-2">
-            <div class="card">
-                <div class="card-header">
-                    Create Topic
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('create.topic') }}" method="POST">
-                        @csrf
-                        <div class="input-group input-group-sm">
-                            <input type="text" name="name" class="form-control" autocomplete="off">
-                            @include('layouts.error', ['name' => 'name'])
-                        </div>
-                        <button type="submit" class="btn btn-sm btn-primary mt-2 rounded-pill">Add topic</button>
-                    </form>
-                </div>
-            </div>
-        </div> --}}
         <div class="col-8">
             @include('layouts.success')
             
@@ -188,48 +171,6 @@
         $(this).data('page', (parseInt($page) + 1)); //update page #
     });
     
-    // let site_url = "{{ route('home') }}";
-    // let page = 1;
-
-    // //script for window loading scroll
-    // load_more(page);
-
-    // $(window).scroll(function () {
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page++;
-    //         load_more(page);
-    //     }
-    // });
-
-    // function load_more(page) {
-    //     $.ajax({
-    //             url: site_url + "?page=" + page,
-    //             type: "get",
-    //             datatype: "html",
-    //             beforeSend: function () {
-    //                 $('.ajax-loading').show();
-    //             }
-    //         })
-    //         .done(function (data) {
-    //             if (data.length == 0) {
-    //                 $('.ajax-loading.text').html("No more answers");
-    //                 return;
-    //             }
-    //             $('.ajax-loading').hide();
-    //             $("#results").append(data['data']);
-
-    //             if(data['images'] != null){
-    //                 $.each(data['images'], function(id, image){
-    //                     $('#images').append('<img src="img/' + image + '" class="img-fluid mt-2 mb-2">');
-    //                 });
-    //             }
-    //         })
-
-    //         .fail(function (jqXHR, ajaxOptions, thrownError) {
-    //             console.log('No response from server');
-    //         });
-    // }
-
     //script for copy link to clipboard
     function copy() {
         let dummy = document.createElement('input');

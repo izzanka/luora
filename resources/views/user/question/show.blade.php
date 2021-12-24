@@ -424,16 +424,6 @@
 @endsection
 @section('script')
 <script>
-    // $('#show_comment').hide();
-
-    // //script for comment
-    // $(document).on('click','#comment', function(e){
-    //     e.preventDefault();
-    //     var $a = $(this);
-    //     $a.toggleClass('active').siblings().removeClass('active');
-    //     $('#show_comment').toggle($a.hasClass('active'));
-    // });
-
     //script for answer report form
     $(document).on('click', '#reportAnswer', function () {
         let href = $(this).attr('data-attr');

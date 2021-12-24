@@ -45,27 +45,6 @@ class AnswerController extends Controller
                 $font->valign('top');
                 $font->angle(0);
             })->save(public_path('/img') . '/' . $imageName);
-            
-            // if(count($request->file('images')) > 8){
-            //     return back()->with('message',['text' => 'Maximum allowed image is 8','class' => 'danger']);;
-            // }
-
-            // $num = 0;
-            // foreach($request->file('images') as $image){
-            //     $num += 1;
-                // $imageName = time() . '-' . $num . '.' . $image->getClientOriginalExtension();
-                // $img_edit = Image::make($image);
-                // $img_edit->resize(700,500);
-                // $img_edit->text('luora.ferdirns.com', 600, 470, function ($font) {
-                //     $font->file(public_path('img/coco-sharp-bold.ttf'));
-                //     $font->size(20);
-                //     $font->color('#808080');
-                //     $font->align('center');
-                //     $font->valign('top');
-                //     $font->angle(0);
-                // })->save(public_path('/img') . '/' . $imageName);
-            //     $images[] = $imageName;
-            // }
         }
 
         Answer::create([
@@ -78,7 +57,7 @@ class AnswerController extends Controller
         return back()->with('message',['text' => 'Answer added successfully!', 'class' => 'success']);
     }
     
-    //api vote
+    //vote
     public function vote(Answer $answer,$vote){
 
         $authUser = auth()->user();

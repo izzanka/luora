@@ -54,23 +54,4 @@
         $('#images').val("");
     });
 
-    // $(function () {
-    //     var multiImgPreview = function (input, imgPreviewPlaceholder) {
-    //         if (input.files) {
-    //             var filesAmount = input.files.length;
-    //             for (i = 0; i < filesAmount; i++) {
-    //                 var reader = new FileReader();
-    //                 reader.onload = function (event) {
-    //                     $($.parseHTML('<img class="border border-dark mr-2 mb-2" width="100" height="100" id="prev-img">')).attr('src', event.target.result).appendTo(imgPreviewPlaceholder);
-    //                 }
-    //                 reader.readAsDataURL(input.files[i]);
-    //             }
-    //         }
-    //     };
-
-    //     $('#images').on('change', function () {
-    //         multiImgPreview(this, '.preview-img');
-    //     });
-    // });
-
 </script>

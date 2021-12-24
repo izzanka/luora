@@ -22,19 +22,6 @@ class CommentController extends Controller
         return back()->with('message',['text' => 'Comment added succesfully!', 'class' => 'success']);
     }
 
-    // public function replyStore(Request $request)
-    // {
-    //     $reply = new Comment();
-    //     $reply->comment = $request->get('comment');
-    //     $reply->user()->associate($request->user());
-
-    //     $reply->parent_id = $request->get('comment_id');
-    //     $answer = Answer::find($request->get('answer_id'));
-
-    //     $answer->comments()->save($reply);
-    //     return back();
-    // }
-
     public function update(Request $request,Comment $comment){
 
         $comment->update([

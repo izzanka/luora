@@ -49,15 +49,5 @@
            
         </div>
     </div>
-    {{-- <div id="show_reply">
-        <div class="row ml-5 mt-2">
-            <div class="col-10">
-                <input type="text" class="form-control">
-            </div>
-            <div class="col-2">
-                <button class="btn btn-primary">Reply</button>
-            </div>
-        </div>
-    </div> --}}
     @endforeach
 </div>
