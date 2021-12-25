@@ -421,7 +421,7 @@
                     @if ($related_questions)
                         @foreach ($related_questions as $related_question)
                             <div class="col-12 mb-2">
-                                <a href="">{{ $related_question->title }}</a>
+                                <a href="{{ route('question.show',$related_question->title_slug) }}">{{ $related_question->title }}</a>
                             </div>
                         @endforeach
                     @endif
