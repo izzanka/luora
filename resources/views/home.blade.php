@@ -6,12 +6,11 @@
     <div class="row">
         <div class="col-8">
             @include('layouts.success')
-            
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            <img src="{{ Auth::user()->avatar }}" alt="avatar" class="rounded-circle mr-2" width="45px" height="45px">
+                            <img src="{{ Auth::user()->avatar }}" alt="avatar" class="rounded-circle mr-3" width="45px" height="45px">
                             <b>{{ Auth::user()->name }}</b>
                         </div>
                         <div class="col-sm-12 mt-3">

@@ -17,7 +17,8 @@
                         <div class="col-sm-12">
                             <div class="alert alert-primary alert-dismissible fade show" role="alert">
                                 <div class="container">
-                                    <li>The image will be placed under the text of your answer</li>
+                                    <li>Image must be less than 2MB</li>
+                                    <li>Image will be placed under the text of your answer</li>
                                 </div>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>

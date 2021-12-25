@@ -410,15 +410,26 @@
            
         </div>
         <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    Related Questions
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        Related Questions
+                    </div>
                 </div>
-                <div class="card-body">
-                   
+                <hr>
+                <div class="row">
+                    @if ($related_questions)
+                        @foreach ($related_questions as $related_question)
+                            <div class="col-12 mb-2">
+                                <a href="">{{ $related_question->title }}</a>
+                            </div>
+                        @endforeach
+                    @endif
+                    
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 @endsection

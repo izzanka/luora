@@ -8,9 +8,16 @@
             <form action="{{ route('create.topic') }}" method="POST">
                 @csrf
                 <div class="input-group input-group-sm">
-                    <input type="text" name="name" class="form-control" autocomplete="off">
-                    @include('layouts.error', ['name' => 'name'])
+                    <input type="text" name="topic_name" class="form-control @error('topic_name') is-invalid @enderror" autocomplete="off">
+                    
+                    @error('topic_name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                    
                 </div>
+
                 <button type="submit" class="btn btn-sm btn-primary mt-2 rounded-pill">Create</button>
             </form>
             <hr>
