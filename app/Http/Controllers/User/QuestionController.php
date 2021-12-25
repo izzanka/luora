@@ -30,13 +30,22 @@ class QuestionController extends Controller
     public function show(Question $question){
 
         $reported_question = false;
+        $related_questions = null;
 
         $user_id = auth()->id();
         $answers = Answer::with(['question','user'])->where('question_id',$question->id)->latest()->get();
         $answered = Answer::where('question_id',$question->id)->where('user_id',$user_id)->first();
         $report_question = ReportQuestion::where('question_id',$question->id)->where('user_id',$user_id)->first();
         $topics = Topic::all();
-    
+        
+        if($question->topics){
+            foreach($question->topics as $topic){
+                $related_questions = Question::select(['title','title_slug'])->where('id','!=',$question->id)->whereHas('topics', function($query)use($topic){
+                    $query->where('topic_id',$topic->id);
+                })->latest()->get();
+            }
+        }
+       
         $report_question_types = [
             [
                 'name' => 'Harrasment',
@@ -128,7 +137,7 @@ class QuestionController extends Controller
         $facebook = \Share::page($link)->facebook()->getRawLinks();
         $twitter = \Share::page($link)->twitter()->getRawLinks();
 
-        return view('user.question.show',compact('question','answers','answered','topics','facebook','twitter','reported_question','report_question_types','report_comment_types','report_answer_types'));
+        return view('user.question.show',compact('question','answers','answered','topics','facebook','twitter','reported_question','report_question_types','report_comment_types','report_answer_types','related_questions'));
     }
 
     public function store(Request $request){
