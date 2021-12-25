@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Topic extends Model
 {
     use HasFactory;
-
-    public $timestamps = false;
     
     protected $guarded = [];
 

@@ -31,7 +31,4 @@ class Question extends Model implements Viewable
     public function report_users(){
         return $this->belongsToMany(User::class,'report_questions')->withPivot('type');
     }
-
-    
-
 }
