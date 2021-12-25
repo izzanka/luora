@@ -24,7 +24,7 @@ class PopularTopic extends Component
      */
     public function render()
     {
-        $topics = Topic::orderBy('follower','desc')->take(8)->get();
+        $topics = Topic::select(['name','name_slug','follower'])->orderBy('follower','desc')->take(8)->get();
         return view('components.popular-topic',compact('topics'));
     }
 }

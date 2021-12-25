@@ -83,7 +83,7 @@ class ProfileController extends Controller
             return redirect()->route('profile.show',$user->name_slug);
         }
 
-        $topics = Topic::all();
+        $topics = Topic::select(['id','name','name_slug'])->get();
         $user->load(['employment','education','location']);
         
         //check employment credential
@@ -328,6 +328,8 @@ class ProfileController extends Controller
             return redirect()->route('profile.index',auth()->user()->name_slug);
         }
 
+        $user->load(['employment','education','location']);
+        
         //check employment credential
         if($user->employment){
             $employment_credential = $this->employment_credential($user);

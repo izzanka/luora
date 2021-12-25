@@ -30,22 +30,24 @@ class QuestionController extends Controller
     public function show(Question $question){
 
         $reported_question = false;
-        $related_questions = null;
 
         $user_id = auth()->id();
-        $answers = Answer::with(['question','user'])->where('question_id',$question->id)->latest()->get();
+        $answers = Answer::with('user')->where('question_id',$question->id)->latest()->get();
         $answered = Answer::where('question_id',$question->id)->where('user_id',$user_id)->first();
         $report_question = ReportQuestion::where('question_id',$question->id)->where('user_id',$user_id)->first();
-        $topics = Topic::all();
+        $topics = Topic::select(['id','name'])->get();
         
+        $related_questions = null;
+
         if($question->topics){
             foreach($question->topics as $topic){
-                $related_questions = Question::select(['title','title_slug'])->where('id','!=',$question->id)->whereHas('topics', function($query)use($topic){
-                    $query->where('topic_id',$topic->id);
+                $topic_id = $topic->id;
+                $related_questions = Question::select(['title','title_slug'])->where('id','!=',$question->id)->whereHas('topics', function($query)use($topic_id){
+                    $query->where('topic_id',$topic_id);
                 })->latest()->get();
             }
         }
-       
+
         $report_question_types = [
             [
                 'name' => 'Harrasment',
