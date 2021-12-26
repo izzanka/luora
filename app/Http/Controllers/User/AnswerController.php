@@ -22,7 +22,8 @@ class AnswerController extends Controller
     public function store(Request $request, Question $question)
     {
         $answer = Answer::where('question_id',$question->id)->where('user_id',auth()->id())->first();
-
+        $imageName = null;
+        
         if($answer){
             return back()->with('message',['text' => 'You already answer the question!','class' => 'danger']);
         }
