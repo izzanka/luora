@@ -75,18 +75,6 @@
                                             <div class="col-11 ">
                                                 <a href="{{ route('profile.show',$answer->user->name_slug) }}" class="text-dark"><b>{{  $answer->user->name }} </b></a> &#183; 
                                                 <a href="{{ route('follow',$answer->user->name_slug) }}">{{ $status }}</a>
-                                                <a href="" class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots" style="font-size: 20px"></i></a><br>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> 
-                                                    <a class="dropdown-item">
-                                                        Report
-                                                    </a>
-                                                    <a class="dropdown-item">
-                                                        Bookmark
-                                                    </a>
-                                                    <a class="dropdown-item">
-                                                        Hide
-                                                    </a>
-                                                </div>
                                                 <div class="text-secondary">
                                                     {{ $credential }} &#183; {{ $answer->created_at->format('M d Y') }}
                                                 </div>
@@ -137,7 +125,7 @@
             </div>
 
             <div class="text-center">
-                <button class="btn btn-secondary btn-sm more mt-2 rounded-pill" data-page="8" data-link="/home?page=" data-div="#answers">More</button>
+                <button class="btn btn-secondary btn-sm more-answers mt-2 rounded-pill" data-page="2" data-link="/home?page=" data-div="#answers">More</button>
             </div>
 
         </div>
@@ -154,7 +142,7 @@
 
     let env_url = "{{ env('APP_URL') }}";
 
-    $(".more").click(function () {
+    $(".more-answers").click(function () {
         $div = $($(this).data('div')); //div to append
         $link = $(this).data('link'); //current URL
 
