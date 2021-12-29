@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-            <div id="answers">
+            <div id="answersHome">
                 @foreach ($answers as $answer)
                     @php
                         //count view
@@ -125,7 +125,7 @@
             </div>
 
             <div class="text-center">
-                <button class="btn btn-secondary btn-sm more-answers mt-2 rounded-pill" data-page="2" data-link="/home?page=" data-div="#answers">More</button>
+                <button class="btn btn-secondary btn-sm moreHome mt-2 rounded-pill" data-page="2" data-link="/home?page=" data-div="#answersHome">More</button>
             </div>
 
         </div>
@@ -142,14 +142,14 @@
 
     let env_url = "{{ env('APP_URL') }}";
 
-    $(".more-answers").click(function () {
+    $(".moreHome").click(function () {
         $div = $($(this).data('div')); //div to append
         $link = $(this).data('link'); //current URL
 
         $page = $(this).data('page'); //get the next page #
         $href = $link + $page; //complete URL
         $.get($href, function (response) { //append data
-            $html = $(response).find("#answers").html();
+            $html = $(response).find("#answersHome").html();
             $div.append($html);
         });
 

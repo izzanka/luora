@@ -33,7 +33,7 @@ Write Answers
                             <hr>
                         </div>
                     </div>
-                    <div id="questions">
+                    <div id="questionsAnswer">
                         @foreach ($questions as $question)
                             <div class="row">
                                 <div class="col-sm-12">
@@ -57,7 +57,7 @@ Write Answers
                     </div>
                     
                     <div class="text-center">
-                        <button class="btn btn-secondary btn-sm more rounded-pill" data-page="2" data-link="/answer?page=" data-div="#questions">More</button>
+                        <button class="btn btn-secondary btn-sm moreAnswer rounded-pill" data-page="2" data-link="/answer?page=" data-div="#questionsAnswer">More</button>
                     </div>
                 </div>
             </div>
@@ -86,14 +86,14 @@ Write Answers
         });
     });
 
-    $(".more").click(function () {
+    $(".moreAnswer").click(function () {
         $div = $($(this).data('div')); //div to append
         $link = $(this).data('link'); //current URL
 
         $page = $(this).data('page'); //get the next page #
         $href = $link + $page; //complete URL
         $.get($href, function (response) { //append data
-            $html = $(response).find("#questions").html();
+            $html = $(response).find("#questionsAnswer").html();
             $div.append($html);
         });
 
