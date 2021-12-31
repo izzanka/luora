@@ -18,7 +18,7 @@ class CreateTopicsTable extends Migration
             $table->string('name',20)->unique();
             $table->string('name_slug',20);
             $table->integer('follower')->default(0);
-            $table->integer('status')->default(0);
+            $table->string('status',20)->nullable();
             $table->timestamps();
         });
     }
