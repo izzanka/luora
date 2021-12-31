@@ -14,6 +14,24 @@ use Intervention\Image\Facades\Image;
 
 class AnswerController extends Controller
 {
+    public function storeImage($request){
+
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $img_edit = Image::make($image);
+        $img_edit->resize(700,500);
+        $img_edit->text('luora.ferdirns.com', 600, 470, function ($font) {
+            $font->file(public_path('img/coco-sharp-bold.ttf'));
+            $font->size(20);
+            $font->color('#808080');
+            $font->align('center');
+            $font->valign('top');
+            $font->angle(0);
+        })->save(public_path('/img') . '/' . $imageName);
+
+        return $imageName;
+    }
+
     public function index(){
         $questions = Question::where('user_id','!=',auth()->id())->latest()->paginate(4);
         return view('user.answer.index',compact('questions'));
@@ -34,18 +52,7 @@ class AnswerController extends Controller
         ]);
 
         if($request->hasFile('image')){
-            $image = $request->file('image');
-            $imageName = time() . '-' . $image->getClientOriginalExtension();
-            $img_edit = Image::make($image);
-            $img_edit->resize(700,500);
-            $img_edit->text('luora.ferdirns.com', 600, 470, function ($font) {
-                $font->file(public_path('img/coco-sharp-bold.ttf'));
-                $font->size(20);
-                $font->color('#808080');
-                $font->align('center');
-                $font->valign('top');
-                $font->angle(0);
-            })->save(public_path('/img') . '/' . $imageName);
+            $imageName = $this->storeImage($request);
         }
 
         Answer::create([
@@ -81,6 +88,7 @@ class AnswerController extends Controller
     }
 
     public function report(Request $request,Answer $answer){
+
         $user_id = auth()->id();
         $report = ReportAnswer::where('user_id',$user_id)->where('answer_id',$answer->id)->first();
 
@@ -105,11 +113,20 @@ class AnswerController extends Controller
     public function update(Answer $answer,Request $request){
 
         $request->validate([
-            'text' => 'required'
+            'text' => 'required',
+            'image' => 'image|max:2048',
         ]);
+        
+        if($request->hasFile('image')){
+            $imageName = $this->storeImage($request);
+        }else{
+ 
+            $imageName = $answer->image;
+        }
 
         $answer->update([
-            'text' => $request->text
+            'text' => $request->text,
+            'image' => $imageName
         ]);
 
         return back()->with('message',['text' => 'Answer updated successfully!', 'class' => 'success']);

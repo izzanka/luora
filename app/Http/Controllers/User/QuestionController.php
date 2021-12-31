@@ -32,7 +32,7 @@ class QuestionController extends Controller
         $reported_question = false;
 
         $user_id = auth()->id();
-        $answers = Answer::with('user')->where('question_id',$question->id)->latest()->get();
+        $answers = Answer::with('user')->where('question_id',$question->id)->latest()->paginate(4);
         $answered = Answer::where('question_id',$question->id)->where('user_id',$user_id)->first();
         $report_question = ReportQuestion::where('question_id',$question->id)->where('user_id',$user_id)->first();
         $topics = Topic::select(['id','name'])->get();
@@ -44,7 +44,7 @@ class QuestionController extends Controller
                 $topic_id = $topic->id;
                 $related_questions = Question::select(['title','title_slug'])->where('id','!=',$question->id)->whereHas('topics', function($query)use($topic_id){
                     $query->where('topic_id',$topic_id);
-                })->latest()->get();
+                })->latest()->paginate(8);
             }
         }
 
@@ -161,11 +161,13 @@ class QuestionController extends Controller
         $title_slug = Str::of($title)->slug('-');
 
         if($request->topic_id){
-            $check = 0;
+
+            $count = 0;
             for ($i=0; $i < count($request->topic_id) ; $i++) {
-                $check++;
-                //check if added topics more than 8
-                if($check > 8){
+                $checkTopic = Topic::find($request->topic_id[$i]);
+                $count++;
+                //if added topics more than 8 or topic not found
+                if($count > 8 || $checkTopic == null){
                     break;
                 }
                 QuestionTopic::create([
@@ -173,6 +175,7 @@ class QuestionController extends Controller
                     'topic_id' => $request->topic_id[$i]
                 ]);
             }
+
         }
 
         return redirect()->route('question.show',$title_slug)->with('message',['text' => 'Question added successfully!', 'class' => 'success']);

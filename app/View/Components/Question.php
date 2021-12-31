@@ -24,7 +24,7 @@ class Question extends Component
      */
     public function render()
     {
-        $topics = Topic::all();
+        $topics = Topic::orderBy('name','asc')->get();
         return view('components.question',compact('topics'));
     }
 }

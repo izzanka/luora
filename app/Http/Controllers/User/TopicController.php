@@ -14,10 +14,11 @@ class TopicController extends Controller
     public function store(Request $request){
 
         $request->validate([
-            'topic_name' => 'required|alpha|unique:topics,name|max:20|min:5'
+            'topic_name' => 'required|alpha|unique:topics,name|max:20|min:3'
         ]);
 
-        $name = ucfirst($request->topic_name);
+        $topic_name = strtolower($request->topic_name);
+        $name = ucfirst($topic_name);
 
         Topic::create([
             'name' => $name,
@@ -33,7 +34,7 @@ class TopicController extends Controller
             $query->whereHas('topics',function($q)use($topic_id){
                 $q->where('topic_id',$topic_id);
             });
-        })->get();
+        })->latest()->paginate(8);
         
         return view('user.topic.show',compact('answers','topic'));
     }
