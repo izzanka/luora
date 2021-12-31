@@ -250,159 +250,174 @@
             </div>
             <div class="row mt-2">
                 <div class="col-12">
-                    @foreach ($answers as $answer)
-                        <!-- Modal Answer-->
-                        <form action="" method="POST" id="answer-updateForm">
-                            @csrf
-                            @method('PUT')
-                            <div class="modal fade" id="answer-updateModal" aria-labelledby="answer-updateModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="answer-updateModalLabel"><b>Edit Answer</b></h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <textarea name="text" class="form-control" id="textAnswer" autocomplete="off"></textarea>
-                                                @include('layouts.error', ['name' => 'text'])
+                    <div id="answersQuestion">
+                        @foreach ($answers as $answer)
+                            <!-- Modal Answer-->
+                            <form action="" method="POST" id="answer-updateForm" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal fade" id="answer-updateModal" aria-labelledby="answer-updateModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="answer-updateModalLabel"><b>Edit Answer</b></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <textarea name="text" class="form-control" id="textAnswer" autocomplete="off"></textarea>
+                                                    @include('layouts.error', ['name' => 'text'])
+                                                    <div id="img2">
+                                                        <img id="output2" class="img-fluid mt-2 rounded">
+                                                    </div>
+                                                    <input type="file" name="image" accept="image/*" class="form-control mt-2" onchange="document.getElementById('output2').src = window.URL.createObjectURL(this.files[0])" id="image2">
+                                                    @include('layouts.error', ['name' => 'image'])
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal" id="close2">Cancel</button>
+                                        <button type="submit" class="btn btn-primary answer-update rounded-pill">Update</button>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary answer-update rounded-pill">Update</button>
                                     </div>
                                 </div>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
 
-                        @php
-                        $credential = \App\Http\Controllers\User\ProfileController::set_credential($answer->user);
-                        @endphp
+                            @php
+                            $credential = \App\Http\Controllers\User\ProfileController::set_credential($answer->user);
+                            @endphp
 
-                        <div id="{{ $answer->user->name_slug }}">
-                        <div class="card mt-4">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="col-sm-1">
-                                                <img src="{{$answer->user->avatar}}" alt="avatar" class="rounded-circle" width="45px" height="45px">
-                                            </div>
-                                            
-                                            <div class="col-sm-11">
-                                                <b><a href="{{ route('profile.show',$answer->user->name_slug) }}" class="text-dark">{{ $answer->user->name  }}</a></b> &#183;
-                                                @php
-                                                    //set follow status
-                                                    if(auth()->user()->isFollowing($answer->user)){
-                                                        $status = "Following";
-                                                    }else{
-                                                        $status = "Follow";
-                                                    }
-                                                @endphp     
-                                                <a href="{{ route('follow',$answer->user->name_slug) }}">{{ $status }}</a>
-                                                 <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                                    @if ($answer->user_id == auth()->id())
-                                                        <a href="" data-attr="{{ route('answer.update',$answer->id) }}" class="dropdown-item" data-toggle="modal" data-target="#answer-updateModal" id="answerUpdate" data-text="{{ $answer->text }}">
-                                                            Edit answer
-                                                        </a>
-                                                        
-                                                        <a href="{{ route('answer.destroy',$answer->id) }}" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this answer?')">
-                                                            Delete answer
-                                                        </a>
-                                                    @else
-                                                        @php
-                                                            $reported_answer = App\Models\ReportAnswer::where('answer_id',$answer->id)->where('user_id',auth()->id())->first();
-                                                        @endphp
-                                                        @if ($reported_answer)
-                                                            <a class="dropdown-item text-danger">
-                                                                Reported
+                            <div id="{{ $answer->user->name_slug }}">
+                            <div class="card mt-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-sm-1">
+                                                    <img src="{{$answer->user->avatar}}" alt="avatar" class="rounded-circle" width="45px" height="45px">
+                                                </div>
+                                                
+                                                <div class="col-sm-11">
+                                                    <b><a href="{{ route('profile.show',$answer->user->name_slug) }}" class="text-dark">{{ $answer->user->name  }}</a></b> &#183;
+                                                    @php
+                                                        //set follow status
+                                                        if(auth()->user()->isFollowing($answer->user)){
+                                                            $status = "Following";
+                                                        }else{
+                                                            $status = "Follow";
+                                                        }
+                                                    @endphp     
+                                                    <a href="{{ route('follow',$answer->user->name_slug) }}">{{ $status }}</a>
+                                                    <a class="text-dark float-right dropdown-toogle" id="navbarDropdown" href="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="bi bi-three-dots"></i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                                        @if ($answer->user_id == auth()->id())
+                                                            <a href="" data-attr="{{ route('answer.update',$answer->id) }}" class="dropdown-item" data-toggle="modal" data-target="#answer-updateModal" id="answerUpdate" data-text="{{ $answer->text }}" data-img="{{ $answer->image }}">
+                                                                Edit answer
+                                                            </a>
+                                                            
+                                                            <a href="{{ route('answer.destroy',$answer->id) }}" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this answer?')">
+                                                                Delete answer
                                                             </a>
                                                         @else
-                                                            <a href="" class="dropdown-item text-dark" data-toggle="modal" data-target="#report_answerModal" data-attr="{{ route('answer.report',$answer->id) }}" id="reportAnswer">
-                                                                Report
+                                                            @php
+                                                                $reported_answer = App\Models\ReportAnswer::where('answer_id',$answer->id)->where('user_id',auth()->id())->first();
+                                                            @endphp
+                                                            @if ($reported_answer)
+                                                                <a class="dropdown-item text-danger">
+                                                                    Reported
+                                                                </a>
+                                                            @else
+                                                                <a href="" class="dropdown-item text-dark" data-toggle="modal" data-target="#report_answerModal" data-attr="{{ route('answer.report',$answer->id) }}" id="reportAnswer">
+                                                                    Report
+                                                                </a>
+                                                            @endif
+                                                            <a class="dropdown-item">
+                                                                Bookmark
+                                                            </a>
+                                                            <a class="dropdown-item">
+                                                                Hide
                                                             </a>
                                                         @endif
-                                                        <a class="dropdown-item">
-                                                            Bookmark
-                                                        </a>
-                                                        <a class="dropdown-item">
-                                                            Hide
-                                                        </a>
+                                                    </div>
+                                                    <br>
+                                                    <div class="text-secondary">
+                                                        {{ $credential }} &#183; {{ $answer->created_at->format('M d Y')  }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-12">
+                                                    {{  $answer->text  }}<br>
+                                                    @if ($answer->image)
+                                                        <img src="{{ asset('img/' . $answer->image) }}" class="img-fluid mt-2 mb-2">
+                                                    @else
+                                                        <div class="mb-2"></div>
                                                     @endif
-                                                </div>
-                                                <br>
-                                                <div class="text-secondary">
-                                                    {{ $credential }} &#183; {{ $answer->created_at->format('M d Y')  }}
+                                                    <small class="text-secondary">{{ views($answer)->count() }} views</small>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row mt-3">
-                                            <div class="col-12">
-                                                {{  $answer->text  }}<br>
-                                                @if ($answer->image)
-                                                    <img src="{{ asset('img/' . $answer->image) }}" class="img-fluid mt-2 mb-2">
-                                                @else
-                                                    <div class="mb-2"></div>
-                                                @endif
-                                                <small class="text-secondary">{{ views($answer)->count() }} views</small>
-                                            </div>
-                                        </div>
-
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="btn-group" role="group">
-                                                    <a href="{{ route('answer.vote',['answer' => $answer->id, 'vote' => 'upvote']) }}" class="text-success mr-2" id="upvote"><i class="bi bi-arrow-up-circle{{ auth()->user()->hasUpVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->upVoters()->count() }}</a>
-                                                    <a href="{{ route('answer.vote',['answer' => $answer->id, 'vote' => 'downvote']) }}" class="text-danger mr-4" id="downvote"><i class="bi bi-arrow-down-circle{{ auth()->user()->hasDownVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->downVoters()->count() }}</a>
-                                                    <a href="javascript: void(0)" class="text-secondary" id="comment"><i class="bi bi-chat"></i> {{ $answer->comments->count() }}</a>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="btn-group" role="group">
+                                                        <a href="{{ route('answer.vote',['answer' => $answer->id, 'vote' => 'upvote']) }}" class="text-success mr-2" id="upvote"><i class="bi bi-arrow-up-circle{{ auth()->user()->hasUpVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->upVoters()->count() }}</a>
+                                                        <a href="{{ route('answer.vote',['answer' => $answer->id, 'vote' => 'downvote']) }}" class="text-danger mr-4" id="downvote"><i class="bi bi-arrow-down-circle{{ auth()->user()->hasDownVoted($answer) ? '-fill' : '' }}" ></i> {{ $answer->downVoters()->count() }}</a>
+                                                        <a href="javascript: void(0)" class="text-secondary" id="comment"><i class="bi bi-chat"></i> {{ $answer->comments->count() }}</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="btn-group float-right" role="group">
-                                                    <a href="" class="text-dark" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="bi bi-share"></i></a>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <a class="dropdown-item" href="{{ $facebook }}#{{ $answer->user->name_slug }}" target="_blank"><i class="bi bi-facebook mr-2"></i>Facebook</a>
-                                                        <a class="dropdown-item" href="{{ $twitter }}#{{ $answer->user->name_slug }}" target="_blank"><i class="bi bi-twitter mr-2"></i>Twitter</a>
-                                                        <a class="dropdown-item" href="javascript: void(0)" onclick="copy()" data-attr="#{{ $answer->user->name_slug }}" id="copyLink">Copy link</a>
+                                                <div class="col-sm-6">
+                                                    <div class="btn-group float-right" role="group">
+                                                        <a href="" class="text-dark" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-share"></i></a>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                            <a class="dropdown-item" href="{{ $facebook }}#{{ $answer->user->name_slug }}" target="_blank"><i class="bi bi-facebook mr-2"></i>Facebook</a>
+                                                            <a class="dropdown-item" href="{{ $twitter }}#{{ $answer->user->name_slug }}" target="_blank"><i class="bi bi-twitter mr-2"></i>Twitter</a>
+                                                            <a class="dropdown-item" href="javascript: void(0)" onclick="copy()" data-attr="#{{ $answer->user->name_slug }}" id="copyLink">Copy link</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        
+                                            <div id="show_comment">
+                                                <form action="{{ route('comment.store') }}" method="POST">
+                                                    @csrf
+                                                    <div class="row mt-3">
+                                                        <div class="col-1">
+                                                            <img src="{{ auth()->user()->avatar }}" alt="avatar" class="rounded-circle" width="45px" height="45px">
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <input type="text" class="form-control" placeholder="Add a comment..." name="comment" autocomplete="off">
+                                                            <input type="hidden" name="answer_id" value="{{ $answer->id }}" id="answer_id">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <button class="btn btn-primary rounded-pill btn-sm" type="submit">Add comment</button>
+                                                        </div>
+                                                    </div>
+                                                    @include('layouts.comment',['comments' => $answer->comments,'answer_id' => $answer->id])
+                                                </form>
+                                            </div>
+                                            <script></script>
                                         </div>
-                                      
-                                        <div id="show_comment">
-                                            <form action="{{ route('comment.store') }}" method="POST">
-                                                @csrf
-                                                <div class="row mt-3">
-                                                    <div class="col-1">
-                                                        <img src="{{ auth()->user()->avatar }}" alt="avatar" class="rounded-circle" width="45px" height="45px">
-                                                    </div>
-                                                    <div class="col-9">
-                                                        <input type="text" class="form-control" placeholder="Add a comment..." name="comment" autocomplete="off">
-                                                        <input type="hidden" name="answer_id" value="{{ $answer->id }}" id="answer_id">
-                                                    </div>
-                                                    <div class="col-2">
-                                                        <button class="btn btn-primary rounded-pill btn-sm" type="submit">Add comment</button>
-                                                    </div>
-                                                </div>
-                                                @include('layouts.comment',['comments' => $answer->comments,'answer_id' => $answer->id])
-                                            </form>
-                                        </div>
-                                        <script></script>
-                                    </div>
-                                </div> 
+                                    </div> 
+                                </div>
                             </div>
+                            </div>
+                        @endforeach
+                    </div>
+                
+                    @if ($answers->isEmpty())
+                        <div class="text-center mt-4"><b>No answers</b></div>
+                    @else
+                        <div class="text-center">
+                            <button class="btn btn-secondary btn-sm moreQuestion mt-2 rounded-pill" data-page="2" data-link="/{{ $question->title_slug }}?page=" data-div="#answersQuestion">More</button>
                         </div>
-                        </div>
-                    @endforeach
+                    @endif
                     
                 </div>
                 
@@ -435,6 +450,21 @@
 @endsection
 @section('script')
 <script>
+
+    $(".moreQuestion").click(function () {
+        $div = $($(this).data('div')); //div to append
+        $link = $(this).data('link'); //current URL
+
+        $page = $(this).data('page'); //get the next page #
+        $href = $link + $page; //complete URL
+        $.get($href, function (response) { //append data
+            $html = $(response).find("#answersQuestion").html();
+            $div.append($html);
+        });
+
+        $(this).data('page', (parseInt($page) + 1)); //update page #
+    });
+
     //script for answer report form
     $(document).on('click', '#reportAnswer', function () {
         let href = $(this).attr('data-attr');
@@ -457,12 +487,24 @@
     $(document).on('click', '#answerUpdate', function () {
         let href = $(this).attr('data-attr');
         let text = $(this).attr('data-text');
+
         $('#textAnswer').val(text);
+    
 
         $(document).on('click', '.answer-update', function () {
             $('#answer-updateForm').attr('action', href);
         });
     });
+
+    $('#image2').on('click',function(){
+        $('#img2').append("<img id='output2' class='img-fluid mt-2 rounded'>");
+    });
+
+    $(document).on('click', '#close2', function () {
+        $('#output2').remove();
+        $('#image2').val("");
+    });
+
 
     //script for comment report form
     $(document).on('click', '#reportComment', function () {

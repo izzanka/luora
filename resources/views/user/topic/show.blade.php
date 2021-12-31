@@ -19,8 +19,8 @@
                     </div>
                 </div>
             </div>
-            <div id="answers">
-                @forelse ($answers as $answer)
+            <div id="answersTopic">
+                @foreach ($answers as $answer)
                     
                     @php
                         //count view
@@ -124,10 +124,17 @@
                                 </div>
                             </div>
                         </div>
-                @empty
-                <div class="text-center mt-4"><b>No Question</b></div>
-                @endforelse
+                @endforeach
             </div>
+
+            @if ($answers->isEmpty())
+                    <div class="text-center mt-4"><b>No question related to this topic</b></div>
+                @else
+                <div class="text-center">
+                    <button class="btn btn-secondary btn-sm moreTopic mt-2 rounded-pill" data-page="2" data-link="/topic/{{ $topic->name_slug }}?page=" data-div="#answersTopic">More</button>
+                </div>
+            @endif
+
         </div>
 
         <div class="col-4">
@@ -135,4 +142,24 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    
+    $(".moreTopic").click(function () {
+        $div = $($(this).data('div')); //div to append
+        $link = $(this).data('link'); //current URL
+
+        $page = $(this).data('page'); //get the next page #
+        $href = $link + $page; //complete URL
+        $.get($href, function (response) { //append data
+            $html = $(response).find("#answersTopic").html();
+            $div.append($html);
+        });
+
+        $(this).data('page', (parseInt($page) + 1)); //update page #
+    });
+    
+</script>
 @endsection

@@ -57,6 +57,7 @@
                                 <x-admin-answers/>
                                 <x-admin-questions/>
                                 <x-admin-comments/>
+                                <x-admin-topics/>
                             @else
                                 <li class="nav-item ml-5">       
                                         <a href="javascript: void(0)" class="text-dark"><i class="bi bi-newspaper" style="font-size: 1.5rem;"></i></a>

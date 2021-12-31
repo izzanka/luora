@@ -31,14 +31,16 @@
                         <div class="col-12">
                                <textarea name="text" cols="30" rows="10" class="form-control" placeholder="Write your answer" autocomplete="off" autofocus id="text"></textarea>
                                @include('layouts.error', ['name' => 'text'])
-                               <input type="file" name="image" accept="image/*" class="form-control mt-2"> 
+                               <div id="img">
+                                    <img id="output" class="img-fluid mt-2 rounded">
+                               </div>
+                               <input type="file" name="image" accept="image/*" class="form-control mt-2" onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])" id="image">
+                               @include('layouts.error', ['name' => 'image'])
                         </div>
                     </div>
 
-
                 </div>
 
-            
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light rounded-pill" data-dismiss="modal" id="close">Close</button>
                     <button type="submit" class="btn btn-primary store rounded-pill">Add Answer</button>
@@ -49,10 +51,15 @@
 </form>
 
 <script>
- 
+    $('#image').on('click',function(){
+        $('#img').append("<img id='output' class='img-fluid mt-2 rounded'>");
+    });
+
     $(document).on('click', '#close', function () {
+        $('#output').remove();
+        
         $('#text').val("");
-        $('#images').val("");
+        $('#image').val("");
     });
 
 </script>
