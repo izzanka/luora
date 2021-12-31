@@ -15,35 +15,36 @@ class CheckAnswerController extends Controller
     }
 
     public function reported(){
-        $answers = Answer::has('report_users')->with(['report_users' => function($q){$q->distinct()->get();}])->withCount('report_users')->orderBy('report_users_count','desc')->get();
+        $answers = Answer::has('report_users')->with(['report_users' => function($q){
+            $q->distinct()->get();
+        }])->withCount('report_users')->orderBy('report_users_count','desc')->get();
         return view('admin.answer.index',compact('answers'));
     }
 
     public function update_status(Answer $answer,$status){
 
-        if($status == 'viewed_by_admin' || 'deleted_by_admin'){
+        if($status == 'deleted_by_admin'){
 
-            if($status == 'deleted_by_admin'){
+            $reports = ReportAnswer::where('answer_id',$answer->id)->get();
 
-                $reports = ReportAnswer::where('answer_id',$answer->id)->get();
-
-                foreach($reports as $report){
-                    $report->delete();
-                }
-
-                foreach($answer->comments as $comment){
-                    $comment->delete();
-                }
-
-                $answer->delete();
-                
-            }else{
-                $answer->update([
-                    'status' => $status
-                ]);
+            foreach($reports as $report){
+                $report->delete();
             }
 
+            foreach($answer->comments as $comment){
+                $comment->delete();
+            }
+
+            $answer->delete();
+            
+        }else if ($status == 'viewed_by_admin'){
+
+            $answer->update([
+                'status' => $status
+            ]);
+
         }else{
+
             return back();
         }
 

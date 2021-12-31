@@ -21,34 +21,33 @@ class CheckQuestionController extends Controller
 
     public function update_status(Question $question,$status){
 
-        if($status == 'viewed_by_admin' || 'deleted_by_admin'){
+        if($status == 'deleted_by_admin'){
 
-            if($status == 'deleted_by_admin'){
+            $qtopics = QuestionTopic::where('question_id',$question->id)->get();
+            $reports = ReportQuestion::where('question_id',$question->id)->get();
 
-                $qtopics = QuestionTopic::where('question_id',$question->id)->get();
-                $reports = ReportQuestion::where('question_id',$question->id)->get();
-
-                foreach($qtopics as $qtopic){
-                    $qtopic->delete();
-                }
-        
-                foreach($question->answers as $answer){
-                    $answer->delete();
-                }
-
-                foreach($reports as $report){
-                    $report->delete();
-                }
-        
-                $question->delete();
-
-            }else{
-                $question->update([
-                    'status' => $status
-                ]);
+            foreach($qtopics as $qtopic){
+                $qtopic->delete();
+            }
+    
+            foreach($question->answers as $answer){
+                $answer->delete();
             }
 
+            foreach($reports as $report){
+                $report->delete();
+            }
+    
+            $question->delete();
+
+        }else if($status == 'viewed_by_admin'){
+
+            $question->update([
+                'status' => $status
+            ]);
+            
         }else{
+
             return back();
         }
 

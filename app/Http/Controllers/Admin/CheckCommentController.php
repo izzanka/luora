@@ -20,21 +20,17 @@ class CheckCommentController extends Controller
     }
 
     public function update_status(Comment $comment,$status){
-        
-        if($status == 'viewed_by_admin' || 'deleted_by_admin'){
-
-            if($status == 'deleted_by_admin'){
-                $reports = ReportComment::where('comment_id',$comment->id)->get();
-                foreach($reports as $report){
-                    $report->delete();
-                }
-                $comment->delete();
-            }else{
-                $comment->update([
-                    'status' => $status
-                ]);
+       
+        if($status == 'deleted_by_admin'){
+            $reports = ReportComment::where('comment_id',$comment->id)->get();
+            foreach($reports as $report){
+                $report->delete();
             }
- 
+            $comment->delete();
+        }else if ($status == 'viewed_by_admin'){
+            $comment->update([
+                'status' => $status
+            ]);
         }else{
             return back();
         }
