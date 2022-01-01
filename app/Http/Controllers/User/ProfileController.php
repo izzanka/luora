@@ -83,7 +83,7 @@ class ProfileController extends Controller
             return redirect()->route('profile.show',$user->name_slug);
         }
 
-        $topics = Topic::select(['id','name','name_slug'])->get();
+        $topics = Topic::select(['id','name','name_slug'])->orderBy('name','asc')->get();
         $user->load(['employment','education','location']);
         
         //check employment credential
@@ -118,9 +118,17 @@ class ProfileController extends Controller
         }
 
         if($request->topic_id){
-
+            $count = 0;
             for ($i=0; $i < count($request->topic_id); $i++) {
-    
+                
+                $checkTopic = Topic::find($request->topic_id[$i]);
+                $count++;
+                
+                //if added topics more than 8 or topic not found
+                if($count > 8 || $checkTopic == null){
+                    break;
+                }
+
                 UserTopic::create([
                     'user_id' => $user->id,
                     'topic_id' => $request->topic_id[$i]

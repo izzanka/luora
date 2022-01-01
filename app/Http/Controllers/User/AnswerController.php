@@ -62,7 +62,7 @@ class AnswerController extends Controller
             'image' => $imageName,
         ]);
 
-        return back()->with('message',['text' => 'Answer added successfully!', 'class' => 'success']);
+        return redirect()->route('question.show',$question->title_slug)->with('message',['text' => 'Answer added successfully!', 'class' => 'success']);
     }
     
     //vote
