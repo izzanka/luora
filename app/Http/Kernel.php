@@ -62,8 +62,5 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'minifyHtml' => \DzId\LaravelHtmlMinifier\Middleware\MinifyHtml::class,        
-        'minifyCss' => \DzId\LaravelHtmlMinifier\Middleware\MinifyCss::class,         
-        'minifyJs' => \DzId\LaravelHtmlMinifier\Middleware\MinifyJavascript::class, 
     ];
 }
