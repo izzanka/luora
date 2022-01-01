@@ -8,7 +8,7 @@ Write Answers
 @include('layouts.answer')
 <div class="container">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-2">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
@@ -23,7 +23,7 @@ Write Answers
                 </div>
             </div>
         </div>
-        <div class="col-7 ml-1">
+        <div class="col-6">
             @include('layouts.success')
             <div class="card">
                 <div class="card-body">
@@ -62,13 +62,17 @@ Write Answers
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-4">
             <div class="card">
                 <div class="card-header">
                     Topics you know
                 </div>
                 <div class="card-body">
-                    
+                    @foreach (auth()->user()->topics as $topic)
+                        <a href="{{ route('topic.show',$topic->name_slug) }}" class="text-dark">{{ $topic->name }} 
+                        <div class="btn btn-secondary float-right btn-sm rounded-pill">
+                        {{ $topic->follower }} Followers</div></a><hr>
+                    @endforeach
                 </div>
             </div>
         </div>
