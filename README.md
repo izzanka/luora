@@ -34,7 +34,7 @@ a Quora (https://quora.com) website clone
 * [jorenvanhocht/laravel-share](https://github.com/jorenvanhocht/laravel-share)
 * [overtrue/laravel-follow](https://github.com/overtrue/laravel-follow)
 * [intervention/image](https://github.com/Intervention/image)
-* [dz-id/laravel-html-minifier](https://github.com/dz-id/laravel-html-minifier)
+* [renatomarinho/laravel-page-speed](https://github.com/renatomarinho/laravel-page-speed)
 
 <!-- GETTING STARTED -->
 ## Getting Started
