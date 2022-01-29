@@ -17,7 +17,7 @@ class AnswerController extends Controller
     public function storeImage($request){
 
         $image = $request->file('image');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $imageName = time() . '.' . $image->extension();
         $img_edit = Image::make($image);
         $img_edit->resize(700,500);
         $img_edit->text('luora.ferdirns.com', 600, 470, function ($font) {
