@@ -4,7 +4,6 @@ namespace App\Livewire\Auth;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -26,18 +25,16 @@ class Register extends Component
 
         try {
 
-            DB::transaction(function () {
-                $user = User::create([
-                    'username' => $this->username,
-                    'username_slug' => str()->slug($this->username),
-                    'email' => $this->email,
-                    'password' => bcrypt($this->password),
-                ]);
+            $user = User::create([
+                'username' => $this->username,
+                'username_slug' => str()->slug($this->username),
+                'email' => $this->email,
+                'password' => bcrypt($this->password),
+            ]);
 
-                Auth::login($user);
+            Auth::login($user);
 
-                $this->redirect(route('home'));
-            });
+            $this->redirect(route('home'));
 
         } catch (\Throwable $th) {
             $this->dispatch('swal',
@@ -47,7 +44,7 @@ class Register extends Component
         }
     }
 
-    #[Title('Sign up | LinkMe')]
+    #[Title('Sign up | Luora')]
     public function render()
     {
         return view('livewire.auth.register');

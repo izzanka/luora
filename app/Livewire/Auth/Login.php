@@ -41,7 +41,7 @@ class Login extends Component
         }
     }
 
-    #[Title('Sign in | LinkMe')]
+    #[Title('Sign in | Luora')]
     public function render()
     {
         return view('livewire.auth.login');
