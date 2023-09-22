@@ -4,9 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Home;
-use App\Livewire\User\Profile\Index;
-use App\Livewire\User\Answer\Index as AnswerIndex;
-use App\Livewire\User\Question\Show;
+use App\Livewire\User\Answer\AnswerIndex;
+use App\Livewire\User\Profile\ProfileIndex;
+use App\Livewire\User\Question\QuestionIndex;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,10 +27,9 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function(){
     Route::get('/', Home::class)->name('home');
-    Route::get('/answers', AnswerIndex::class)->name('answer.index');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/{question:title_slug}', Show::class)->name('question.show');
-    Route::get('/profile/{user:username_slug}', Index::class)->name('profile.index');
-
+    Route::get('/answers', AnswerIndex::class)->name('answer.index');
+    Route::get('/{question:title_slug}', QuestionIndex::class)->name('question.index');
+    Route::get('/profile/{user:username_slug}', ProfileIndex::class)->name('profile.index');
 });
 

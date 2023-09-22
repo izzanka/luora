@@ -50,8 +50,11 @@
                         </div>
                     </div>
                 </div>
+                @php
+                    $from = 'home';
+                @endphp
                 @foreach ($answers as $answer)
-                    <livewire:user.answer :$answer :key="$answer->id"/>
+                    <livewire:user.answer :$answer :$from :key="$answer->id"/>
                 @endforeach
             </div>
             <div class="col-3">

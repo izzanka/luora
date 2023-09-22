@@ -36,8 +36,19 @@ class User extends Authenticatable
         return $this->belongsToMany(Topic::class);
     }
 
-    public function spaces()
-    {
+    public function spaces(){
         return $this->hasMany(Space::class);
+    }
+
+    public function education(){
+        return $this->hasOne(Education::class);
+    }
+
+    public function employment(){
+        return $this->hasOne(Employment::class);
+    }
+
+    public function location(){
+        return $this->hasOne(Location::class);
     }
 }

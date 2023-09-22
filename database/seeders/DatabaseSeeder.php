@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        for ($i=1; $i < 10 ; $i++) {
+        for ($i=1; $i <= 10 ; $i++) {
             DB::table('users')->insert([
                 'username' => 'test' . $i,
                 'username_slug' => 'test' . $i,
@@ -20,21 +20,19 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $title = 'example question from user';
-
-        for ($i=1; $i < 10 ; $i++) {
+        for ($i=1; $i <= 10 ; $i++) {
             DB::table('questions')->insert([
                 'user_id' => 1,
-                'title' => $title . ' ' . $i,
-                'title_slug' => str()->slug($title),
+                'title' => 'Example question from user ' . $i . '?',
+                'title_slug' => 'Example-question-from-user-' . $i,
                 'created_at' => now(),
             ]);
         }
 
-        for ($i=1; $i < 10 ; $i++) {
-            for ($j=1; $j < 10 ; $j++) {
+        for ($i=1; $i <= 10 ; $i++) {
+            for ($j=1; $j <= 10 ; $j++) {
                 DB::table('answers')->insert([
-                    'user_id' => $i + 1,
+                    'user_id' => $i,
                     'question_id' => 1,
                     'answer' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem voluptates fugiat atque, voluptatibus fuga quos ab eligendi delectus ullam veniam. Sed ipsam fugit deserunt vero pariatur ad laboriosam itaque numquam?',
                     'created_at' => now(),

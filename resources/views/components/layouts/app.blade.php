@@ -22,7 +22,7 @@
                     @guest
                         <div class="nav-item d-none d-md-flex me-3">
                             <div class="btn-list">
-                                <a href="{{ route('login') }}" wire:navigate class="btn btn-ghost-danger btn-pill {{ request()->route()->named('login') ? 'active' : '' }}" >
+                                <a href="{{ route('login') }}" wire:navigate class="btn btn-outline-danger border-danger btn-pill {{ request()->route()->named('login') ? 'active' : '' }}" >
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
@@ -30,7 +30,7 @@
                                     </svg>
                                     Sign in
                                 </a>
-                                <a href="{{ route('register') }}" wire:navigate class="btn btn-ghost-danger btn-pill {{ request()->route()->named('register') ? 'active' : '' }}">
+                                <a href="{{ route('register') }}" wire:navigate class="btn btn-outline-danger border-danger btn-pill {{ request()->route()->named('register') ? 'active' : '' }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
@@ -45,7 +45,7 @@
                     @else
                         <div class="nav-item d-none d-md-flex me-2">
                             <div class="btn-list me-2">
-                                <a href="{{ route('home') }}" class="btn btn-ghost-danger btn-pill {{ request()->route()->named('home') ? 'active' : ''}}">
+                                <a href="{{ route('home') }}" class="btn btn-outline-danger border-danger btn-pill {{ request()->route()->named('home') ? 'active' : ''}}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
@@ -54,7 +54,7 @@
                                      </svg>
                                     Home
                                 </a>
-                                <a href="" class="btn btn-ghost-danger btn-pill {{ request()->route()->named('appearance.index') ? 'active' : ''}}">
+                                <a href="" class="btn btn-outline-danger border-danger btn-pill {{ request()->route()->named('appearance.index') ? 'active' : ''}}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M9 6l11 0"></path>
@@ -66,7 +66,7 @@
                                     </svg>
                                     Following
                                 </a>
-                                <a href="{{ route('answer.index') }}" class="btn btn-ghost-danger btn-pill {{ request()->route()->named('answer.index') ? 'active' : ''}}">
+                                <a href="{{ route('answer.index') }}" class="btn btn-outline-danger border-danger btn-pill {{ request()->route()->named('answer.index') ? 'active' : ''}}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
@@ -75,7 +75,7 @@
                                      </svg>
                                     Answer
                                 </a>
-                                <a href="" class="btn btn-ghost-danger btn-pill {{ request()->route()->named('appearance.index') ? 'active' : ''}}">
+                                <a href="" class="btn btn-outline-danger border-danger btn-pill {{ request()->route()->named('appearance.index') ? 'active' : ''}}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users-group" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
@@ -87,7 +87,7 @@
                                      </svg>
                                     Spaces
                                 </a>
-                                <a href="" class="btn btn-ghost-danger btn-pill {{ request()->route()->named('appearance.index') ? 'active' : ''}}">
+                                <a href="" class="btn btn-outline-danger border-danger btn-pill {{ request()->route()->named('appearance.index') ? 'active' : ''}}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bell" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"></path>
@@ -132,7 +132,7 @@
                 </div>
             </div>
 
-            <footer class="footer footer-transparent d-print-none">
+            {{-- <footer class="footer footer-transparent d-print-none">
                 <div class="container-xl mt-2">
                   <div class="row text-center align-items-center flex-row-reverse">
                     <div class="col-lg-auto ms-lg-auto">
@@ -153,7 +153,7 @@
                     </div>
                   </div>
                 </div>
-            </footer>
+            </footer> --}}
         </div>
         <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
         <script type="text/javascript">

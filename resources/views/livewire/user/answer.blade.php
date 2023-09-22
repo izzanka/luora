@@ -5,48 +5,50 @@
                 <div class="row">
                     <span class="avatar rounded-circle ms-2" style="background-image: url(@if($answer->user->image == null) 'https://ui-avatars.com/api/?name={{ $answer->user->username }}&background=DE6060&color=fff&rounded=true&size=56' @else {{ asset($answer->user->image) }} @endif)"></span>
                     <div class="col-11">
-                        <a href="" class="text-dark"><b>{{ $answer->user->username }}</b></a> &#8226;
-                        <a href="">Follow</a>
-                        <div class="text-secondary">
+                        <a href="" class="text-dark">
+                            <b style="font-size: 15px">{{ $answer->user->username }}</b>
+                        </a>
+                        @if(auth()->id() != $answer->user->id) &#8226; <a href="" style="font-size: 13px">Follow</a> @endif
+                        <div class="text-secondary" style="font-size: 13px">
                             {{ $answer->user->credential ?? 'web developer' }} &#8226; <a href="" class="text-secondary">{{ $answer->created_at->diffForHumans() }}</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="mt-3">
-                <a href="" class="text-dark"><b>{{ $answer->question->title }}</b></a>
-            </div>
-            <p class="mt-2">{{ $answer->answer }}</p>
+            @if ($from == 'home')
+                <div class="mt-3">
+                    <a href="{{ route('question.index', $answer->question->title_slug) }}" class="text-dark"><b style="font-size: 16px">{{ $answer->question->title }}</b></a>
+                </div>
+            @endif
+            <p class="mt-3" style="font-size: 15px">
+                {{ $answer->answer }}
+            </p>
             <div class="mt-3">
                 <small class="text-secondary">{{ $answer->total_views }} views</small>
             </div>
             <div class="mt-2">
-                <button wire:click="votes('up')" class="btn btn-pill btn-outline-secondary" >
-                    @if ($vote == 'up')
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-up-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M10.586 3l-6.586 6.586a2 2 0 0 0 -.434 2.18l.068 .145a2 2 0 0 0 1.78 1.089h2.586v7a2 2 0 0 0 2 2h4l.15 -.005a2 2 0 0 0 1.85 -1.995l-.001 -7h2.587a2 2 0 0 0 1.414 -3.414l-6.586 -6.586a2 2 0 0 0 -2.828 0z" stroke-width="0" fill="currentColor"></path>
-                        </svg>
-                    @else
+                <button wire:click="votes('up')" class="btn btn-pill btn-outline-secondary @if($vote == 'up') active border-secondary @endif">
+                    <div wire:loading.remove wire:target="votes('up')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-up" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M9 20v-8h-3.586a1 1 0 0 1 -.707 -1.707l6.586 -6.586a1 1 0 0 1 1.414 0l6.586 6.586a1 1 0 0 1 -.707 1.707h-3.586v8a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                        </svg>
-                    @endif
+                         </svg>
+                    </div>
+                    <div wire:loading wire:target="votes('up')">
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                    </div>
                     Upvote &#8226; {{ $total_upvotes }}
                 </button>
-                <button wire:click="votes('down')" class="btn btn-pill btn-outline-secondary" >
-                    @if ($vote == 'down')
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-down-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <button wire:click="votes('down')" class="btn btn-pill btn-outline-secondary @if($vote == 'down') active border-secondary @endif">
+                    <div wire:loading.remove wire:target="votes('down')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-down" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M10 2l-.15 .005a2 2 0 0 0 -1.85 1.995v6.999l-2.586 .001a2 2 0 0 0 -1.414 3.414l6.586 6.586a2 2 0 0 0 2.828 0l6.586 -6.586a2 2 0 0 0 .434 -2.18l-.068 -.145a2 2 0 0 0 -1.78 -1.089l-2.586 -.001v-6.999a2 2 0 0 0 -2 -2h-4z" stroke-width="0" fill="currentColor"></path>
-                        </svg>
-                    @else
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-down" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M15 4v8h3.586a1 1 0 0 1 .707 1.707l-6.586 6.586a1 1 0 0 1 -1.414 0l-6.586 -6.586a1 1 0 0 1 .707 -1.707h3.586v-8a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1z"></path>
-                     </svg>
-                    @endif
+                            <path d="M15 4v8h3.586a1 1 0 0 1 .707 1.707l-6.586 6.586a1 1 0 0 1 -1.414 0l-6.586 -6.586a1 1 0 0 1 .707 -1.707h3.586v-8a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1z"></path>
+                         </svg>
+                    </div>
+                    <div wire:loading wire:target="votes('down')">
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                    </div>
                     Downvote &#8226; {{ $total_downvotes }}
                 </button>
                 <button class="btn btn-pill btn-ghost-secondary">

@@ -12,43 +12,62 @@ class Answer extends Component
     public $vote;
     public int $total_upvotes = 0;
     public int $total_downvotes = 0;
+    public string $from;
 
     #[On('voted')]
-    public function mount()
+    public function mount($from = '')
     {
         $this->answer->load(['user','question','votes','userVotes']);
+        $this->from = $from;
         $this->vote = $this->answer->userVotes->vote ?? null;
-        $this->total_upvotes = $this->answer->votes->where('vote', 'up')->count();
-        $this->total_downvotes = $this->answer->votes->where('vote', 'down')->count();
+        $this->total_upvotes = $this->answer->total_upvotes;
+        $this->total_downvotes = $this->answer->total_downvotes;
+        $this->answer->increment('total_views');
     }
 
     public function votes(string $vote)
     {
-        try {
+        if($vote == 'up' || $vote == 'down')
+        {
+            try {
 
-            if($this->vote == null)
-            {
-                Vote::create([
-                    'answer_id' => $this->answer->id,
-                    'user_id' => auth()->id(),
-                    'vote' => $vote
-                ]);
+                if($this->vote == null)
+                {
+                    Vote::create([
+                        'answer_id' => $this->answer->id,
+                        'user_id' => auth()->id(),
+                        'vote' => $vote
+                    ]);
+
+                    $vote == 'up' ? $this->answer->increment('total_upvotes') : $this->answer->increment('total_downvotes');
+                }
+                else if($vote == $this->vote)
+                {
+                    $this->answer->userVotes->delete();
+
+                    $vote == 'up' ? $this->answer->decrement('total_upvotes') : $this->answer->decrement('total_downvotes');
+                }
+                else
+                {
+                    $this->answer->userVotes->update(['vote' => $vote]);
+
+                    if($vote == 'up'){
+                        $this->answer->increment('total_upvotes');
+                        $this->answer->decrement('total_downvotes');
+                    }else{
+                        $this->answer->increment('total_downvotes');
+                        $this->answer->decrement('total_upvotes');
+                    }
+                }
+
+                $this->dispatch('voted');
+
+            } catch (\Throwable $th) {
+                $this->dispatch('swal',
+                    title: 'Vote answer error',
+                    icon: 'error',
+                );
             }
-
-            if($vote == $this->vote)
-            {
-                $this->answer->userVotes->delete();
-            }
-
-            $this->answer->userVotes->update(['vote' => $vote]);
-
-            $this->dispatch('voted');
-
-        } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Vote answer error',
-                icon: 'error',
-            );
         }
     }
 

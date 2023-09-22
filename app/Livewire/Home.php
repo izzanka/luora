@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Answer;
-use App\Models\Question;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -37,21 +36,29 @@ class Home extends Component
         }
     }
 
+    public function editQuestionTitle()
+    {
+        $removeSpace = str_replace(' ', '-', $this->title);
+        $removeSpecialChar = preg_replace('/[^A-Za-z0-9\-]/', '',$removeSpace);
+        $addSpace = str_replace('-', ' ', $removeSpecialChar);
+        return ucfirst($addSpace) . '?';
+    }
+
     public function addQuestion()
     {
         $this->validate();
 
         try {
 
-            $title = ucfirst($this->title);
-            $title_slug = str()->slug($title);
+            $title = $this->editQuestionTitle();
+            $title_slug = str()->slug($this->title);
 
             auth()->user()->questions()->create([
                 'title' => $title,
                 'title_slug' => $title_slug,
             ]);
 
-            $this->redirect(route('question.show', $title_slug));
+            $this->redirect(route('question.index', $title_slug));
 
         } catch (\Throwable $th) {
             $this->dispatch('swal',
