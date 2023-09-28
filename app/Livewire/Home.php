@@ -68,6 +68,8 @@ class Home extends Component
         }
     }
 
+
+
     public function render()
     {
         $answers = Answer::where('user_id','!=',auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);

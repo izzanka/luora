@@ -3,7 +3,9 @@
 namespace App\Livewire\User;
 
 use App\Models\Vote;
+use App\Models\Answer as ModelAnswer;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class Answer extends Component
@@ -13,15 +15,19 @@ class Answer extends Component
     public int $total_upvotes = 0;
     public int $total_downvotes = 0;
     public string $from;
+    public string $route;
 
-    #[On('voted')]
-    public function mount($from = '')
+    #[Rule(['required','string'])]
+    public string $answer_edit;
+
+    #[On('answer-updated')]
+    public function mount()
     {
         $this->answer->load(['user','question','votes','userVotes']);
-        $this->from = $from;
         $this->vote = $this->answer->userVotes->vote ?? null;
         $this->total_upvotes = $this->answer->total_upvotes;
         $this->total_downvotes = $this->answer->total_downvotes;
+        $this->answer_edit = $this->answer->answer;
         $this->answer->increment('total_views');
     }
 
@@ -60,7 +66,7 @@ class Answer extends Component
                     }
                 }
 
-                $this->dispatch('voted');
+                $this->dispatch('answer-updated');
 
             } catch (\Throwable $th) {
                 $this->dispatch('swal',
@@ -69,6 +75,62 @@ class Answer extends Component
                 );
             }
         }
+    }
+
+    public function report()
+    {
+
+    }
+
+    public function edit()
+    {
+        if(auth()->id() != $this->answer->user_id)
+        {
+            $this->redirect(route('question.index', $this->answer->question->title_slug));
+        }
+
+        $this->validate();
+
+        try {
+
+            if($this->answer_edit != $this->answer->answer)
+            {
+                $this->answer->update([
+                    'answer' => $this->answer_edit
+                ]);
+
+                $this->answer->question->touch();
+
+                $this->dispatch('swal',
+                    title: 'Answer edited',
+                    icon: 'success',
+                );
+
+                $this->redirect(route('question.index', $this->answer->question->title_slug));
+            }
+
+            $this->redirect(route('question.index', $this->answer->question->title_slug));
+
+        } catch (\Throwable $th) {
+            $this->dispatch('swal',
+                title: 'Edit answer error',
+                icon: 'error',
+            );
+        }
+    }
+
+    public function confirmDelete($answer_id)
+    {
+        $this->dispatch('swal-dialog',
+            title: 'Delete answer?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonColor: '#DB5E5F',
+            confirmButtonColor: '#206BC4',
+            answer_id: $answer_id,
+            name: 'answer',
+        );
     }
 
     public function render()

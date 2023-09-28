@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <b style="font-size: 21px">{{ $question->title }}</b>
                     <div class="mt-3">
-                        <button @if($disabled  || auth()->id() == $question->user_id) disabled @endif class="btn btn-pill btn-outline-secondary"  @if(!$disabled) data-bs-toggle="modal" data-bs-target="#answerQuestionModal" @endif>
+                        <button @if($disabled > 0 || auth()->id() == $question->user_id) disabled @endif class="btn btn-pill btn-outline-secondary"  @if($disabled == 0) data-bs-toggle="modal" data-bs-target="#answerQuestionModal" @endif>
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
@@ -44,6 +44,33 @@
                 </div>
             @endif
         </div>
+        @if($disabled == 0)
+        <div class="modal" id="answerQuestionModal" tabindex="-1" wire:ignore.self>
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form wire:submit="answerQuestion({{ $question->id }})">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{ $question->title }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label class="form-label">Answer</label>
+                            <input type="text" class="form-control form-control-flush mt-3 @error('answer') is-invalid @enderror" wire:model="answer" placeholder="Write your answer"/>
+                            @error('answer')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-ghost-secondary btn-pill" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary btn-pill">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
         <div class="col-4 mt-3">
             <div class="card">
                 <div class="card-header" style="font-size: 15px">
@@ -51,7 +78,7 @@
                 </div>
                 <div class="card-body">
                     @foreach ($questions as $question)
-                        <div class="mb-3">
+                        <div class="mb-3" wire:key="{{ $question->id }}">
                             <a style="font-size: 15px" href="{{ route('question.index', $question->title_slug) }}">{{ $question->title }}</a>
                         </div>
                     @endforeach
@@ -59,30 +86,5 @@
             </div>
         </div>
     </div>
-    @if(!$disabled)
-    <div class="modal" id="answerQuestionModal" tabindex="-1" wire:ignore.self>
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <form wire:submit="answerQuestion({{ $question->id }})">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ $question->title }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="text" class="form-control form-control-flush mt-3 @error('answer') is-invalid @enderror" wire:model="answer" placeholder="Write your answer"/>
-                        @error('answer')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-ghost-secondary btn-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-pill">Post</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    @endif
+
 </div>

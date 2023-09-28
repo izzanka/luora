@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->string('position', 60);
             $table->string('company',12);
-            $table->string('start_year',4);
-            $table->string('end_year',4)->nullable();
+            $table->year('start_year');
+            $table->year('end_year')->nullable();
             $table->boolean('currently')->nullable();
             $table->timestamps();
         });

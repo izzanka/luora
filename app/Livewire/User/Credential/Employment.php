@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire\User\Profile;
+namespace App\Livewire\User\Credential;
 
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 
-class ProfileIndex extends Component
+class Employment extends Component
 {
     #[Rule(['required','string','max:40'])]
     public $position;
@@ -32,16 +32,16 @@ class ProfileIndex extends Component
         $this->employment_currently = auth()->user()->employment->currently ?? false;
     }
 
-    public function employmentCredential()
-    {
-        $year_or_currently = $this->employment_currently ? 'present' : $this->employment_end_year;
-        $year_or_null = $year_or_currently ? ' (' . $this->employment_start_year . ' - ' . $year_or_currently . ')' : ' (' . $this->employment_start_year . ')';
+    // public function employmentCredential()
+    // {
+    //     $year_or_currently = $this->employment_currently ? 'present' : $this->employment_end_year;
+    //     $year_or_null = $year_or_currently ? ' (' . $this->employment_start_year . ' - ' . $year_or_currently . ')' : ' (' . $this->employment_start_year . ')';
 
-        return [
-            'credential' => $this->position . ' at ' . $this->company,
-            'year' => $year_or_null,
-        ];
-    }
+    //     return [
+    //         'credential' => $this->position . ' at ' . $this->company,
+    //         'year' => $year_or_null,
+    //     ];
+    // }
 
     public function updateEmploymentCredential()
     {
@@ -92,6 +92,6 @@ class ProfileIndex extends Component
 
     public function render()
     {
-        return view('livewire.user.profile.profile-index');
+        return view('livewire.user.credential.employment');
     }
 }

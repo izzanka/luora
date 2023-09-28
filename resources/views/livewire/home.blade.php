@@ -22,7 +22,7 @@
                                         </button>
                                     </div>
                                     <div class="col-4">
-                                        <a href="" class="btn btn-ghost-secondary w-100 btn-pill">
+                                        <a href="{{ route('answer.index') }}" class="btn btn-ghost-secondary w-100 btn-pill">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
@@ -54,7 +54,7 @@
                     $from = 'home';
                 @endphp
                 @foreach ($answers as $answer)
-                    <livewire:user.answer :$answer :$from :key="$answer->id"/>
+                    <livewire:user.answer :$answer :key="$answer->id" :$from/>
                 @endforeach
             </div>
             <div class="col-3">
@@ -92,6 +92,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            <label class="form-label">Question</label>
                             <input type="text" class="form-control form-control-flush mt-3 @error('title') is-invalid @enderror" wire:model.blur="title" placeholder="Start your question with 'What', 'How', 'Why', etc."/>
                             @error('title')
                                 <div class="invalid-feedback">

@@ -16,9 +16,9 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->string('school',60);
-            $table->string('primary',30);
+            $table->string('major',30);
             $table->string('degree_type',12)->nullable();
-            $table->string('graduation_year',4)->nullable();
+            $table->year('graduation_year')->nullable();
             $table->timestamps();
         });
     }

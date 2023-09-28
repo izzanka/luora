@@ -102,7 +102,7 @@
                                 <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if(auth()->user()->image == null) 'https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset(auth()->user()->image) }} @endif)"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <a class="dropdown-item text-dark" href="{{ route('profile.index', auth()->user()->username_slug) }}">
+                                <a target="_blank" class="dropdown-item text-dark" href="{{ route('profile.index', auth()->user()->username_slug) }}">
                                     {{ auth()->user()->username }}
                                 </a>
                                 <div class="dropdown-divider"></div>
@@ -129,6 +129,7 @@
             <div class="page-wrapper">
                 <div class="container">
                     {{ $slot ?? null }}
+                    @yield('main')
                 </div>
             </div>
 
@@ -169,6 +170,23 @@
                     Livewire.dispatch('increase-limit');
                 }
             }
+
+            window.addEventListener('swal-dialog',function(e){
+                Swal.fire({
+                    title: e.detail.title,
+                    icon: e.detail.icon,
+                    showCancelButton: e.detail.showCancelButton,
+                    confirmButtonText: e.detail.confirmButtonText,
+                    cancelButtonColor: e.detail.cancelButtonColor,
+                    confirmButtonColor: e.detail.confirmButtonColor,
+                }).then((result) => {
+                    if(result.isConfirmed){
+                        if(e.detail.name == 'answer'){
+                            Livewire.dispatch('swal-answer-delete', {answer: e.detail.answer_id})
+                        }
+                    }
+                });
+            });
         </script>
     </body>
 </html>
