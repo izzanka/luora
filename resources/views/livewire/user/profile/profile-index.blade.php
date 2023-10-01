@@ -12,11 +12,12 @@
                                 <b style="font-size: 27px">
                                     {{ auth()->user()->username }}
                                 </b>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#profileModal">Edit profile</a>
                             </div>
                         </div>
-                        <h3 class="mt-1 text-primary">
+                        <h3 class="mt-1 text-secondary">
                             @if (auth()->user()->credential == null)
-                                <a href="" class="text-secondary" data-bs-toggle="modal" data-bs-target="#addProfileCredentialModal">Add profile credential</a>
+                                <a href="" data-bs-toggle="modal" data-bs-target="#profileModal">Add profile credential</a>
                             @else
                                 {{ auth()->user()->credential }}
                             @endif
@@ -28,7 +29,7 @@
                 </div>
                 <div class="mt-3 ms-1">
                     @if (auth()->user()->description == null)
-                        <a href="" class="text-secondary">Write a description about yourself</a>
+                        <a href="" class="text-secondary" data-bs-toggle="modal" data-bs-target="#profileModal">Write a description about yourself</a>
                     @else
                         {{ auth()->user()->description }}
                     @endif
@@ -36,10 +37,10 @@
                 <div class="mt-4">
                     <div class="row text-center">
                         <div class="col-3">
-                            <a href="" class="text-secondary">{{ auth()->user()->answers()->count() }} Answers</a>
+                            <a href="#" class="@if($answers) text-danger @else text-secondary @endif " wire:click.prevent="showAnswers">{{ auth()->user()->answers()->count() }} Answers</a>
                         </div>
                         <div class="col-3">
-                            <a href="" class="text-secondary">{{ auth()->user()->questions()->count() }} Questions</a>
+                            <a href="" class="@if($questions) text-danger @else text-secondary @endif" wire:click.prevent="showQuestions">{{ auth()->user()->questions()->count() }} Questions</a>
                         </div>
                         <div class="col-3">
                             <a href="" class="text-secondary">0 Followers</a>
@@ -49,7 +50,32 @@
                         </div>
                     </div>
                 </div>
-                <hr class="mt-3">
+                <hr class="mt-3 mb-3">
+                @if ($answers)
+                    @foreach ($answers as $answer)
+                        <div>
+                            <div>
+                                <a href="{{ route('question.index', $answer->question->title_slug) }}" class="text-dark"><b>{{ $answer->question->title }}</b></a>
+                            </div>
+                            <div class="mt-1">
+                                {{ $answer->answer }}
+                            </div>
+                            <hr class="mt-3 mb-3">
+                        </div>
+                    @endforeach
+                @endif
+
+                @if ($questions)
+                    @foreach ($questions as $question)
+                        <div>
+                            <div>
+                                <a href="{{ route('question.index', $question->title_slug) }}" class="text-dark"><b>{{ $question->title }}</b></a>
+                            </div>
+                            <hr class="mt-3 mb-3">
+                        </div>
+                    @endforeach
+                @endif
+
             </div>
             <div class="col-2">
 
@@ -126,7 +152,47 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="employmentModal" tabindex="-1" wire:ignore.self>
+    <div class="modal" id="profileModal" tabindex="-1" wire:ignore.self>
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form wire:submit="updateProfile">
+                    <div class="modal-header">
+                        <b>Edit profile</b>
+                    </div>
+                    <div class="modal-body">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control @error('username') is-invalid @enderror" wire:model="username" />
+                        @error('username')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                        <label class="form-label mt-3">Credential</label>
+                        <input type="text" class="form-control @error('credential') is-invalid @enderror" wire:model="credential" />
+                        @error('credential')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                        <label class="form-label mt-3">Description</label>
+                        <input type="text" class="form-control @error('description') is-invalid @enderror" wire:model="description" />
+                        @error('description')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-ghost-secondary btn-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-pill">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{-- <div class="modal" id="employmentModal" tabindex="-1" wire:ignore.self>
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <form wire:submit="addEmployment">
@@ -319,7 +385,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{--
     <script>
         let employmentStartYearDropdown = document.getElementById('employment-start-year');

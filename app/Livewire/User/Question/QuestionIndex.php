@@ -18,15 +18,15 @@ class QuestionIndex extends Component
 
     #[Rule(['required','string'])]
     public string $answer = '';
-    public int $disabled;
+    public int $already_answer;
+    public string $sort_by = '';
 
-    #[On('answer-deleted')]
-    #[On('answered')]
     public function mount(Question $question)
     {
         $this->question = $question;
-        $this->disabled = Answer::where('user_id', auth()->id())->where('question_id', $question->id)->count();
+        $this->already_answer = Answer::where('user_id', auth()->id())->where('question_id', $question->id)->count();
         $this->total_answers = Answer::where('question_id', $question->id)->count();
+        $this->sort_by = 'Recent';
     }
 
     public function answerQuestion()
@@ -35,10 +35,19 @@ class QuestionIndex extends Component
 
         try {
 
-            if($this->disabled > 1)
+            if($this->already_answer != 0)
             {
                 $this->dispatch('swal',
                     title: 'You already answered the question',
+                    icon: 'warning',
+                );
+
+                $this->reset('answer');
+
+            }else if($this->question->user_id == auth()->id())
+            {
+                $this->dispatch('swal',
+                    title: 'Can`t answer your own question',
                     icon: 'warning',
                 );
 
@@ -53,11 +62,11 @@ class QuestionIndex extends Component
             $this->question->touch();
 
             $this->dispatch('swal',
-                title: 'You answer the question',
+                title: 'Question answered',
                 icon: 'success',
             );
-            $this->dispatch('answered');
-            // $this->redirect(route('question.index', $this->question->title_slug));
+
+            $this->redirect(route('question.index', $this->question->title_slug));
 
         } catch (\Throwable $th) {
             $this->dispatch('swal',
@@ -83,14 +92,21 @@ class QuestionIndex extends Component
         }
     }
 
+    public function sort()
+    {
+        $this->sort_by == 'Recent' ? $this->sort_by = 'Upvote' : $this->sort_by = 'Recent';
+        $this->render();
+    }
+
     #[On('swal-answer-delete')]
     public function delete(Answer $answer)
     {
         $answer->load('question');
+        $question_title_slug = $answer->question->title_slug;
 
         if(auth()->id() != $answer->user_id)
         {
-            $this->redirect(route('question.index', $answer->question->title_slug));
+            $this->redirect(route('question.index', $question_title_slug));
         }
 
         try {
@@ -103,7 +119,7 @@ class QuestionIndex extends Component
                 icon: 'success',
             );
 
-            $this->dispatch('answer-deleted');
+            $this->redirect(route('question.index', $question_title_slug));
 
         } catch (\Throwable $th) {
             $this->dispatch('swal',
@@ -113,11 +129,13 @@ class QuestionIndex extends Component
         }
     }
 
-    #[On('answer-deleted')]
-    #[On('answered')]
     public function render()
     {
-        $answers = Answer::with(['question','user'])->where('question_id', $this->question->id)->latest()->paginate($this->limitPerPage);
+        if($this->sort_by == 'Recent'){
+            $answers = Answer::with(['question','user'])->where('question_id', $this->question->id)->latest()->paginate($this->limitPerPage);
+        }else if($this->sort_by == 'Upvote'){
+            $answers = Answer::with(['question','user'])->where('question_id', $this->question->id)->orderByDesc('total_upvotes')->paginate($this->limitPerPage);
+        }
         $questions = Question::where('user_id', '!=', auth()->id())->where('id', '!=', $this->question->id)->latest()->take(5)->get();
         return view('livewire.user.question.question-index', compact('answers','questions'));
     }

@@ -51,4 +51,31 @@ class User extends Authenticatable
     public function location(){
         return $this->hasOne(Location::class);
     }
+
+    public function follow($user_id) {
+        if(!$this->isFollowing($user_id)) {
+            Follow::create([
+                'user_id' => auth()->id(),
+                'following_id' => $user_id
+            ]);
+        }
+    }
+
+    public function unfollow($user_id) {
+        if($this->isFollowing($user_id)){
+            Follow::where('user_id', auth()->id())->where('following_id', $user_id)->delete();
+        }
+    }
+
+    public function isFollowing($user_id) {
+        return $this->following()->where('users.id', $user_id)->exists();
+    }
+
+    public function following() {
+        return $this->hasManyThrough(User::class, Follow::class, 'user_id', 'id', 'id', 'following_id');
+    }
+
+    public function followers() {
+        return $this->hasManyThrough(User::class, Follow::class, 'following_id', 'id', 'id', 'user_id');
+    }
 }

@@ -9,7 +9,13 @@
                     <a href="" class="text-dark">
                         <b style="font-size: 15px">{{ $answer->user->username }}</b>
                     </a>
-                    @if(auth()->id() != $answer->user->id) &#8226; <a href="" style="font-size: 13px">Follow</a> @endif
+                    @if(auth()->id() != $answer->user->id) &#8226;
+                        @if(!$followed)
+                            <a href="#" style="font-size: 13px" wire:click.prevent="follow"> Follow </a>
+                        @else
+                            <a href="#" style="font-size: 13px" wire:click.prevent="unfollow" class="text-secondary"> Following </a>
+                        @endif
+                    @endif
                     <div class="text-secondary" style="font-size: 13px">
                         {{ $answer->user->credential }} @if($answer->user->credential) &#8226; @endif  <a href="" class="text-secondary">{{ $answer->created_at->diffForHumans() }}</a>
                     </div>
@@ -131,7 +137,11 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-ghost-secondary btn-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-pill">Save</button>
+                        <button type="submit" class="btn btn-primary btn-pill">
+                            <div wire:loading wire:target="edit">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                            </div>
+                            Save</button>
                     </div>
                 </form>
             </div>

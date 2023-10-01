@@ -13,12 +13,11 @@ class QuestionShow extends Component
 
     #[Rule(['required','string'])]
     public string $answer = '';
-    public bool $disabled;
+    public int $already_answer;
 
     public function mount()
     {
-        $check_if_already_answered = Answer::where('user_id', auth()->id())->where('question_id', $this->question->id)->count();
-        $check_if_already_answered > 0 ? $this->disabled = true : $this->disabled = false;
+        $this->already_answer = Answer::where('user_id', auth()->id())->where('question_id', $this->question->id)->count();
     }
 
     public function answerQuestion()
@@ -27,10 +26,19 @@ class QuestionShow extends Component
 
         try {
 
-            if($this->disabled)
+            if($this->already_answer != 0)
             {
                 $this->dispatch('swal',
                     title: 'You already answered the question',
+                    icon: 'warning',
+                );
+
+                $this->reset('answer');
+            }
+            else if($this->question->user_id == auth()->id())
+            {
+                $this->dispatch('swal',
+                    title: 'Can`t answer your own question',
                     icon: 'warning',
                 );
 
@@ -45,7 +53,7 @@ class QuestionShow extends Component
             $this->question->touch();
 
             $this->dispatch('swal',
-                title: 'You answer the question',
+                title: 'Question answered',
                 icon: 'success',
             );
 

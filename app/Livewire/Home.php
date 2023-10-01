@@ -3,8 +3,12 @@
 namespace App\Livewire;
 
 use App\Models\Answer;
+use App\Models\Question;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,8 +17,15 @@ class Home extends Component
     use WithPagination;
     private $limitPerPage = 5;
 
-    #[Rule(['required','string','min:10','unique:questions'])]
+    #[Rule(['required','string','min:10','max:120'])]
     public string $title;
+
+    #[Url]
+    public $search = '';
+
+    protected $queryString = [
+        'search',
+    ];
 
     #[On('increase-limit')]
     public function increaseLimitPerPage()
@@ -46,33 +57,49 @@ class Home extends Component
 
     public function addQuestion()
     {
-        $this->validate();
+        $this->validateOnly('title');
 
         try {
 
             $title = $this->editQuestionTitle();
             $title_slug = str()->slug($this->title);
 
-            auth()->user()->questions()->create([
-                'title' => $title,
-                'title_slug' => $title_slug,
-            ]);
+            $sameQuestion = Question::where('title_slug', $title_slug)->count();
+
+            if($sameQuestion != 0)
+            {
+                $this->dispatch('swal',
+                    title: 'Question already been asked',
+                    icon: 'error',
+                );
+
+            }else{
+
+                auth()->user()->questions()->create([
+                    'title' => $title,
+                    'title_slug' => $title_slug,
+                ]);
+
+                $this->dispatch('swal',
+                    title: 'Question asked',
+                    icon: 'success',
+                );
+            }
 
             $this->redirect(route('question.index', $title_slug));
 
         } catch (\Throwable $th) {
             $this->dispatch('swal',
-                title: 'Ask question error ' . $th->getMessage(),
+                title: 'Ask question error',
                 icon: 'error',
             );
         }
     }
 
-
-
     public function render()
     {
-        $answers = Answer::where('user_id','!=',auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
-        return view('livewire.home', compact('answers'));
+        $answers = Answer::groupBy('user_id')->where('user_id','!=',auth()->id())->whereNull('status')->latest()->distinct()->paginate($this->limitPerPage);
+        $users = User::select('id','username','username_slug')->where('username', 'like', '%'.$this->search.'%')->latest()->get();
+        return view('livewire.home', compact('answers','users'));
     }
 }

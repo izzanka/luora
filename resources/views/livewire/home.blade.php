@@ -53,24 +53,47 @@
                 @php
                     $from = 'home';
                 @endphp
-                @foreach ($answers as $answer)
-                    <livewire:user.answer :$answer :key="$answer->id" :$from/>
-                @endforeach
+                <div class="mb-4">
+                    @foreach ($answers as $answer)
+                        <livewire:user.answer :$answer :key="$answer->id" :$from/>
+                    @endforeach
+                </div>
             </div>
             <div class="col-3">
-                <div class="mb-3">
-                    <div class="input-icon">
-                        <input type="text" value="" class="form-control" placeholder="Search username…" wire:model.live="search"/>
-                        <span class="input-icon-addon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-                                <path d="M21 21l-6 -6"></path>
-                             </svg>
-                        </span>
-                    </div>
+                <div class="input-icon">
+                    <input type="text" value="" class="form-control" placeholder="Search username…" wire:model.live="search"/>
+                    <span class="input-icon-addon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                            <path d="M21 21l-6 -6"></path>
+                            </svg>
+                    </span>
                 </div>
-                <div>
+                @if (!empty($search))
+                    <div class="mt-3">
+                        @if ($users->isEmpty())
+                            <div class="text-center text-secondary">
+                                User not found
+                            </div>
+                        @endif
+                        @foreach ($users as $user)
+                            <div class="mt-2">
+                                <div class="card">
+                                        <div class="card-body">
+                                            <a href="" class="text-dark">
+                                                <b>
+                                                    {{ $user->username }}
+                                                </b>
+                                            </a>
+
+                                        </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+                <div class="mt-3">
                     <button class="btn btn-secondary w-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -93,7 +116,7 @@
                         </div>
                         <div class="modal-body">
                             <label class="form-label">Question</label>
-                            <input type="text" class="form-control form-control-flush mt-3 @error('title') is-invalid @enderror" wire:model.blur="title" placeholder="Start your question with 'What', 'How', 'Why', etc."/>
+                            <input type="text" class="form-control form-control-flush mt-3 @error('title') is-invalid @enderror" wire:model="title" placeholder="Start your question with 'What', 'How', 'Why', etc."/>
                             @error('title')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -102,7 +125,11 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-ghost-secondary btn-pill" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary btn-pill">Add Question</button>
+                            <button type="submit" class="btn btn-primary btn-pill">
+                                <div wire:loading wire:target="addQuestion">
+                                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                </div>
+                                Add Question</button>
                         </div>
                     </form>
                 </div>
