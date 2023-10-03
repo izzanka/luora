@@ -6,7 +6,7 @@
                     <span class="avatar rounded-circle" style="background-image: url(@if($answer->user->image == null) 'https://ui-avatars.com/api/?name={{ $answer->user->username }}&background=DE6060&color=fff&rounded=true&size=56' @else {{ asset($answer->user->image) }} @endif)"></span>
                 </div>
                 <div class="col-11">
-                    <a href="" class="text-dark">
+                    <a href="{{ route('profile.index', $answer->user->username_slug) }}" class="text-dark">
                         <b style="font-size: 15px">{{ $answer->user->username }}</b>
                     </a>
                     @if(auth()->id() != $answer->user->id) &#8226;

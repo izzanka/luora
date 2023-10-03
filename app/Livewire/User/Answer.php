@@ -82,11 +82,14 @@ class Answer extends Component
     {
         try {
 
-            auth()->user()->follow($this->answer->user_id);
-            $this->followed = true;
-
-            $this->render();
-
+            if($this->answer->user_id != auth()->id())
+            {
+                auth()->user()->follow($this->answer->user_id);
+                $this->followed = true;
+    
+                $this->render();    
+            }
+           
         } catch (\Throwable $th) {
             $this->dispatch('swal',
                 title: 'Follow error',
@@ -99,10 +102,13 @@ class Answer extends Component
     {
         try {
 
-            auth()->user()->unfollow($this->answer->user_id);
-            $this->followed = false;
-
-            $this->render();
+            if($this->answer->user_id != auth()->id())
+            {
+                auth()->user()->unfollow($this->answer->user_id);
+                $this->followed = false;
+    
+                $this->render();
+            }
 
         } catch (\Throwable $th) {
             $this->dispatch('swal',
@@ -111,7 +117,6 @@ class Answer extends Component
             );
         }
     }
-
 
     public function report(string $type)
     {

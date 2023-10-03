@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->string('title', 120)->unique();
+            $table->string('title', 200)->unique();
             $table->string('title_slug');
             $table->string('status')->nullable();
             $table->timestamps();

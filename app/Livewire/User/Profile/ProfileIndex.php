@@ -3,6 +3,7 @@
 namespace App\Livewire\User\Profile;
 
 use App\Models\User;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Illuminate\Validation\Rule;
 
@@ -13,14 +14,27 @@ class ProfileIndex extends Component
     // public $employment_start_year;
     // public $employment_end_year;
     // public bool $employment_currently;
+    private $id;
     public $username;
     public $credential;
     public $description;
     public $image;
+    public int $total_followers = 0;
+    public int $total_following = 0;
+    public int $total_answers = 0;
+    public int $total_questions = 0;
     public $answers = null;
     public $questions = null;
+    public $user_followers = null;
+    public $user_following = null;
     public bool $show;
+    public bool $followed;
+    public $employment_credential;
+    public $education_credential;
+    public $location_credential;
+    public $user;
 
+    
     public function rules()
     {
         return [
@@ -32,19 +46,24 @@ class ProfileIndex extends Component
 
     public function mount(User $user)
     {
-        if($user->id != auth()->id()){
-            $this->username = $user->username;
-            $this->credential = $user->credential;
-            $this->description = $user->description;
-            $this->image = $user->image;
-            $this->show = false;
-        }else{
-            $this->username = auth()->user()->username;
-            $this->credential = auth()->user()->credential;
-            $this->description = auth()->user()->description;
-            $this->image = auth()->user()->image;
-            $this->show = true;
-        }
+        $user->load(['answers','questions','employment','education','location']);
+
+        $this->user = $user;
+        $this->username = $user->username;
+        $this->credential = $user->credential;
+        $this->description = $user->description;
+        $this->image = $user->image;
+        $this->total_followers = $user->followers()->count();
+        $this->total_following = $user->following()->count();
+        $this->followed = auth()->user()->isFollowing($user->id);
+        $this->total_answers = $user->answers()->count();
+        $this->total_questions = $user->questions()->count();
+        $this->employment_credential = null;
+        $this->education_credential = null;
+        $this->location_credential = null;
+        
+        $user->id != auth()->id() ? $this->show = false : $this->show = true;
+
         // $this->position = auth()->user()->employment->position ?? null;
         // $this->company = auth()->user()->employment->company ?? null;
         // $this->employment_start_year = auth()->user()->employment->start_year ?? 2020;
@@ -111,6 +130,46 @@ class ProfileIndex extends Component
     //     }
     // }
 
+    public function follow()
+    {
+        try {
+
+            if($this->user->id != auth()->id())
+            {
+                auth()->user()->follow($this->user->id);
+                $this->followed = true;
+                $this->total_followers = $this->user->followers()->count();
+                $this->render();    
+            }
+           
+        } catch (\Throwable $th) {
+            $this->dispatch('swal',
+                title: 'Follow error',
+                icon: 'error',
+            );
+        }
+    }
+
+    public function unfollow()
+    {
+        try {
+
+            if($this->user->id != auth()->id())
+            {
+                auth()->user()->unfollow($this->user->id);
+                $this->followed = false;
+                $this->total_followers = $this->user->followers()->count();
+                $this->render();
+            }
+
+        } catch (\Throwable $th) {
+            $this->dispatch('swal',
+                title: 'Unfollow error',
+                icon: 'error',
+            );
+        }
+    }
+
     public function updateProfile()
     {
         $this->validate();
@@ -141,17 +200,37 @@ class ProfileIndex extends Component
         }
     }
 
+    public function showReset()
+    {
+        $this->answers = null;
+        $this->questions = null;
+    }
+
     public function showAnswers()
     {
-        $this->questions = null;
-        $this->answers = auth()->user()->answers()->select(['id','user_id','question_id','answer','created_at'])->with('question:id,title,title_slug')->latest()->get();
+        $this->showReset();
+        $this->answers = $this->user->answers()->select(['id','user_id','question_id','answer','created_at'])->with('question:id,title,title_slug')->latest()->get();
         $this->render();
     }
 
     public function showQuestions()
     {
-        $this->answers = null;
-        $this->questions = auth()->user()->questions()->latest()->get();
+        $this->showReset();
+        $this->questions = $this->user->questions()->latest()->get();
+        $this->render();
+    }
+
+    public function showFollowers()
+    {
+        $this->showReset();
+        $this->user_followers = $this->user->followers()->get();
+        $this->render();
+    }
+
+    public function showFollowing()
+    {
+        $this->showReset();
+        $this->user_following = $this->user->following()->get();
         $this->render();
     }
 

@@ -17,7 +17,7 @@ class Home extends Component
     use WithPagination;
     private $limitPerPage = 5;
 
-    #[Rule(['required','string','min:10','max:120'])]
+    #[Rule(['required','string','min:10','max:200'])]
     public string $title;
 
     #[Url]

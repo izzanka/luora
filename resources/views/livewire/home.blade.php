@@ -80,14 +80,16 @@
                         @foreach ($users as $user)
                             <div class="mt-2">
                                 <div class="card">
-                                        <div class="card-body">
-                                            <a href="" class="text-dark">
-                                                <b>
-                                                    {{ $user->username }}
-                                                </b>
-                                            </a>
-
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($user->image == null) 'https://ui-avatars.com/api/?name={{ $user->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($user->image) }} @endif)"></span>
+                                            </div>
+                                            <div class="col-10 mt-1">
+                                                <a href="" class="ms-1">{{ $user->username }}</a>
+                                            </div>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
