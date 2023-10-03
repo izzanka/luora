@@ -92,7 +92,7 @@
                                         <path d="M16 5l3 3"></path>
                                     </svg>
                                 Edit</a>
-                                <a class="dropdown-item" href="#" wire:click="confirmDelete({{ $answer->id }})">
+                                <a class="dropdown-item" href="#" wire:click.prevent="confirmDelete({{ $answer->id }})">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M4 7l16 0"></path>

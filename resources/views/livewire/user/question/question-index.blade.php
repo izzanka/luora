@@ -25,7 +25,7 @@
                         Sort
                         <button class="btn ms-2 btn-pill dropdown-toggle" data-bs-toggle="dropdown">{{ $sort_by }}</button>
                         <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item" wire:click="sort"> {{ $sort_by == 'Recent' ? 'Upvote' : 'Recent' }}</a>
+                            <a href="#" class="dropdown-item" wire:click.prevent="sort"> {{ $sort_by == 'Recent' ? 'Upvote' : 'Recent' }}</a>
                         </div>
                     </div>
                 </div>

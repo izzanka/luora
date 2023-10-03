@@ -14,7 +14,6 @@ class ProfileIndex extends Component
     // public $employment_start_year;
     // public $employment_end_year;
     // public bool $employment_currently;
-    private $id;
     public $username;
     public $credential;
     public $description;
@@ -34,7 +33,7 @@ class ProfileIndex extends Component
     public $location_credential;
     public $user;
 
-    
+
     public function rules()
     {
         return [
@@ -61,7 +60,7 @@ class ProfileIndex extends Component
         $this->employment_credential = null;
         $this->education_credential = null;
         $this->location_credential = null;
-        
+
         $user->id != auth()->id() ? $this->show = false : $this->show = true;
 
         // $this->position = auth()->user()->employment->position ?? null;
@@ -139,9 +138,10 @@ class ProfileIndex extends Component
                 auth()->user()->follow($this->user->id);
                 $this->followed = true;
                 $this->total_followers = $this->user->followers()->count();
-                $this->render();    
+                $this->showReset();
+                $this->render();
             }
-           
+
         } catch (\Throwable $th) {
             $this->dispatch('swal',
                 title: 'Follow error',
@@ -159,6 +159,7 @@ class ProfileIndex extends Component
                 auth()->user()->unfollow($this->user->id);
                 $this->followed = false;
                 $this->total_followers = $this->user->followers()->count();
+                $this->showReset();
                 $this->render();
             }
 
@@ -176,25 +177,28 @@ class ProfileIndex extends Component
 
         try {
 
-            $username_slug = str()->slug($this->username);
+            if($this->user->id != auth()->id())
+            {
+                $username_slug = str()->slug($this->username);
 
-            auth()->user()->update([
-                'username' => $this->username,
-                'username_slug' => $username_slug,
-                'credential' => $this->credential,
-                'description' => $this->description
-            ]);
+                auth()->user()->update([
+                    'username' => $this->username,
+                    'username_slug' => $username_slug,
+                    'credential' => $this->credential,
+                    'description' => $this->description
+                ]);
 
-            $this->dispatch('swal',
-                title: 'Edit profile success',
-                icon: 'success',
-            );
+                $this->dispatch('swal',
+                    title: 'Edit profile success',
+                    icon: 'success',
+                );
+            }
 
             $this->redirect(route('profile.index', $username_slug));
 
         } catch (\Throwable $th) {
             $this->dispatch('swal',
-                title: 'Edit profile error ' . $th->getMessage(),
+                title: 'Edit profile error',
                 icon: 'error',
             );
         }
@@ -204,34 +208,74 @@ class ProfileIndex extends Component
     {
         $this->answers = null;
         $this->questions = null;
+        $this->user_followers = null;
+        $this->user_following = null;
     }
 
     public function showAnswers()
     {
-        $this->showReset();
-        $this->answers = $this->user->answers()->select(['id','user_id','question_id','answer','created_at'])->with('question:id,title,title_slug')->latest()->get();
-        $this->render();
+        try {
+
+            $this->showReset();
+            $this->answers = $this->user->answers()->select(['id','user_id','question_id','answer','created_at'])->with('question:id,title,title_slug')->latest()->get();
+            $this->render();
+
+        } catch (\Throwable $th) {
+            $this->dispatch('swal',
+                title: 'Get user answers error',
+                icon: 'error',
+            );
+        }
+
     }
 
     public function showQuestions()
     {
-        $this->showReset();
-        $this->questions = $this->user->questions()->latest()->get();
-        $this->render();
+        try {
+
+            $this->showReset();
+            $this->questions = $this->user->questions()->latest()->get();
+            $this->render();
+
+        } catch (\Throwable $th) {
+            $this->dispatch('swal',
+                title: 'Get user questions error',
+                icon: 'error',
+            );
+        }
+
     }
 
     public function showFollowers()
     {
-        $this->showReset();
-        $this->user_followers = $this->user->followers()->get();
-        $this->render();
+        try {
+
+            $this->showReset();
+            $this->user_followers = $this->user->followers()->get();
+            $this->render();
+
+        } catch (\Throwable $th) {
+            $this->dispatch('swal',
+                title: 'Get user followers error',
+                icon: 'error',
+            );
+        }
     }
 
     public function showFollowing()
     {
-        $this->showReset();
-        $this->user_following = $this->user->following()->get();
-        $this->render();
+        try {
+
+            $this->showReset();
+            $this->user_following = $this->user->following()->get();
+            $this->render();
+
+        } catch (\Throwable $th) {
+            $this->dispatch('swal',
+                title: 'Get user following error',
+                icon: 'error',
+            );
+        }
     }
 
     public function render()

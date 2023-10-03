@@ -6,7 +6,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 text-center">
-                                <input type="text" class="form-control form-control-rounded" placeholder="What do you want to ask or share?">
+                                <input type="text" class="form-control form-control-rounded" placeholder="What do you want to ask or share?" type="button" data-bs-toggle="modal" data-bs-target="#askQuestionModal">
                                 <div class="row mt-3">
                                     <div class="col-4">
                                         <button class="btn btn-ghost-secondary w-100 btn-pill" type="button" data-bs-toggle="modal" data-bs-target="#askQuestionModal">
@@ -61,7 +61,7 @@
             </div>
             <div class="col-3">
                 <div class="input-icon">
-                    <input type="text" value="" class="form-control" placeholder="Search username…" wire:model.live="search"/>
+                    <input type="text" class="form-control" placeholder="Search by username…" wire:model.live="search"/>
                     <span class="input-icon-addon">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -80,16 +80,18 @@
                         @foreach ($users as $user)
                             <div class="mt-2">
                                 <div class="card">
+                                    <a href="{{ route('profile.index', $user->username_slug) }}">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-2">
                                                 <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($user->image == null) 'https://ui-avatars.com/api/?name={{ $user->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($user->image) }} @endif)"></span>
                                             </div>
                                             <div class="col-10 mt-1">
-                                                <a href="" class="ms-1">{{ $user->username }}</a>
+                                               <span class="ms-1 text-dark">{{ $user->username }}</span>
                                             </div>
                                         </div>
                                     </div>
+                                    </a>
                                 </div>
                             </div>
                         @endforeach

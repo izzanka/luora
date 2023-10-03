@@ -37,7 +37,7 @@
                         @if(!$show)
                             <div>
                                 @if(!$followed)
-                                <button class="btn btn-pill btn-primary btn-sm" wire:click.prevent="follow">
+                                <button class="btn btn-pill btn-primary btn-sm" wire:click="follow">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="me-1 icon icon-tabler icon-tabler-user-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
@@ -48,7 +48,7 @@
                                         Follow
                                     </button>
                                 @else
-                                <button class="btn btn-pill btn-primary btn-sm" wire:click.prevent="unfollow">
+                                <button class="btn btn-pill btn-primary btn-sm" wire:click="unfollow">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="me-1 icon icon-tabler icon-tabler-user-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
@@ -122,14 +122,16 @@
                 @endif
                 @if($user_followers)
                     @forelse ($user_followers as $u_f)
-                        <div class="row">
-                            <div class="col-1">
-                                <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($u_f->image == null) 'https://ui-avatars.com/api/?name={{ $u_f->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($u_f->image) }} @endif)"></span>
+                        <a href="">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($u_f->image == null) 'https://ui-avatars.com/api/?name={{ $u_f->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($u_f->image) }} @endif)"></span>
+                                </div>
+                                <div class="col-11 mt-1">
+                                    <span class="text-dark">{{ $u_f->username }}</span>
+                                </div>
                             </div>
-                            <div class="col-11 mt-1">
-                                <a href="">{{ $u_f->username }}</a>
-                            </div>
-                        </div>
+                        </a>
                         <hr class="mt-3 mb-3">
                     @empty
                         <div class="text-center">
@@ -139,14 +141,16 @@
                 @endif
                 @if($user_following)
                     @forelse ($user_following as $u_f)
-                        <div class="row">
-                            <div class="col-1">
-                                <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($u_f->image == null) 'https://ui-avatars.com/api/?name={{ $u_f->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($u_f->image) }} @endif)"></span>
+                        <a href="">
+                            <div class="row">
+                                <div class="col-1">
+                                    <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($u_f->image == null) 'https://ui-avatars.com/api/?name={{ $u_f->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($u_f->image) }} @endif)"></span>
+                                </div>
+                                <div class="col-11 mt-1">
+                                    <span class="text-dark">{{ $u_f->username }}</span>
+                                </div>
                             </div>
-                            <div class="col-11 mt-1">
-                                <a href="">{{ $u_f->username }}</a>
-                            </div>
-                        </div>
+                        </a>
                         <hr class="mt-3 mb-3">
                     @empty
                         <div class="text-center">
