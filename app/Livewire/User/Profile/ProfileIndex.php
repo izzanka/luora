@@ -40,6 +40,7 @@ class ProfileIndex extends Component
             'username' => ['required','string','max:25', Rule::unique('users')->ignore(auth()->id())],
             'credential' => ['string','max:60'],
             'description' => ['string','max:255'],
+            'image' => ['image','max:2048']
         ];
     }
 
@@ -57,77 +58,42 @@ class ProfileIndex extends Component
         $this->followed = auth()->user()->isFollowing($user->id);
         $this->total_answers = $user->answers()->count();
         $this->total_questions = $user->questions()->count();
-        $this->employment_credential = null;
-        $this->education_credential = null;
-        $this->location_credential = null;
+        $this->employment_credential = $user->employment()->exists() ? $this->employmentCredential() : $this->employment_credential = null;
+        $this->education_credential = $user->education()->exists() ? $this->educationCredential() : $this->education_credential = null;
+        $this->location_credential = $user->location()->exists() ? $this->locationCredential() : $this->location_credential = null;
 
         $user->id != auth()->id() ? $this->show = false : $this->show = true;
-
-        // $this->position = auth()->user()->employment->position ?? null;
-        // $this->company = auth()->user()->employment->company ?? null;
-        // $this->employment_start_year = auth()->user()->employment->start_year ?? 2020;
-        // $this->employment_end_year = auth()->user()->employment->end_year ?? null;
-        // $this->employment_currently = auth()->user()->employment->currently ?? false;
-
     }
 
-    // public function employmentCredential()
-    // {
-    //     $year_or_currently = $this->employment_currently ? 'present' : $this->employment_end_year;
-    //     $year_or_null = $year_or_currently ? ' (' . $this->employment_start_year . ' - ' . $year_or_currently . ')' : ' (' . $this->employment_start_year . ')';
+    public function employmentCredential()
+    {
+        $year_or_currently = $this->user->employment->currently ? 'present' : $this->user->employment->end_year;
+        $year_or_null = $year_or_currently ? ' (' . $this->user->employment->start_year . ' - ' . $year_or_currently . ')' : ' (' . $this->user->employment->start_year . ')';
 
-    //     return [
-    //         'credential' => $this->position . ' at ' . $this->company,
-    //         'year' => $year_or_null,
-    //     ];
-    // }
+        return [
+            'credential' => $this->user->employment->position . ' at ' . $this->user->employment->company,
+            'year' => $year_or_null,
+        ];
+    }
 
-    // public function updateEmploymentCredential()
-    // {
-    //     $this->validateOnly(['position','company','employment_start_year','employment_end_year','employment_currently']);
+    public function educationCredential()
+    {
+        $year_or_currently = $this->user->education->graduation_year ? ' (Graduated ' . $this->user->education->graduation_year . ')' : null;
+        return [
+            'credential' => $this->user->education->degree_type . ' in ' . $this->user->education->major . ', ' . $this->user->education->school,
+            'year' => $year_or_currently,
+        ];
+    }
 
-    //     try {
+    public function locationCredential(){
+        $year_or_currently = $this->user->location->currently ? 'present' : $this->user->location->end_year;
+        $year_or_null = $year_or_currently ? ' (' . $this->user->location->start_year . ' - ' . $year_or_currently . ')' : ' (' . $this->user->location->start_year . ')';
 
-    //         if(!auth()->user()->employment()->exists())
-    //         {
-    //             auth()->user()->employment->create([
-    //                 'position' => $this->position,
-    //                 'company' => $this->company,
-    //                 'start_year' => $this->start_year,
-    //                 'end_year' => $this->end_year,
-    //                 'currently' => $this->currently,
-    //             ]);
-
-    //             $this->dispatch('swal',
-    //                 title: 'Add employment credential success',
-    //                 icon: 'success',
-    //             );
-
-    //         }else{
-
-    //             auth()->user()->employment->update([
-    //                 'position' => $this->position,
-    //                 'company' => $this->company,
-    //                 'start_year' => $this->start_year,
-    //                 'end_year' => $this->end_year,
-    //                 'currently' => $this->currently,
-    //             ]);
-
-    //             $this->dispatch('swal',
-    //                 title: 'Update employment credential success',
-    //                 icon: 'success',
-    //             );
-    //         }
-
-    //         $this->redirect(route('profile.index'));
-
-    //     } catch (\Throwable $th) {
-    //         $this->dispatch('swal',
-    //             title: 'Add employment credential error',
-    //             icon: 'error',
-    //         );
-    //     }
-    // }
+        return [
+            'credential' => 'Lives in ' . $this->user->location->location,
+            'year' => $year_or_null,
+        ];
+    }
 
     public function follow()
     {
@@ -177,7 +143,7 @@ class ProfileIndex extends Component
 
         try {
 
-            if($this->user->id != auth()->id())
+            if($this->user->id == auth()->id())
             {
                 $username_slug = str()->slug($this->username);
 
@@ -198,7 +164,7 @@ class ProfileIndex extends Component
 
         } catch (\Throwable $th) {
             $this->dispatch('swal',
-                title: 'Edit profile error',
+                title: 'Edit profile error ' . $th->getMessage(),
                 icon: 'error',
             );
         }

@@ -86,10 +86,10 @@ class Answer extends Component
             {
                 auth()->user()->follow($this->answer->user_id);
                 $this->followed = true;
-    
-                $this->render();    
+
+                $this->render();
             }
-           
+
         } catch (\Throwable $th) {
             $this->dispatch('swal',
                 title: 'Follow error',
@@ -106,7 +106,7 @@ class Answer extends Component
             {
                 auth()->user()->unfollow($this->answer->user_id);
                 $this->followed = false;
-    
+
                 $this->render();
             }
 

@@ -14,64 +14,38 @@ class Employment extends Component
     #[Rule(['required','string','max:40'])]
     public $company;
 
-    #[Rule(['required','max:4'])]
-    public $employment_start_year;
+    #[Rule(['required','string','min:4','max:4'])]
+    public $start_year;
 
-    #[Rule(['required','max:4'])]
-    public $employment_end_year;
+    #[Rule(['nullable','string','min:4','max:4'])]
+    public $end_year;
 
     #[Rule(['required','boolean'])]
-    public bool $employment_currently;
+    public bool $currently;
 
     public function mount()
     {
         $this->position = auth()->user()->employment->position ?? null;
         $this->company = auth()->user()->employment->company ?? null;
-        $this->employment_start_year = auth()->user()->employment->start_year ?? 2020;
-        $this->employment_end_year = auth()->user()->employment->end_year ?? null;
-        $this->employment_currently = auth()->user()->employment->currently ?? false;
+        $this->start_year = auth()->user()->employment->start_year ?? null;
+        $this->end_year = auth()->user()->employment->end_year ?? null;
+        $this->currently = auth()->user()->employment->currently ?? false;
     }
 
-    // public function employmentCredential()
-    // {
-    //     $year_or_currently = $this->employment_currently ? 'present' : $this->employment_end_year;
-    //     $year_or_null = $year_or_currently ? ' (' . $this->employment_start_year . ' - ' . $year_or_currently . ')' : ' (' . $this->employment_start_year . ')';
-
-    //     return [
-    //         'credential' => $this->position . ' at ' . $this->company,
-    //         'year' => $year_or_null,
-    //     ];
-    // }
-
-    public function updateEmploymentCredential()
+    public function addEmploymentCredential()
     {
-        $this->validateOnly(['position','company','employment_start_year','employment_end_year','employment_currently']);
+        $this->validate();
 
         try {
 
-            if(!auth()->user()->employment()->exists())
-            {
-                auth()->user()->employment()->create([
-                    'position' => $this->position,
-                    'company' => $this->company,
-                    'start_year' => $this->start_year,
-                    'end_year' => $this->end_year,
-                    'currently' => $this->currently,
-                ]);
+            $this->currently ? $end_year = null : $end_year = $this->end_year;
 
-                $this->dispatch('swal',
-                    title: 'Add employment credential success',
-                    icon: 'success',
-                );
-
-                $this->redirect(route('profile.index'));
-            }
-
-            auth()->user()->employment->update([
+            auth()->user()->employment()->updateOrCreate([
+            ],[
                 'position' => $this->position,
                 'company' => $this->company,
                 'start_year' => $this->start_year,
-                'end_year' => $this->end_year,
+                'end_year' => $end_year,
                 'currently' => $this->currently,
             ]);
 
@@ -80,11 +54,46 @@ class Employment extends Component
                 icon: 'success',
             );
 
-            $this->redirect(route('profile.index'));
+            $this->redirect(route('profile.index', auth()->user()->username_slug));
 
         } catch (\Throwable $th) {
             $this->dispatch('swal',
-                title: 'Add employment credential error',
+                title: 'Update employment credential error',
+                icon: 'error',
+            );
+        }
+    }
+
+    public function confirmDelete()
+    {
+        $this->dispatch('swal-dialog',
+            title: 'Delete employment credential?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonColor: '#DB5E5F',
+            confirmButtonColor: '#206BC4',
+            name: 'employment',
+        );
+    }
+
+    #[On('swal-employment-delete')]
+    public function delete()
+    {
+        try {
+
+            auth()->user()->employment->delete();
+
+            $this->dispatch('swal',
+                title: 'Delete employment credential success',
+                icon: 'success',
+            );
+
+            $this->redirect(route('profile.index', auth()->user()->username_slug));
+
+        } catch (\Throwable $th) {
+            $this->dispatch('swal',
+                title: 'Delete employment credential error',
                 icon: 'error',
             );
         }
