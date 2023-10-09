@@ -19,7 +19,7 @@
                                 Add employment credential
                             </div>
                             <div class="card-body">
-                                <label class="form-label">Position</label>
+                                <label class="form-label required">Position</label>
                                 <input type="text" class="form-control @error('position') is-invalid @enderror" wire:model.blur="position" />
                                 @error('position')
                                     <div class="invalid-feedback">
@@ -27,7 +27,7 @@
                                     </div>
                                 @enderror
 
-                                <label class="form-label mt-3">Company</label>
+                                <label class="form-label required mt-3">Company</label>
                                 <input type="text" class="form-control @error('company') is-invalid @enderror" wire:model.blur="company"/>
                                 @error('company')
                                     <div class="invalid-feedback">
@@ -35,7 +35,7 @@
                                     </div>
                                 @enderror
 
-                                <label class="form-label mt-3">Start Year</label>
+                                <label class="form-label required mt-3">Start Year</label>
                                 <input type="number" class="form-control @error('start_year') is-invalid @enderror" wire:model.blur="start_year">
                                 @error('start_year')
                                     <div class="invalid-feedback">
@@ -44,7 +44,7 @@
                                 @enderror
 
                                 @if(!$currently)
-                                    <label class="form-label mt-3">End Year</label>
+                                    <label class="form-label required mt-3">End Year</label>
                                     <input type="number" class="form-control @error('end_year') is-invalid @enderror" wire:model.blur="end_year">
                                     @error('end_year')
                                         <div class="invalid-feedback">

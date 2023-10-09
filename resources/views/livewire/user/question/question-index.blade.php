@@ -23,9 +23,39 @@
                 <div class="mt-3">
                     <div class="text-end">
                         Sort
-                        <button class="btn ms-2 btn-pill dropdown-toggle" data-bs-toggle="dropdown">{{ $sort_by }}</button>
+                        <button class="btn ms-2 btn-pill dropdown-toggle" data-bs-toggle="dropdown">
+                            @if ($sort_by == 'Recent')
+                                <svg xmlns="http://www.w3.org/2000/svg" class="me-2 icon icon-tabler icon-tabler-clock-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M21 12a9 9 0 1 0 -9.972 8.948c.32 .034 .644 .052 .972 .052"></path>
+                                    <path d="M12 7v5l2 2"></path>
+                                    <path d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z"></path>
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" class="me-2 icon icon-tabler icon-tabler-arrow-big-up" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M9 20v-8h-3.586a1 1 0 0 1 -.707 -1.707l6.586 -6.586a1 1 0 0 1 1.414 0l6.586 6.586a1 1 0 0 1 -.707 1.707h-3.586v8a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                </svg>
+                            @endif
+                            {{ $sort_by }}
+                        </button>
                         <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item" wire:click.prevent="sort"> {{ $sort_by == 'Recent' ? 'Upvote' : 'Recent' }}</a>
+                            <a href="#" class="dropdown-item" wire:click.prevent="sort">
+                                @if ($sort_by != 'Recent')
+                                <svg xmlns="http://www.w3.org/2000/svg" class="me-2 icon icon-tabler icon-tabler-clock-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M21 12a9 9 0 1 0 -9.972 8.948c.32 .034 .644 .052 .972 .052"></path>
+                                    <path d="M12 7v5l2 2"></path>
+                                    <path d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z"></path>
+                                </svg>
+                                @else
+                                <svg xmlns="http://www.w3.org/2000/svg" class="me-2 icon icon-tabler icon-tabler-arrow-big-up" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M9 20v-8h-3.586a1 1 0 0 1 -.707 -1.707l6.586 -6.586a1 1 0 0 1 1.414 0l6.586 6.586a1 1 0 0 1 -.707 1.707h-3.586v8a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                </svg>
+                                @endif
+                                {{ $sort_by == 'Recent' ? 'Upvote' : 'Recent' }}
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -62,7 +92,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label class="form-label">Answer</label>
+                            <label class="form-label required">Answer</label>
                             <input type="text" class="form-control form-control-flush mt-3 @error('answer') is-invalid @enderror" wire:model="answer" placeholder="Write your answer"/>
                             @error('answer')
                                 <div class="invalid-feedback">

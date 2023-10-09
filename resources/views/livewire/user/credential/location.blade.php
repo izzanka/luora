@@ -17,7 +17,7 @@
                                 Add location credential
                             </div>
                             <div class="card-body">
-                                <label class="form-label">Location</label>
+                                <label class="form-label required">Location</label>
                                 <input type="text" class="form-control @error('location') is-invalid @enderror" wire:model.blur="location"/>
                                 @error('location')
                                     <div class="invalid-feedback">
@@ -25,7 +25,7 @@
                                     </div>
                                 @enderror
 
-                                <label class="form-label mt-3">Start Year</label>
+                                <label class="form-label required mt-3">Start Year</label>
                                 <input type="text" class="form-control @error('start_year') is-invalid @enderror" wire:model.blur="start_year"/>
                                 @error('start_year')
                                     <div class="invalid-feedback">
@@ -34,7 +34,7 @@
                                 @enderror
 
                                 @if(!$currently)
-                                    <label class="form-label mt-3">End Year</label>
+                                    <label class="form-label required mt-3">End Year</label>
                                     <input type="number" class="form-control @error('end_year') is-invalid @enderror" wire:model.blur="end_year">
                                     @error('end_year')
                                         <div class="invalid-feedback">

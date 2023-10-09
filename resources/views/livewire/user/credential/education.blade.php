@@ -17,28 +17,28 @@
                                 Add education credential
                             </div>
                             <div class="card-body">
-                                <label class="form-label">School</label>
+                                <label class="form-label required">School</label>
                                 <input type="text" class="form-control @error('school') is-invalid @enderror" wire:model.blur="school" />
                                 @error('school')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
-                                <label class="form-label mt-3">Major</label>
+                                <label class="form-label required mt-3">Major</label>
                                 <input type="text" class="form-control @error('major') is-invalid @enderror" wire:model.blur="major" />
                                 @error('major')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
-                                <label class="form-label mt-3">Degree Type</label>
+                                <label class="form-label required mt-3">Degree Type</label>
                                 <input type="text" class="form-control @error('degree_type') is-invalid @enderror" wire:model.blur="degree_type" />
                                 @error('degree_type')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
-                                <label class="form-label mt-3">Graduation Year</label>
+                                <label class="form-label required mt-3">Graduation Year</label>
                                 <input type="number" class="form-control @error('graduation_year') is-invalid @enderror" wire:model.blur="graduation_year" />
                                 @error('graduation_year')
                                     <div class="invalid-feedback">

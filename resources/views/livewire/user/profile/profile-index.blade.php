@@ -4,13 +4,13 @@
             <div class="col-6">
                 <div class="row">
                     <div class="col-3">
-                        <span class="avatar avatar-xl rounded-circle" style="background-image: url(@if($user->image == null) 'https://ui-avatars.com/api/?name={{ $user->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($user->image) }} @endif)"></span>
+                        <span class="avatar avatar-xl rounded-circle" style="background-image: url(@if($current_image == null) 'https://ui-avatars.com/api/?name={{ $username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($current_image) }} @endif)"></span>
                     </div>
                     <div class="col-9">
                         <div class="row">
                             <div class="col-12">
                                 <b style="font-size: 27px">
-                                    {{ $user->username }}
+                                    {{ $username }}
                                 </b>
                                 @if($show)
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#profileModal">Edit profile</a>
@@ -296,7 +296,29 @@
                         <b>Edit profile</b>
                     </div>
                     <div class="modal-body">
-                        <label class="form-label">Username</label>
+                        <div class="row">
+                            <div class="col-2">
+                                @if ($image)
+                                    <span class="avatar avatar-lg rounded-circle" style="background-image: url({{ $image->temporaryUrl() }})"></span>
+                                @else
+                                    <span class="avatar avatar-lg rounded-circle" style="background-image: url(@if($current_image == null) 'https://ui-avatars.com/api/?name={{ $username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($current_image) }} @endif)"></span>
+                                @endif
+                            </div>
+                            <div class="col-10">
+                                <label class="form-label">
+                                    <div wire:loading wire:target="image">
+                                        <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                                    </div>
+                                    Image</label>
+                                <input type="file" class="form-control @error('image') is-invalid @enderror" wire:model="image">
+                                @error('image')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <label class="form-label required mt-3">Username</label>
                         <input type="text" class="form-control @error('username') is-invalid @enderror" wire:model="username" />
                         @error('username')
                             <div class="invalid-feedback">
@@ -321,8 +343,8 @@
                         @enderror
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-ghost-secondary btn-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-pill">
+                        <button type="button" class="btn btn-ghost-secondary btn-pill" data-bs-dismiss="modal" >Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-pill" wire:loading.attr="disabled" wire:target="image">
                             <div wire:loading wire:target="updateProfile">
                                 <span class="spinner-border spinner-border-sm me-2" role="status"></span>
                             </div>
@@ -333,28 +355,5 @@
             </div>
         </div>
     </div>
-    {{--
-    <script>
-        let employmentStartYearDropdown = document.getElementById('employment-start-year');
-        let employmentEndYearDropdown = document.getElementById('employment-end-year');
-
-        function addEmploymentYear()
-        {
-            yearDropdown(employmentStartYearDropdown);
-            yearDropdown(employmentEndYearDropdown);
-        }
-
-        function yearDropdown(dropdown) {
-            let currentYear = new Date().getFullYear();
-            let earliestYear = 2000;
-            while (currentYear >= earliestYear) {
-                let dateOption = document.createElement('option');
-                dateOption.text = currentYear;
-                dateOption.value = currentYear;
-                dropdown.add(dateOption);
-                currentYear -= 1;
-            }
-        }
-    </script> --}}
     @endif
 </div>

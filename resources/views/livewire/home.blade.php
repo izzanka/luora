@@ -119,7 +119,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label class="form-label">Question</label>
+                            <label class="form-label required">Question</label>
                             <input type="text" class="form-control form-control-flush mt-3 @error('title') is-invalid @enderror" wire:model="title" placeholder="Start your question with 'What', 'How', 'Why', etc."/>
                             @error('title')
                                 <div class="invalid-feedback">
