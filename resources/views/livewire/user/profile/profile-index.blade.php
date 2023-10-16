@@ -272,17 +272,46 @@
                 <div class="mt-4">
                     Knows about
                     @if ($show)
-                    <span class="float-end">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
-                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
-                            <path d="M16 5l3 3"></path>
-                        </svg>
-                    </span>
+                        <span class="float-end">
+                            <svg role="button" data-bs-toggle="modal" data-bs-target="#topicModal" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                                <path d="M16 5l3 3"></path>
+                            </svg>
+                        </span>
                     @endif
-
                     <hr class="mt-3 mb-3">
+                    @if($show && $followed_topics->isEmpty())
+                        <div class="text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mailbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M10 21v-6.5a3.5 3.5 0 0 0 -7 0v6.5h18v-6a4 4 0 0 0 -4 -4h-10.5"></path>
+                                <path d="M12 11v-8h4l2 2l-2 2h-4"></path>
+                                <path d="M6 15h1"></path>
+                            </svg>
+                            <div class="mt-2 mb-3">
+                                You haven't added any topics yet.
+                            </div>
+                            <button class="btn btn-outline-primary btn-pill" data-bs-toggle="modal" data-bs-target="#topicModal">
+                                Add topics
+                            </button>
+                        </div>
+                    @else
+                        @foreach ($followed_topics as $topic)
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <span class="avatar avatar-sm rounded-circle" style="background-image: url('https://ui-avatars.com/api/?name={{ $topic->name }}&background=DE6060&color=fff&rounded=true&size=112')"></span>
+                                    </div>
+                                    <div class="col-11 mt-1">
+                                        <a href="#" class="text-dark ms-2">{{ $topic->name }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                    <livewire:user.topic.topic-index/>
                 </div>
             </div>
         </div>

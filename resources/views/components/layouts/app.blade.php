@@ -7,7 +7,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{ $title ?? 'Luora' }}</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     </head>
     <body>
         <div class="page">
@@ -129,17 +129,24 @@
             <div class="page-wrapper">
                 <div class="container">
                     {{ $slot ?? null }}
-                    @yield('main')
+                    {{-- @yield('main') --}}
                 </div>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script type="text/javascript">
-            window.addEventListener('swal',function(e){
-                Swal.fire({
-                    title: e.detail.title,
-                    icon: e.detail.icon,
-                });
+            window.addEventListener('toastify',function(e){
+                Toastify({
+                    text: e.detail.text,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "center",
+                    style: {
+                        background: e.detail.background
+                    }
+                }).showToast();
             });
 
             window.onscroll = function(ev){
@@ -147,35 +154,6 @@
                     Livewire.dispatch('increase-limit');
                 }
             }
-
-            window.addEventListener('swal-dialog',function(e){
-                Swal.fire({
-                    title: e.detail.title,
-                    icon: e.detail.icon,
-                    showCancelButton: e.detail.showCancelButton,
-                    confirmButtonText: e.detail.confirmButtonText,
-                    cancelButtonColor: e.detail.cancelButtonColor,
-                    confirmButtonColor: e.detail.confirmButtonColor,
-                }).then((result) => {
-                    if(result.isConfirmed){
-                        if(e.detail.name == 'answer'){
-                            Livewire.dispatch('swal-answer-delete', {answer: e.detail.answer_id})
-                        }
-
-                        if(e.detail.name == 'employment'){
-                            Livewire.dispatch('swal-employment-delete')
-                        }
-
-                        if(e.detail.name == 'education'){
-                            Livewire.dispatch('swal-education-delete')
-                        }
-
-                        if(e.detail.name == 'location'){
-                            Livewire.dispatch('swal-location-delete')
-                        }
-                    }
-                });
-            });
         </script>
     </body>
 </html>

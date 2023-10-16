@@ -16,17 +16,16 @@ class QuestionIndex extends Component
     public int $limitPerPage = 5;
     public int $total_answers = 0;
 
-    #[Rule(['required','string'])]
+    #[Rule('required|string')]
     public string $answer = '';
     public int $already_answer;
-    public string $sort_by = '';
+    public string $sort_by = 'Recent';
 
     public function mount(Question $question)
     {
         $this->question = $question;
         $this->already_answer = Answer::where('user_id', auth()->id())->where('question_id', $question->id)->count();
         $this->total_answers = Answer::where('question_id', $question->id)->count();
-        $this->sort_by = 'Recent';
     }
 
     public function answerQuestion()
@@ -37,18 +36,18 @@ class QuestionIndex extends Component
 
             if($this->already_answer != 0)
             {
-                $this->dispatch('swal',
-                    title: 'You already answered the question',
-                    icon: 'warning',
+                $this->dispatch('toastify',
+                    text: 'You already answered the question ',
+                    background: '#CB4B10',
                 );
 
                 $this->reset('answer');
 
             }else if($this->question->user_id == auth()->id())
             {
-                $this->dispatch('swal',
-                    title: 'Can`t answer your own question',
-                    icon: 'warning',
+                $this->dispatch('toastify',
+                    text: 'Can`t answer your own question ',
+                    background: '#CB4B10',
                 );
 
                 $this->reset('answer');
@@ -61,17 +60,45 @@ class QuestionIndex extends Component
 
             $this->question->touch();
 
-            $this->dispatch('swal',
-                title: 'Question answered',
-                icon: 'success',
+            $this->dispatch('toastify',
+                text: 'Question answered ',
+                background: '#2D9655',
             );
 
             $this->redirect(route('question.index', $this->question->title_slug));
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Answer question error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Answer question failed, please try again later ',
+                background: '#CB4B10',
+            );
+        }
+    }
+
+    public function delete(Question $question)
+    {
+        try {
+
+            $answers = Answer::select('id','question_id')->where('question_id', $question->id)->get();
+
+            foreach($answers as $answer)
+            {
+                $answer->delete();
+            }
+
+            $question->delete();
+
+            $this->dispatch('toastify',
+                text: 'Delete question success ',
+                background: '#2D9655',
+            );
+
+            $this->redirect(route('home'));
+
+        } catch (\Throwable $th) {
+            $this->dispatch('toastify',
+                text: 'Delete question failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
@@ -85,9 +112,9 @@ class QuestionIndex extends Component
             }
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Get answers error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Get answers failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
@@ -96,37 +123,6 @@ class QuestionIndex extends Component
     {
         $this->sort_by == 'Recent' ? $this->sort_by = 'Upvote' : $this->sort_by = 'Recent';
         $this->render();
-    }
-
-    #[On('swal-answer-delete')]
-    public function delete(Answer $answer)
-    {
-        $answer->load('question');
-        $question_title_slug = $answer->question->title_slug;
-
-        if(auth()->id() != $answer->user_id)
-        {
-            $this->redirect(route('question.index', $question_title_slug));
-        }
-
-        try {
-
-            $answer->question->touch();
-            $answer->delete();
-
-            $this->dispatch('swal',
-                title: 'Delete answer success',
-                icon: 'success',
-            );
-
-            $this->redirect(route('question.index', $question_title_slug));
-
-        } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Delete answer error',
-                icon: 'error',
-            );
-        }
     }
 
     public function render()

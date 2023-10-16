@@ -11,10 +11,9 @@ use Livewire\WithFileUploads;
 class ProfileIndex extends Component
 {
     use WithFileUploads;
-
-    public $username;
-    public $credential;
-    public $description;
+    public string $username = '';
+    public string $credential = '';
+    public string $description = '';
     public $image;
     public $current_image;
     public int $total_followers = 0;
@@ -25,13 +24,14 @@ class ProfileIndex extends Component
     public $questions = null;
     public $user_followers = null;
     public $user_following = null;
-    public bool $show;
+    public $followed_topics = null;
     public bool $followed;
-    public $employment_credential;
-    public $education_credential;
-    public $location_credential;
+    public array $employment_credential = [];
+    public array $education_credential = [];
+    public array $location_credential = [];
     public $user;
-
+    #[Locked]
+    public bool $show;
 
     public function rules()
     {
@@ -49,17 +49,18 @@ class ProfileIndex extends Component
 
         $this->user = $user;
         $this->username = $user->username;
-        $this->credential = $user->credential;
-        $this->description = $user->description;
+        $this->credential = $user->credential ?? '';
+        $this->description = $user->description ?? '';
         $this->current_image = $user->image;
-        $this->total_followers = $user->followers()->count();
-        $this->total_following = $user->following()->count();
-        $this->followed = auth()->user()->isFollowing($user->id);
+        $this->total_followers = $user->userFollowers()->count();
+        $this->total_following = $user->userFollowing()->count();
+        $this->followed = auth()->user()->userIsFollowing($user->id);
         $this->total_answers = $user->answers()->count();
         $this->total_questions = $user->questions()->count();
-        $this->employment_credential = $user->employment()->exists() ? $this->employmentCredential() : $this->employment_credential = null;
-        $this->education_credential = $user->education()->exists() ? $this->educationCredential() : $this->education_credential = null;
-        $this->location_credential = $user->location()->exists() ? $this->locationCredential() : $this->location_credential = null;
+        $this->employment_credential = $user->employment()->exists() ? $this->employmentCredential() : $this->employment_credential = [];
+        $this->education_credential = $user->education()->exists() ? $this->educationCredential() : $this->education_credential = [];
+        $this->location_credential = $user->location()->exists() ? $this->locationCredential() : $this->location_credential = [];
+        $this->followed_topics = $user->topicFollowing()->latest()->get() ?? null;
 
         $user->id != auth()->id() ? $this->show = false : $this->show = true;
     }
@@ -101,17 +102,17 @@ class ProfileIndex extends Component
 
             if($this->user->id != auth()->id())
             {
-                auth()->user()->follow($this->user->id);
+                auth()->user()->userFollow($this->user->id);
                 $this->followed = true;
-                $this->total_followers = $this->user->followers()->count();
+                $this->total_followers = $this->user->userFollowers()->count();
                 $this->showReset();
                 $this->render();
             }
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Follow error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Follow failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
@@ -122,17 +123,17 @@ class ProfileIndex extends Component
 
             if($this->user->id != auth()->id())
             {
-                auth()->user()->unfollow($this->user->id);
+                auth()->user()->userUnfollow($this->user->id);
                 $this->followed = false;
-                $this->total_followers = $this->user->followers()->count();
+                $this->total_followers = $this->user->userFollowers()->count();
                 $this->showReset();
                 $this->render();
             }
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Unfollow error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Unfollow failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
@@ -162,18 +163,18 @@ class ProfileIndex extends Component
                     'description' => $this->description
                 ]);
 
-                $this->dispatch('swal',
-                    title: 'Edit profile success',
-                    icon: 'success',
+                $this->dispatch('toastify',
+                    text: 'Edit profile success ',
+                    background: '#2D9655',
                 );
             }
 
             $this->redirect(route('profile.index', $username_slug));
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Edit profile error ' . $th->getMessage(),
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Edit profile failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
@@ -195,9 +196,9 @@ class ProfileIndex extends Component
             $this->render();
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Get user answers error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Get user answers failed, please try again later ',
+                background: '#CB4B10',
             );
         }
 
@@ -212,9 +213,9 @@ class ProfileIndex extends Component
             $this->render();
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Get user questions error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Get user questions failed, please try again later ',
+                background: '#CB4B10',
             );
         }
 
@@ -225,13 +226,13 @@ class ProfileIndex extends Component
         try {
 
             $this->showReset();
-            $this->user_followers = $this->user->followers()->get();
+            $this->user_followers = $this->user->userFollowers()->get();
             $this->render();
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Get user followers error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Get user followers failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
@@ -241,13 +242,13 @@ class ProfileIndex extends Component
         try {
 
             $this->showReset();
-            $this->user_following = $this->user->following()->get();
+            $this->user_following = $this->user->userFollowing()->get();
             $this->render();
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Get user following error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Get user following failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }

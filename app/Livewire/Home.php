@@ -17,7 +17,7 @@ class Home extends Component
     use WithPagination;
     private $limitPerPage = 5;
 
-    #[Rule(['required','string','min:10','max:200'])]
+    #[Rule('required|string|min:10|max:200')]
     public string $title;
 
     #[Url]
@@ -40,9 +40,9 @@ class Home extends Component
             }
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Get answers error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Get answers failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
@@ -68,9 +68,9 @@ class Home extends Component
 
             if($sameQuestion != 0)
             {
-                $this->dispatch('swal',
-                    title: 'Question already been asked',
-                    icon: 'error',
+                $this->dispatch('toastify',
+                    text: 'Question already been asked ',
+                    background: '#CB4B10',
                 );
 
             }else{
@@ -80,18 +80,18 @@ class Home extends Component
                     'title_slug' => $title_slug,
                 ]);
 
-                $this->dispatch('swal',
-                    title: 'Question asked',
-                    icon: 'success',
+                $this->dispatch('toastify',
+                    text: 'Question asked ',
+                    background: '#2D9655',
                 );
             }
 
             $this->redirect(route('question.index', $title_slug));
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Ask question error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Ask question failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }

@@ -9,14 +9,14 @@ use Livewire\Component;
 
 class Login extends Component
 {
-    #[Rule(['required', 'email', 'max:255'])]
-    public $email = '';
+    #[Rule('required|email|max:255')]
+    public string $email = '';
 
-    #[Rule(['required', 'max:255', 'min:8'])]
-    public $password = '';
+    #[Rule('required|max:255|min:8')]
+    public string $password = '';
 
-    #[Rule(['boolean'])]
-    public $remember = false;
+    #[Rule('boolean')]
+    public bool $remember = false;
 
     public function login()
     {
@@ -27,16 +27,16 @@ class Login extends Component
             if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
                 $this->redirect(route('home'));
             } else {
-                $this->dispatch('swal',
-                    title: 'Email or password is wrong',
-                    icon: 'error',
+                $this->dispatch('toastify',
+                    text: 'Email or password is wrong ',
+                    background: '#CB4B10',
                 );
             }
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Login error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Login failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }

@@ -4,21 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Question extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
+
     protected $guarded = [];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function answers(){
+    public function answers()
+    {
         return $this->hasMany(Answer::class);
     }
 
-    public function topics(){
-        return $this->belongsToMany(Topic::class);
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title
+        ];
     }
 }

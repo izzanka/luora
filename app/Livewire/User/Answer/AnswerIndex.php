@@ -3,6 +3,9 @@
 namespace App\Livewire\User\Answer;
 
 use App\Models\Question;
+use App\Models\Topic;
+use App\Models\TopicFollow;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -11,12 +14,14 @@ class AnswerIndex extends Component
     use WithPagination;
     public int $limitPerPage = 5;
     public int $total_questions = 0;
-
     public bool $disabled = false;
+    public $followed_topics = null;
 
+    #[On('follow-topic')]
     public function mount()
     {
         $this->total_questions = Question::where('user_id', '!=', auth()->id())->count();
+        $this->followed_topics = auth()->user()->topicFollowing()->latest()->get() ?? null;
     }
 
     public function loadMore()
@@ -28,16 +33,43 @@ class AnswerIndex extends Component
             }
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Get questions error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Get more questions failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
 
     public function render()
     {
-        $questions = Question::with('answers')->where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
+        $topicFollow = TopicFollow::select('topic_id')->where('user_id', auth()->id())->get();
+        $id_topics = [];
+
+        foreach($topicFollow as $topic)
+        {
+            $id_topics[] = $topic->topic_id;
+        }
+
+        $name_topics = [];
+        $topics = Topic::select('name')->findMany($id_topics);
+
+        foreach($topics as $topic)
+        {
+            $name_topics[] = $topic->name;
+        }
+
+        $questions_id = [];
+        foreach($name_topics as $name_topic)
+        {
+            $questions = Question::search($name_topic)->get();
+
+           foreach($questions as $question)
+           {
+                !in_array($question->id, $questions_id) ? $questions_id[] = $question->id : '' ;
+           }
+        }
+
+        $questions = Question::whereIn('id', $questions_id)->where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
         return view('livewire.user.answer.answer-index', compact('questions'));
     }
 }

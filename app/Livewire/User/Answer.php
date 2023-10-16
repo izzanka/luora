@@ -2,34 +2,49 @@
 
 namespace App\Livewire\User;
 
+use App\Models\Comment;
 use App\Models\Follow;
-use App\Models\Vote;
+use App\Models\AnswerVote;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
+use App\Models\Answer as ModelAnswer;
 
 class Answer extends Component
 {
     public $answer;
     public $vote;
     public int $total_upvotes = 0;
-    public int $total_downvotes = 0;
-    public string $from;
-    public string $route;
-    #[Rule(['required','string'])]
-    public string $answer_edit;
+    // public int $total_downvotes = 0;
+    public int $total_comments = 0;
+    public $credential = null;
     public bool $followed;
+    public string $from = '';
+
+    #[Rule('required|string')]
+    public string $answer_edit;
 
     #[On('answer-updated')]
+    #[On('update-comment')]
     public function mount()
     {
-        $this->answer->load(['user','question','votes','userVotes']);
-        $this->vote = $this->answer->userVotes->vote ?? null;
+        $this->answer->load(['user','question','userAnswerVotes','comments']);
+        $this->vote = $this->answer->userAnswerVotes->vote ?? null;
         $this->total_upvotes = $this->answer->total_upvotes;
-        $this->total_downvotes = $this->answer->total_downvotes;
+        // $this->total_downvotes = $this->answer->total_downvotes;
+        $this->total_comments = $this->answer->comments->count();
         $this->answer_edit = $this->answer->answer;
-        $this->followed = auth()->user()->isFollowing($this->answer->user_id);
-        $this->answer->increment('total_views');
+        $this->followed = auth()->user()->userIsFollowing($this->answer->user_id);
+        $this->answer->user->credential == null ? $this->employmentCredential() : $this->credential = $this->answer->user->credential;
+    }
+
+    public function employmentCredential()
+    {
+        if($this->answer->user->employment()->exists())
+        {
+            $this->credential = $this->answer->user->employment->position . ' at ' . $this->answer->user->employment->company;
+        }
     }
 
     public function votes(string $vote)
@@ -40,7 +55,7 @@ class Answer extends Component
 
                 if($this->vote == null)
                 {
-                    Vote::create([
+                    AnswerVote::create([
                         'answer_id' => $this->answer->id,
                         'user_id' => auth()->id(),
                         'vote' => $vote
@@ -50,13 +65,13 @@ class Answer extends Component
                 }
                 else if($vote == $this->vote)
                 {
-                    $this->answer->userVotes->delete();
+                    $this->answer->userAnswerVotes->delete();
 
                     $vote == 'up' ? $this->answer->decrement('total_upvotes') : $this->answer->decrement('total_downvotes');
                 }
                 else
                 {
-                    $this->answer->userVotes->update(['vote' => $vote]);
+                    $this->answer->userAnswerVotes->update(['vote' => $vote]);
 
                     if($vote == 'up'){
                         $this->answer->increment('total_upvotes');
@@ -70,9 +85,9 @@ class Answer extends Component
                 $this->dispatch('answer-updated');
 
             } catch (\Throwable $th) {
-                $this->dispatch('swal',
-                    title: 'Vote answer error',
-                    icon: 'error',
+                $this->dispatch('toastify',
+                    text: 'Vote answer failed, please try again later ',
+                    background: '#CB4B10',
                 );
             }
         }
@@ -84,16 +99,16 @@ class Answer extends Component
 
             if($this->answer->user_id != auth()->id())
             {
-                auth()->user()->follow($this->answer->user_id);
+                auth()->user()->userFollow($this->answer->user_id);
                 $this->followed = true;
 
                 $this->render();
             }
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Follow error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Follow user failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
@@ -104,16 +119,16 @@ class Answer extends Component
 
             if($this->answer->user_id != auth()->id())
             {
-                auth()->user()->unfollow($this->answer->user_id);
+                auth()->user()->userUnfollow($this->answer->user_id);
                 $this->followed = false;
 
                 $this->render();
             }
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Unfollow error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Unfollow user failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
@@ -123,9 +138,9 @@ class Answer extends Component
         try {
             //code...
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Report answer error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Report answer failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
@@ -149,9 +164,9 @@ class Answer extends Component
 
                 $this->answer->question->touch();
 
-                $this->dispatch('swal',
-                    title: 'Answer edited',
-                    icon: 'success',
+                $this->dispatch('toastify',
+                    text: 'Answer edited ',
+                    background: '#2D9655',
                 );
 
                 $this->redirect(route('question.index', $this->answer->question->title_slug));
@@ -160,29 +175,46 @@ class Answer extends Component
             $this->redirect(route('question.index', $this->answer->question->title_slug));
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Edit answer error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Edit answer failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }
 
-    public function confirmDelete($answer_id)
+    public function delete(ModelAnswer $answer)
     {
-        $this->dispatch('swal-dialog',
-            title: 'Delete answer?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Delete',
-            cancelButtonColor: '#DB5E5F',
-            confirmButtonColor: '#206BC4',
-            answer_id: $answer_id,
-            name: 'answer',
-        );
+        $answer->load('question');
+        $question_title_slug = $answer->question->title_slug;
+
+        if(auth()->id() != $answer->user_id)
+        {
+            $this->redirect(route('question.index', $question_title_slug));
+        }
+
+        try {
+
+            $answer->question->touch();
+            $answer->delete();
+
+            $this->dispatch('toastify',
+                text: 'Delete answer success ',
+                background: '#2D9655',
+            );
+
+            $this->redirect(route('question.index', $question_title_slug));
+
+        } catch (\Throwable $th) {
+            $this->dispatch('toastify',
+                text: 'Delete answer failed, please try again later ',
+                background: '#CB4B10',
+            );
+        }
     }
 
     public function render()
     {
+        $this->answer->increment('total_views');
         return view('livewire.user.answer');
     }
 }

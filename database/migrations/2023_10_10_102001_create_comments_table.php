@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Answer;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,13 +13,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->string('location', 50);
-            $table->string('start_year', 4);
-            $table->string('end_year', 4)->nullable();
-            $table->boolean('currently')->nullable();
+            $table->foreignIdFor(Answer::class);
+            $table->integer('parent_id')->nullable();
+            $table->text('comment');
+            $table->bigInteger('total_upvotes')->unsigned()->default(0);
+            $table->bigInteger('total_downvotes')->unsigned()->default(0);
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('comments');
     }
 };

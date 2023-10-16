@@ -9,6 +9,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
+        "laravel/scout": "^10.5",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0"
     },

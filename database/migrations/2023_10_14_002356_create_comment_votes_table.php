@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Answer;
+use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('votes', function (Blueprint $table) {
+        Schema::create('comment_votes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Answer::class);
+            $table->foreignIdFor(Comment::class);
             $table->foreignIdFor(User::class);
-            $table->string('vote');
+            $table->string('vote', 4);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('votes');
+        Schema::dropIfExists('comment_votes');
     }
 };

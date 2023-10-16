@@ -15,6 +15,47 @@
                                 </svg>
                                 Answer
                             </button>
+                            <div class="float-end">
+                                <svg role="button" data-bs-toggle="dropdown" xmlns="http://www.w3.org/2000/svg" class="mt-2 icon icon-tabler icon-tabler-dots" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                </svg>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="me-2 icon icon-tabler icon-tabler-alert-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                            <path d="M12 8v4"></path>
+                                            <path d="M12 16h.01"></path>
+                                        </svg>
+                                    Report</a>
+                                </div>
+                            </div>
+                        @else
+                        <div class="float-end">
+                            <svg role="button" data-bs-toggle="dropdown" xmlns="http://www.w3.org/2000/svg" class="mt-2 icon icon-tabler icon-tabler-dots" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                            </svg>
+                            <div class="dropdown-menu">
+                                @if (auth()->id() == $question->user_id)
+                                    <a class="dropdown-item" href="#" wire:click.prevent="delete({{ $question->id }})" wire:confirm="Delete question?">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M4 7l16 0"></path>
+                                            <path d="M10 11l0 6"></path>
+                                            <path d="M14 11l0 6"></path>
+                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                        </svg>
+                                    Delete</a>
+                                @endif
+                            </div>
+                        </div>
                         @endif
                     </div>
                 </div>

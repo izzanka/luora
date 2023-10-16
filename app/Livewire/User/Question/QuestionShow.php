@@ -11,7 +11,7 @@ class QuestionShow extends Component
 {
     public $question;
 
-    #[Rule(['required','string'])]
+    #[Rule('required|string')]
     public string $answer = '';
     public int $already_answer;
 
@@ -28,18 +28,18 @@ class QuestionShow extends Component
 
             if($this->already_answer != 0)
             {
-                $this->dispatch('swal',
-                    title: 'You already answered the question',
-                    icon: 'warning',
+                $this->dispatch('toastify',
+                    text: 'You already answered the question ',
+                    background: '#CB4B10',
                 );
 
                 $this->reset('answer');
             }
             else if($this->question->user_id == auth()->id())
             {
-                $this->dispatch('swal',
-                    title: 'Can`t answer your own question',
-                    icon: 'warning',
+                $this->dispatch('toastify',
+                    text: 'Can`t answer your own question ',
+                    background: '#CB4B10',
                 );
 
                 $this->reset('answer');
@@ -52,17 +52,17 @@ class QuestionShow extends Component
 
             $this->question->touch();
 
-            $this->dispatch('swal',
-                title: 'Question answered',
-                icon: 'success',
+            $this->dispatch('toastify',
+                text: 'Question answered ',
+                background: '#2D9655',
             );
 
             $this->redirect(route('question.index', $this->question->title_slug));
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Answer question error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Answer question failed, please try again later ',
+                background: '#CB4B10',
             );
         }
     }

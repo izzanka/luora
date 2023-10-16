@@ -55,7 +55,7 @@
                 @endphp
                 <div class="mb-4">
                     @foreach ($answers as $answer)
-                        <livewire:user.answer :$answer :key="$answer->id" :$from/>
+                        <livewire:user.answer :$answer wire:key="{{ $answer->id }}" :$from/>
                     @endforeach
                 </div>
             </div>
@@ -83,11 +83,11 @@
                                     <a href="{{ route('profile.index', $user->username_slug) }}">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-2">
+                                            <div class="col-1">
                                                 <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($user->image == null) 'https://ui-avatars.com/api/?name={{ $user->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($user->image) }} @endif)"></span>
                                             </div>
-                                            <div class="col-10 mt-1">
-                                               <span class="ms-1 text-dark">{{ $user->username }}</span>
+                                            <div class="col-11 mt-1">
+                                               <span class="ms-3 text-dark">{{ $user->username }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -105,7 +105,7 @@
                             <path d="M9 12h6"></path>
                             <path d="M12 9v6"></path>
                          </svg>
-                        Create Topic
+                        Create Space
                     </button>
                 </div>
             </div>

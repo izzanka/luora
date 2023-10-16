@@ -10,14 +10,14 @@ use Livewire\Component;
 
 class Register extends Component
 {
-    #[Rule(['required', 'string', 'max:19', 'unique:users,username'])]
-    public $username = '';
+    #[Rule('required|string|max:19|unique:users,username')]
+    public string $username = '';
 
-    #[Rule(['required', 'email', 'max:255', 'unique:users,email'])]
-    public $email = '';
+    #[Rule('required|email|max:255|unique:users,email')]
+    public string $email = '';
 
-    #[Rule(['required', 'min:8', 'max:255'])]
-    public $password = '';
+    #[Rule('required|min:8|max:255')]
+    public string $password = '';
 
     public function register()
     {
@@ -37,9 +37,9 @@ class Register extends Component
             $this->redirect(route('home'));
 
         } catch (\Throwable $th) {
-            $this->dispatch('swal',
-                title: 'Register error',
-                icon: 'error',
+            $this->dispatch('toastify',
+                text: 'Register failed, please try again later ',
+                backgorund: '#CB4B10',
             );
         }
     }

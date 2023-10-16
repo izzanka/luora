@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,11 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('topics', function (Blueprint $table) {
+        Schema::create('topic_follows', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->bigInteger('total_followers')->default(0);
-            $table->string('status')->nullable();
+            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Topic::class);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('topics');
+        Schema::dropIfExists('topic_follows');
     }
 };
