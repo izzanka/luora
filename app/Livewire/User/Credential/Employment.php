@@ -2,7 +2,6 @@
 
 namespace App\Livewire\User\Credential;
 
-use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 
@@ -41,7 +40,7 @@ class Employment extends Component
             $this->currently ? $end_year = null : $end_year = $this->end_year;
 
             auth()->user()->employment()->updateOrCreate([
-            ],[
+            ], [
                 'position' => $this->position,
                 'company' => $this->company,
                 'start_year' => $this->start_year,

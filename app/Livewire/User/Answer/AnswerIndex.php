@@ -12,9 +12,13 @@ use Livewire\WithPagination;
 class AnswerIndex extends Component
 {
     use WithPagination;
+
     public int $limitPerPage = 5;
+
     public int $total_questions = 0;
+
     public bool $disabled = false;
+
     public $followed_topics = null;
 
     #[On('follow-topic')]
@@ -28,7 +32,7 @@ class AnswerIndex extends Component
     {
         try {
 
-            if($this->total_questions >= $this->limitPerPage){
+            if ($this->total_questions >= $this->limitPerPage) {
                 $this->limitPerPage += 5;
             }
 
@@ -45,31 +49,28 @@ class AnswerIndex extends Component
         $topicFollow = TopicFollow::select('topic_id')->where('user_id', auth()->id())->get();
         $id_topics = [];
 
-        foreach($topicFollow as $topic)
-        {
+        foreach ($topicFollow as $topic) {
             $id_topics[] = $topic->topic_id;
         }
 
         $name_topics = [];
         $topics = Topic::select('name')->findMany($id_topics);
 
-        foreach($topics as $topic)
-        {
+        foreach ($topics as $topic) {
             $name_topics[] = $topic->name;
         }
 
         $questions_id = [];
-        foreach($name_topics as $name_topic)
-        {
+        foreach ($name_topics as $name_topic) {
             $questions = Question::search($name_topic)->get();
 
-           foreach($questions as $question)
-           {
-                !in_array($question->id, $questions_id) ? $questions_id[] = $question->id : '' ;
-           }
+            foreach ($questions as $question) {
+                ! in_array($question->id, $questions_id) ? $questions_id[] = $question->id : '';
+            }
         }
 
         $questions = Question::whereIn('id', $questions_id)->where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
+
         return view('livewire.user.answer.answer-index', compact('questions'));
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->string('position', 50);
-            $table->string('company',50);
+            $table->string('company', 50);
             $table->string('start_year', 4);
             $table->string('end_year', 4)->nullable();
             $table->boolean('currently')->nullable();

@@ -3,7 +3,6 @@
 namespace App\Livewire\User\Question;
 
 use App\Models\Answer;
-use App\Models\Question;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 
@@ -13,6 +12,7 @@ class QuestionShow extends Component
 
     #[Rule('required|string')]
     public string $answer = '';
+
     public int $already_answer;
 
     public function mount()
@@ -26,17 +26,14 @@ class QuestionShow extends Component
 
         try {
 
-            if($this->already_answer != 0)
-            {
+            if ($this->already_answer != 0) {
                 $this->dispatch('toastify',
                     text: 'You already answered the question ',
                     background: '#CB4B10',
                 );
 
                 $this->reset('answer');
-            }
-            else if($this->question->user_id == auth()->id())
-            {
+            } elseif ($this->question->user_id == auth()->id()) {
                 $this->dispatch('toastify',
                     text: 'Can`t answer your own question ',
                     background: '#CB4B10',

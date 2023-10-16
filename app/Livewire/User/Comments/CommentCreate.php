@@ -9,10 +9,15 @@ use Livewire\Component;
 class CommentCreate extends Component
 {
     public ?Comment $commentModel = null;
+
     public $answerId = null;
+
     public $parentId = null;
+
     public ?string $message = null;
+
     public bool $showProfile = true;
+
     public bool $isEditing = false;
 
     #[Rule('required|string')]
@@ -63,7 +68,7 @@ class CommentCreate extends Component
                     'comment' => $this->comment,
                     'answer_id' => $this->answerId,
                     'user_id' => auth()->id(),
-                    'parent_id' => $this->parentId
+                    'parent_id' => $this->parentId,
                 ]);
 
                 $this->dispatch('hide-comment-form');

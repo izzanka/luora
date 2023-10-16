@@ -25,7 +25,7 @@ class Question extends Model
     public function toSearchableArray(): array
     {
         return [
-            'title' => $this->title
+            'title' => $this->title,
         ];
     }
 }

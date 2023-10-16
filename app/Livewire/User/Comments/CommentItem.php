@@ -10,9 +10,13 @@ use Livewire\Component;
 class CommentItem extends Component
 {
     public $comment;
+
     public bool $replying = false;
+
     public bool $editing = false;
+
     public $vote;
+
     public int $total_upvotes = 0;
 
     public function mount(Comment $comment)
@@ -62,13 +66,11 @@ class CommentItem extends Component
     {
         try {
 
-            if (auth()->id() == $this->comment->user_id)
-            {
+            if (auth()->id() == $this->comment->user_id) {
 
-                $comments = Comment::select('id','parent_id')->where('parent_id', $this->comment->id)->get();
+                $comments = Comment::select('id', 'parent_id')->where('parent_id', $this->comment->id)->get();
 
-                foreach($comments as $comment)
-                {
+                foreach ($comments as $comment) {
                     $comment->delete();
                 }
 
@@ -79,9 +81,9 @@ class CommentItem extends Component
                     background: '#2D9655',
                 );
 
-                if($from == 'home'){
+                if ($from == 'home') {
                     $this->redirect(route('home'));
-                }else{
+                } else {
                     $this->redirect(route('question.index', $from));
                 }
             }
@@ -96,34 +98,28 @@ class CommentItem extends Component
 
     public function votes(string $vote, string $from)
     {
-        if($vote == 'up' || $vote == 'down')
-        {
+        if ($vote == 'up' || $vote == 'down') {
             try {
 
-                if($this->vote == null)
-                {
+                if ($this->vote == null) {
                     CommentVote::create([
                         'comment_id' => $this->comment->id,
                         'user_id' => auth()->id(),
-                        'vote' => $vote
+                        'vote' => $vote,
                     ]);
 
                     $vote == 'up' ? $this->comment->increment('total_upvotes') : $this->comment->increment('total_downvotes');
-                }
-                else if($vote == $this->vote)
-                {
+                } elseif ($vote == $this->vote) {
                     $this->comment->userCommentVotes->delete();
 
                     $vote == 'up' ? $this->comment->decrement('total_upvotes') : $this->comment->decrement('total_downvotes');
-                }
-                else
-                {
+                } else {
                     $this->comment->userCommentVotes->update(['vote' => $vote]);
 
-                    if($vote == 'up'){
+                    if ($vote == 'up') {
                         $this->comment->increment('total_upvotes');
                         $this->comment->decrement('total_downvotes');
-                    }else{
+                    } else {
                         $this->comment->increment('total_downvotes');
                         $this->comment->decrement('total_upvotes');
                     }
@@ -134,9 +130,9 @@ class CommentItem extends Component
                     background: '#2D9655',
                 );
 
-                if($from == 'home'){
+                if ($from == 'home') {
                     $this->redirect(route('home'));
-                }else{
+                } else {
                     $this->redirect(route('question.index', $from));
                 }
 
@@ -148,7 +144,6 @@ class CommentItem extends Component
             }
         }
     }
-
 
     #[On('comment-created')]
     private function commentCreated(int $id)

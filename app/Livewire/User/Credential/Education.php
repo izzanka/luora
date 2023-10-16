@@ -2,7 +2,6 @@
 
 namespace App\Livewire\User\Credential;
 
-use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 
@@ -35,7 +34,7 @@ class Education extends Component
         try {
 
             auth()->user()->education()->updateOrCreate([
-            ],[
+            ], [
                 'school' => $this->school,
                 'major' => $this->major,
                 'degree_type' => $this->degree_type,

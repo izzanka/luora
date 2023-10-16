@@ -11,16 +11,16 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            'username' => 'admin 1' ,
-            'username_slug' => 'admin-1' ,
+            'username' => 'admin 1',
+            'username_slug' => 'admin-1',
             'email' => 'admin1@gmail.com',
             'password' => bcrypt('password'),
             'created_at' => now(),
         ]);
 
         DB::table('users')->insert([
-            'username' => 'admin 2' ,
-            'username_slug' => 'admin-2' ,
+            'username' => 'admin 2',
+            'username_slug' => 'admin-2',
             'email' => 'admin2@gmail.com',
             'password' => bcrypt('password'),
             'created_at' => now(),
@@ -126,15 +126,14 @@ class DatabaseSeeder extends Seeder
             'Zero',
         ];
 
-        for($i=0; $i < count($topic_names); $i++)
-        {
+        for ($i = 0; $i < count($topic_names); $i++) {
             DB::table('topics')->insert([
                 'name' => $topic_names[$i],
                 'total_followers' => 1,
                 'created_at' => now(),
             ]);
 
-            $title = 'Example question: what is ' . $topic_names[$i] . '?';
+            $title = 'Example question: what is '.$topic_names[$i].'?';
 
             DB::table('questions')->insert([
                 'user_id' => 1,

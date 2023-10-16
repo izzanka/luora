@@ -9,11 +9,12 @@ use Livewire\Component;
 class CommentIndex extends Component
 {
     public $answer;
+
     public $comments;
 
     public function mount()
     {
-        $this->comments = Comment::with(['user','replies'])->where('answer_id', $this->answer->id)->whereNull('parent_id')->latest()->get();
+        $this->comments = Comment::with(['user', 'replies'])->where('answer_id', $this->answer->id)->whereNull('parent_id')->latest()->get();
     }
 
     #[On('comment-created')]
@@ -23,8 +24,7 @@ class CommentIndex extends Component
 
             $comment = Comment::find($id);
 
-            if(!$comment->parent_id)
-            {
+            if (! $comment->parent_id) {
                 $this->comments = $this->comments->prepend($comment);
             }
 

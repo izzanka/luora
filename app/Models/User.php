@@ -61,17 +61,17 @@ class User extends Authenticatable
 
     public function userFollow($user_id)
     {
-        if(!$this->userIsFollowing($user_id)) {
+        if (! $this->userIsFollowing($user_id)) {
             UserFollow::create([
                 'user_id' => auth()->id(),
-                'following_id' => $user_id
+                'following_id' => $user_id,
             ]);
         }
     }
 
     public function userUnfollow($user_id)
     {
-        if($this->userIsFollowing($user_id)){
+        if ($this->userIsFollowing($user_id)) {
             UserFollow::where('user_id', auth()->id())->where('following_id', $user_id)->delete();
         }
     }
@@ -93,17 +93,17 @@ class User extends Authenticatable
 
     public function topicFollow($topic_id)
     {
-        if(!$this->topicIsFollowing($topic_id)) {
+        if (! $this->topicIsFollowing($topic_id)) {
             TopicFollow::create([
                 'user_id' => auth()->id(),
-                'topic_id' => $topic_id
+                'topic_id' => $topic_id,
             ]);
         }
     }
 
     public function topicUnfollow($topic_id)
     {
-        if($this->topicIsFollowing($topic_id)){
+        if ($this->topicIsFollowing($topic_id)) {
             TopicFollow::where('user_id', auth()->id())->where('topic_id', $topic_id)->delete();
         }
     }

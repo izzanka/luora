@@ -4,12 +4,12 @@ namespace App\Livewire\User\Topic;
 
 use App\Models\Topic;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class TopicIndex extends Component
 {
     public $followed_topics = null;
+
     public $search = '';
 
     #[On('follow-topic')]
@@ -22,14 +22,13 @@ class TopicIndex extends Component
     {
         try {
 
-            if(!auth()->user()->topicIsFollowing($topic_id)) {
+            if (! auth()->user()->topicIsFollowing($topic_id)) {
 
                 auth()->user()->topicFollow($topic_id);
 
                 $topic = Topic::find($topic_id);
 
-                if($topic)
-                {
+                if ($topic) {
                     $topic->increment('total_followers');
                 }
 
@@ -40,7 +39,7 @@ class TopicIndex extends Component
 
                 $this->dispatch('follow-topic');
 
-            }else{
+            } else {
                 $this->dispatch('toastify',
                     text: 'Topic already followed ',
                     background: '#CB4B10',
@@ -63,8 +62,7 @@ class TopicIndex extends Component
 
             $topic = Topic::find($topic_id);
 
-            if($topic)
-            {
+            if ($topic) {
                 $topic->decrement('total_followers');
             }
 
@@ -83,10 +81,10 @@ class TopicIndex extends Component
         }
     }
 
-
     public function render()
     {
         $topics = Topic::where('name', 'like', '%'.$this->search.'%')->latest()->get();
-        return view('livewire.user.topic.topic-index',compact('topics'));
+
+        return view('livewire.user.topic.topic-index', compact('topics'));
     }
 }

@@ -2,23 +2,27 @@
 
 namespace App\Livewire\User\Question;
 
-use Livewire\Attributes\On;
-use Livewire\Component;
 use App\Models\Answer;
 use App\Models\Question;
 use Livewire\Attributes\Rule;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 class QuestionIndex extends Component
 {
     use WithPagination;
+
     public $question;
+
     public int $limitPerPage = 5;
+
     public int $total_answers = 0;
 
     #[Rule('required|string')]
     public string $answer = '';
+
     public int $already_answer;
+
     public string $sort_by = 'Recent';
 
     public function mount(Question $question)
@@ -34,8 +38,7 @@ class QuestionIndex extends Component
 
         try {
 
-            if($this->already_answer != 0)
-            {
+            if ($this->already_answer != 0) {
                 $this->dispatch('toastify',
                     text: 'You already answered the question ',
                     background: '#CB4B10',
@@ -43,8 +46,7 @@ class QuestionIndex extends Component
 
                 $this->reset('answer');
 
-            }else if($this->question->user_id == auth()->id())
-            {
+            } elseif ($this->question->user_id == auth()->id()) {
                 $this->dispatch('toastify',
                     text: 'Can`t answer your own question ',
                     background: '#CB4B10',
@@ -79,10 +81,9 @@ class QuestionIndex extends Component
     {
         try {
 
-            $answers = Answer::select('id','question_id')->where('question_id', $question->id)->get();
+            $answers = Answer::select('id', 'question_id')->where('question_id', $question->id)->get();
 
-            foreach($answers as $answer)
-            {
+            foreach ($answers as $answer) {
                 $answer->delete();
             }
 
@@ -107,7 +108,7 @@ class QuestionIndex extends Component
     {
         try {
 
-            if($this->total_answers >= $this->limitPerPage){
+            if ($this->total_answers >= $this->limitPerPage) {
                 $this->limitPerPage += 5;
             }
 
@@ -127,12 +128,13 @@ class QuestionIndex extends Component
 
     public function render()
     {
-        if($this->sort_by == 'Recent'){
-            $answers = Answer::with(['question','user'])->where('question_id', $this->question->id)->latest()->paginate($this->limitPerPage);
-        }else if($this->sort_by == 'Upvote'){
-            $answers = Answer::with(['question','user'])->where('question_id', $this->question->id)->orderByDesc('total_upvotes')->paginate($this->limitPerPage);
+        if ($this->sort_by == 'Recent') {
+            $answers = Answer::with(['question', 'user'])->where('question_id', $this->question->id)->latest()->paginate($this->limitPerPage);
+        } elseif ($this->sort_by == 'Upvote') {
+            $answers = Answer::with(['question', 'user'])->where('question_id', $this->question->id)->orderByDesc('total_upvotes')->paginate($this->limitPerPage);
         }
         $questions = Question::where('user_id', '!=', auth()->id())->where('id', '!=', $this->question->id)->latest()->take(5)->get();
-        return view('livewire.user.question.question-index', compact('answers','questions'));
+
+        return view('livewire.user.question.question-index', compact('answers', 'questions'));
     }
 }

@@ -6,7 +6,6 @@ use Livewire\Component;
 
 class FollowingIndex extends Component
 {
-
     public function mount()
     {
 

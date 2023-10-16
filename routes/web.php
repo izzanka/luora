@@ -25,11 +25,10 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', Register::class)->name('register');
 });
 
-Route::middleware('auth')->group(function(){
+Route::middleware('auth')->group(function () {
     Route::get('/', Home::class)->name('home');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/answers', AnswerIndex::class)->name('answer.index');
     Route::get('/{question:title_slug}', QuestionIndex::class)->name('question.index');
     Route::get('/profile/{user:username_slug}', ProfileIndex::class)->name('profile.index');
 });
-

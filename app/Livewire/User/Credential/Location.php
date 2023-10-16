@@ -2,7 +2,6 @@
 
 namespace App\Livewire\User\Credential;
 
-use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 
@@ -35,12 +34,12 @@ class Location extends Component
         try {
 
             auth()->user()->location()->updateOrCreate([],
-            [
-                'location' => $this->location,
-                'start_year' => $this->start_year,
-                'end_year' => $this->end_year,
-                'currently' => $this->currently,
-            ]);
+                [
+                    'location' => $this->location,
+                    'start_year' => $this->start_year,
+                    'end_year' => $this->end_year,
+                    'currently' => $this->currently,
+                ]);
 
             $this->dispatch('toastify',
                 text: 'Update location credential success ',

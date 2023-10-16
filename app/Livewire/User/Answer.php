@@ -2,24 +2,27 @@
 
 namespace App\Livewire\User;
 
-use App\Models\Comment;
-use App\Models\Follow;
+use App\Models\Answer as ModelAnswer;
 use App\Models\AnswerVote;
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
-use App\Models\Answer as ModelAnswer;
 
 class Answer extends Component
 {
     public $answer;
+
     public $vote;
+
     public int $total_upvotes = 0;
+
     // public int $total_downvotes = 0;
     public int $total_comments = 0;
+
     public $credential = null;
+
     public bool $followed;
+
     public string $from = '';
 
     #[Rule('required|string')]
@@ -29,7 +32,7 @@ class Answer extends Component
     #[On('update-comment')]
     public function mount()
     {
-        $this->answer->load(['user','question','userAnswerVotes','comments']);
+        $this->answer->load(['user', 'question', 'userAnswerVotes', 'comments']);
         $this->vote = $this->answer->userAnswerVotes->vote ?? null;
         $this->total_upvotes = $this->answer->total_upvotes;
         // $this->total_downvotes = $this->answer->total_downvotes;
@@ -41,42 +44,35 @@ class Answer extends Component
 
     public function employmentCredential()
     {
-        if($this->answer->user->employment()->exists())
-        {
-            $this->credential = $this->answer->user->employment->position . ' at ' . $this->answer->user->employment->company;
+        if ($this->answer->user->employment()->exists()) {
+            $this->credential = $this->answer->user->employment->position.' at '.$this->answer->user->employment->company;
         }
     }
 
     public function votes(string $vote)
     {
-        if($vote == 'up' || $vote == 'down')
-        {
+        if ($vote == 'up' || $vote == 'down') {
             try {
 
-                if($this->vote == null)
-                {
+                if ($this->vote == null) {
                     AnswerVote::create([
                         'answer_id' => $this->answer->id,
                         'user_id' => auth()->id(),
-                        'vote' => $vote
+                        'vote' => $vote,
                     ]);
 
                     $vote == 'up' ? $this->answer->increment('total_upvotes') : $this->answer->increment('total_downvotes');
-                }
-                else if($vote == $this->vote)
-                {
+                } elseif ($vote == $this->vote) {
                     $this->answer->userAnswerVotes->delete();
 
                     $vote == 'up' ? $this->answer->decrement('total_upvotes') : $this->answer->decrement('total_downvotes');
-                }
-                else
-                {
+                } else {
                     $this->answer->userAnswerVotes->update(['vote' => $vote]);
 
-                    if($vote == 'up'){
+                    if ($vote == 'up') {
                         $this->answer->increment('total_upvotes');
                         $this->answer->decrement('total_downvotes');
-                    }else{
+                    } else {
                         $this->answer->increment('total_downvotes');
                         $this->answer->decrement('total_upvotes');
                     }
@@ -97,8 +93,7 @@ class Answer extends Component
     {
         try {
 
-            if($this->answer->user_id != auth()->id())
-            {
+            if ($this->answer->user_id != auth()->id()) {
                 auth()->user()->userFollow($this->answer->user_id);
                 $this->followed = true;
 
@@ -117,8 +112,7 @@ class Answer extends Component
     {
         try {
 
-            if($this->answer->user_id != auth()->id())
-            {
+            if ($this->answer->user_id != auth()->id()) {
                 auth()->user()->userUnfollow($this->answer->user_id);
                 $this->followed = false;
 
@@ -147,8 +141,7 @@ class Answer extends Component
 
     public function edit()
     {
-        if(auth()->id() != $this->answer->user_id)
-        {
+        if (auth()->id() != $this->answer->user_id) {
             $this->redirect(route('question.index', $this->answer->question->title_slug));
         }
 
@@ -156,10 +149,9 @@ class Answer extends Component
 
         try {
 
-            if($this->answer_edit != $this->answer->answer)
-            {
+            if ($this->answer_edit != $this->answer->answer) {
                 $this->answer->update([
-                    'answer' => $this->answer_edit
+                    'answer' => $this->answer_edit,
                 ]);
 
                 $this->answer->question->touch();
@@ -187,8 +179,7 @@ class Answer extends Component
         $answer->load('question');
         $question_title_slug = $answer->question->title_slug;
 
-        if(auth()->id() != $answer->user_id)
-        {
+        if (auth()->id() != $answer->user_id) {
             $this->redirect(route('question.index', $question_title_slug));
         }
 
@@ -215,6 +206,7 @@ class Answer extends Component
     public function render()
     {
         $this->answer->increment('total_views');
+
         return view('livewire.user.answer');
     }
 }

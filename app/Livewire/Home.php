@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\Answer;
 use App\Models\Question;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Url;
@@ -15,6 +14,7 @@ use Livewire\WithPagination;
 class Home extends Component
 {
     use WithPagination;
+
     private $limitPerPage = 5;
 
     #[Rule('required|string|min:10|max:200')]
@@ -34,8 +34,7 @@ class Home extends Component
 
             $total_answers = Answer::where('user_id', '!=', auth()->id())->count();
 
-            if($total_answers >= $this->limitPerPage)
-            {
+            if ($total_answers >= $this->limitPerPage) {
                 $this->limitPerPage += 5;
             }
 
@@ -50,9 +49,10 @@ class Home extends Component
     public function editQuestionTitle()
     {
         $removeSpace = str_replace(' ', '-', $this->title);
-        $removeSpecialChar = preg_replace('/[^A-Za-z0-9\-]/', '',$removeSpace);
+        $removeSpecialChar = preg_replace('/[^A-Za-z0-9\-]/', '', $removeSpace);
         $addSpace = str_replace('-', ' ', $removeSpecialChar);
-        return ucfirst($addSpace) . '?';
+
+        return ucfirst($addSpace).'?';
     }
 
     public function addQuestion()
@@ -66,14 +66,13 @@ class Home extends Component
 
             $sameQuestion = Question::where('title_slug', $title_slug)->count();
 
-            if($sameQuestion != 0)
-            {
+            if ($sameQuestion != 0) {
                 $this->dispatch('toastify',
                     text: 'Question already been asked ',
                     background: '#CB4B10',
                 );
 
-            }else{
+            } else {
 
                 auth()->user()->questions()->create([
                     'title' => $title,
@@ -98,8 +97,9 @@ class Home extends Component
 
     public function render()
     {
-        $answers = Answer::groupBy('user_id')->where('user_id','!=',auth()->id())->whereNull('status')->latest()->distinct()->paginate($this->limitPerPage);
-        $users = User::select('id','username','username_slug')->where('username', 'like', '%'.$this->search.'%')->latest()->get();
-        return view('livewire.home', compact('answers','users'));
+        $answers = Answer::groupBy('user_id')->where('user_id', '!=', auth()->id())->whereNull('status')->latest()->distinct()->paginate($this->limitPerPage);
+        $users = User::select('id', 'username', 'username_slug')->where('username', 'like', '%'.$this->search.'%')->latest()->get();
+
+        return view('livewire.home', compact('answers', 'users'));
     }
 }
