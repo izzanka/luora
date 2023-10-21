@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="text-center mt-3">
-                    Already have an account? <a href="{{ route('login') }}" wire:navigate class="text-danger">Sign in</a>
+                    Already have an account? <a wire:navigate href="{{ route('login') }}" wire:navigate class="text-danger">Sign in</a>
                 </div>
             </div>
             <div class="col-3"></div>

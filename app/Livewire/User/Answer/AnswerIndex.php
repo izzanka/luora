@@ -25,7 +25,7 @@ class AnswerIndex extends Component
     public function mount()
     {
         $this->total_questions = Question::where('user_id', '!=', auth()->id())->count();
-        $this->followed_topics = auth()->user()->topicFollowing()->latest()->get() ?? null;
+        $this->followed_topics = auth()->user()->topicFollowing()->get() ?? null;
     }
 
     public function loadMore()
@@ -65,11 +65,15 @@ class AnswerIndex extends Component
             $questions = Question::search($name_topic)->get();
 
             foreach ($questions as $question) {
-                ! in_array($question->id, $questions_id) ? $questions_id[] = $question->id : '';
+                $questions_id[] = $question->id;
             }
         }
 
-        $questions = Question::whereIn('id', $questions_id)->where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
+        if(!empty($id_topics)){
+            $questions = Question::whereIn('id', $questions_id)->where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
+        }else{
+            $questions = Question::where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
+        }
 
         return view('livewire.user.answer.answer-index', compact('questions'));
     }

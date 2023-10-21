@@ -5,7 +5,7 @@
                 <b style="font-size: 16px">{{ $question->title }}</b>
             </a>
             <div class="mt-2 text-secondary">
-                <a href="" class="text-secondary" style="font-size: 13px">
+                <a href="{{ route('question.index', $question->title_slug) }}" class="text-secondary" style="font-size: 13px">
                     <b>
                     @if ($question->answers()->count() > 0)
                         {{ $question->answers()->count() }} answers

@@ -4,6 +4,8 @@ namespace App\Livewire\User\Question;
 
 use App\Models\Answer;
 use App\Models\Question;
+use App\Models\Topic;
+use App\Models\TopicFollow;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -133,7 +135,35 @@ class QuestionIndex extends Component
         } elseif ($this->sort_by == 'Upvote') {
             $answers = Answer::with(['question', 'user'])->where('question_id', $this->question->id)->orderByDesc('total_upvotes')->paginate($this->limitPerPage);
         }
-        $questions = Question::where('user_id', '!=', auth()->id())->where('id', '!=', $this->question->id)->latest()->take(5)->get();
+
+        $topicFollow = TopicFollow::select('topic_id')->where('user_id', auth()->id())->get();
+        $id_topics = [];
+
+        foreach ($topicFollow as $topic) {
+            $id_topics[] = $topic->topic_id;
+        }
+
+        $name_topics = [];
+        $topics = Topic::select('name')->findMany($id_topics);
+
+        foreach ($topics as $topic) {
+            $name_topics[] = $topic->name;
+        }
+
+        $questions_id = [];
+        foreach ($name_topics as $name_topic) {
+            $questions = Question::search($name_topic)->get();
+
+            foreach ($questions as $question) {
+                $questions_id[] = $question->id;
+            }
+        }
+
+        if(!empty($id_topics)){
+            $questions = Question::whereIn('id', $questions_id)->where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
+        }else{
+            $questions = Question::where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
+        }
 
         return view('livewire.user.question.question-index', compact('answers', 'questions'));
     }
