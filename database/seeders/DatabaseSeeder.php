@@ -26,6 +26,14 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
         ]);
 
+        DB::table('users')->insert([
+            'username' => 'user 1',
+            'username_slug' => 'user-1',
+            'email' => 'user1@gmail.com',
+            'password' => bcrypt('password'),
+            'created_at' => now(),
+        ]);
+
         $topic_names = [
             'Anime',
             'Advertising',
@@ -144,6 +152,13 @@ class DatabaseSeeder extends Seeder
 
             DB::table('answers')->insert([
                 'user_id' => 2,
+                'question_id' => $i + 1,
+                'answer' => 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolor, magnam! Ipsam dolore numquam eos praesentium, a fuga nostrum perspiciatis reprehenderit! Quas deserunt numquam est explicabo sint nostrum quod, inventore perspiciatis.',
+                'created_at' => now(),
+            ]);
+
+            DB::table('answers')->insert([
+                'user_id' => 3,
                 'question_id' => $i + 1,
                 'answer' => 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolor, magnam! Ipsam dolore numquam eos praesentium, a fuga nostrum perspiciatis reprehenderit! Quas deserunt numquam est explicabo sint nostrum quod, inventore perspiciatis.',
                 'created_at' => now(),

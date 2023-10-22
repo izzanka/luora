@@ -106,7 +106,7 @@
                                     {{ auth()->user()->username }}
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('stats.index') }}">
                                     Your content & stats
                                 </a>
                                 <div class="dropdown-divider"></div>
@@ -128,7 +128,8 @@
 
             <div class="page-wrapper">
                 <div class="container">
-                    {{ $slot }}
+                    {{ $slot ?? null}}
+                    @yield('main')
                 </div>
             </div>
         </div>
@@ -155,6 +156,7 @@
                 }
             }
         </script>
+        @yield('javascript')
     </body>
 </html>
 

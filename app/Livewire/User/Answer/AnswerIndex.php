@@ -46,8 +46,8 @@ class AnswerIndex extends Component
 
     public function render()
     {
-        $topicFollow = TopicFollow::select('topic_id')->where('user_id', auth()->id())->get();
         $id_topics = [];
+        $topicFollow = TopicFollow::select('topic_id')->where('user_id', auth()->id())->get();
 
         foreach ($topicFollow as $topic) {
             $id_topics[] = $topic->topic_id;
@@ -63,13 +63,14 @@ class AnswerIndex extends Component
         $questions_id = [];
         foreach ($name_topics as $name_topic) {
             $questions = Question::search($name_topic)->get();
-
-            foreach ($questions as $question) {
-                $questions_id[] = $question->id;
+            if($questions->isNotEmpty()){
+                foreach ($questions as $question) {
+                    !in_array($question->id, $questions_id) ? $questions_id[] = $question->id : '';
+                }
             }
         }
 
-        if(!empty($id_topics)){
+        if(count($questions_id) > 0){
             $questions = Question::whereIn('id', $questions_id)->where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
         }else{
             $questions = Question::where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);

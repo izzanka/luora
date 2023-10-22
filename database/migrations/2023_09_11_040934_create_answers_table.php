@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('answer');
             $table->string('image')->nullable();
             $table->string('status')->nullable();
-            $table->bigInteger('total_views')->unsigned()->default(0);
+            $table->bigInteger('total_shares')->unsigned()->default(0);
             $table->bigInteger('total_upvotes')->unsigned()->default(0);
             $table->bigInteger('total_downvotes')->unsigned()->default(0);
             $table->timestamps();

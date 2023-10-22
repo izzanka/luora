@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StatController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Home;
@@ -27,6 +28,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/', Home::class)->name('home');
+    Route::get('/stats', [StatController::class, 'index'])->name('stats.index');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/answers', AnswerIndex::class)->name('answer.index');
     Route::get('/{question:title_slug}', QuestionIndex::class)->name('question.index');

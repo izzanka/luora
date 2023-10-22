@@ -15,8 +15,7 @@ class Answer extends Component
     public $vote;
 
     public int $total_upvotes = 0;
-
-    // public int $total_downvotes = 0;
+    public int $total_views = 0;
     public int $total_comments = 0;
 
     public $credential = null;
@@ -35,7 +34,7 @@ class Answer extends Component
         $this->answer->load(['user', 'question', 'userAnswerVotes', 'comments']);
         $this->vote = $this->answer->userAnswerVotes->vote ?? null;
         $this->total_upvotes = $this->answer->total_upvotes;
-        // $this->total_downvotes = $this->answer->total_downvotes;
+        $this->total_views = views($this->answer)->unique()->count();
         $this->total_comments = $this->answer->comments->count();
         $this->answer_edit = $this->answer->answer;
         $this->followed = auth()->user()->userIsFollowing($this->answer->user_id);
@@ -205,8 +204,7 @@ class Answer extends Component
 
     public function render()
     {
-        $this->answer->increment('total_views');
-
+        views($this->answer)->record();
         return view('livewire.user.answer');
     }
 }

@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Answer extends Model
+class Answer extends Model implements Viewable
 {
-    use HasFactory;
+    use HasFactory, InteractsWithViews;
+
+    protected $removeViewsOnDelete = true;
 
     protected $guarded = [];
 
@@ -35,4 +39,5 @@ class Answer extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
 }

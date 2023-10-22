@@ -32,7 +32,7 @@
                     {{ $answer->answer }}
                 </p>
                 <div class="mt-3">
-                    <small class="text-secondary">{{ $answer->total_views }} views</small>
+                    <small class="text-secondary">{{ $total_views }} views</small>
                 </div>
                 <div class="mt-2">
                     <button wire:click="votes('up')" class="btn btn-pill btn-outline-secondary @if($vote == 'up') active border-secondary @endif">

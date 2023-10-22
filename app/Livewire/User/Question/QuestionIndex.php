@@ -136,30 +136,19 @@ class QuestionIndex extends Component
             $answers = Answer::with(['question', 'user'])->where('question_id', $this->question->id)->orderByDesc('total_upvotes')->paginate($this->limitPerPage);
         }
 
-        $topicFollow = TopicFollow::select('topic_id')->where('user_id', auth()->id())->get();
-        $id_topics = [];
-
-        foreach ($topicFollow as $topic) {
-            $id_topics[] = $topic->topic_id;
-        }
-
-        $name_topics = [];
-        $topics = Topic::select('name')->findMany($id_topics);
-
-        foreach ($topics as $topic) {
-            $name_topics[] = $topic->name;
-        }
+        $titles = explode('-', $this->question->title_slug);
 
         $questions_id = [];
-        foreach ($name_topics as $name_topic) {
-            $questions = Question::search($name_topic)->get();
-
-            foreach ($questions as $question) {
-                $questions_id[] = $question->id;
+        foreach($titles as $title){
+            $questions = Question::search($title)->where('id', '!=', $this->question->id)->get();
+            if($questions->isNotEmpty()){
+                foreach ($questions as $question) {
+                    !in_array($question->id, $questions_id) ? $questions_id[] = $question->id : '';
+                }
             }
         }
 
-        if(!empty($id_topics)){
+        if(count($questions_id) > 0) {
             $questions = Question::whereIn('id', $questions_id)->where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
         }else{
             $questions = Question::where('user_id', '!=', auth()->id())->whereNull('status')->latest()->paginate($this->limitPerPage);
