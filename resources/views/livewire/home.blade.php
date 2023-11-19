@@ -83,11 +83,8 @@
                                     <a href="{{ route('profile.index', $user->username_slug) }}">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-1">
-                                                <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($user->image == null) 'https://ui-avatars.com/api/?name={{ $user->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($user->image) }} @endif)"></span>
-                                            </div>
-                                            <div class="col-11 mt-1">
-                                               <span class="ms-3 text-dark">{{ $user->username }}</span>
+                                            <div class="col-12 text-center">
+                                                <span class="text-dark">{{ $user->username }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -97,7 +94,7 @@
                         @endforeach
                     </div>
                 @endif
-                <div class="mt-3">
+                <div class="mt-3 mb-3">
                     <button class="btn btn-secondary w-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

@@ -4,7 +4,7 @@
             <div class="col-6">
                 <div class="row">
                     <div class="col-3">
-                        <span class="avatar avatar-xl rounded-circle" style="background-image: url(@if($current_image == null) 'https://ui-avatars.com/api/?name={{ $username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($current_image) }} @endif)"></span>
+                        <span class="avatar avatar-xl rounded-circle" style="background-image: url(@if($current_image == null) 'https://ui-avatars.com/api/?name={{ $username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset('storage/' . $current_image) }} @endif)"></span>
                     </div>
                     <div class="col-9">
                         <div class="row">
@@ -125,7 +125,7 @@
                         <a href="">
                             <div class="row">
                                 <div class="col-1">
-                                    <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($u_f->image == null) 'https://ui-avatars.com/api/?name={{ $u_f->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($u_f->image) }} @endif)"></span>
+                                    <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($u_f->image == null) 'https://ui-avatars.com/api/?name={{ $u_f->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset('storage/' . $u_f->image) }} @endif)"></span>
                                 </div>
                                 <div class="col-11 mt-1">
                                     <span class="text-dark">{{ $u_f->username }}</span>
@@ -144,7 +144,7 @@
                         <a href="">
                             <div class="row">
                                 <div class="col-1">
-                                    <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($u_f->image == null) 'https://ui-avatars.com/api/?name={{ $u_f->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($u_f->image) }} @endif)"></span>
+                                    <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if($u_f->image == null) 'https://ui-avatars.com/api/?name={{ $u_f->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset('storage/' . $u_f->image) }} @endif)"></span>
                                 </div>
                                 <div class="col-11 mt-1">
                                     <span class="text-dark">{{ $u_f->username }}</span>
@@ -330,7 +330,7 @@
                                 @if ($image)
                                     <span class="avatar avatar-lg rounded-circle" style="background-image: url({{ $image->temporaryUrl() }})"></span>
                                 @else
-                                    <span class="avatar avatar-lg rounded-circle" style="background-image: url(@if($current_image == null) 'https://ui-avatars.com/api/?name={{ $username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset($current_image) }} @endif)"></span>
+                                    <span class="avatar avatar-lg rounded-circle" style="background-image: url(@if($current_image == null) 'https://ui-avatars.com/api/?name={{ $username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset('storage/' . $current_image) }} @endif)"></span>
                                 @endif
                             </div>
                             <div class="col-10">

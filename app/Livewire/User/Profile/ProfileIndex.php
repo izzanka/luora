@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileIndex extends Component
 {
@@ -168,8 +169,8 @@ class ProfileIndex extends Component
                 $image = $this->current_image;
 
                 if ($this->image) {
-                    $temp_image = $this->image->store('/public/images/photos');
-                    $image = str_replace('public', 'storage', $temp_image);
+                    Storage::delete($image);
+                    $image = $this->image->store('images/photos');
                 }
 
                 auth()->user()->update([
@@ -190,7 +191,7 @@ class ProfileIndex extends Component
 
         } catch (\Throwable $th) {
             $this->dispatch('toastify',
-                text: 'Edit profile failed, please try again later ',
+                text: 'Edit profile failed, please try again later',
                 background: '#CB4B10',
             );
         }

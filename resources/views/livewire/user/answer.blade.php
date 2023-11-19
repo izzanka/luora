@@ -4,7 +4,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-1">
-                        <span class="avatar rounded-circle" style="background-image: url(@if($answer->user->image == null) 'https://ui-avatars.com/api/?name={{ $answer->user->username }}&background=DE6060&color=fff&rounded=true&size=56' @else {{ asset($answer->user->image) }} @endif)"></span>
+                        <span class="avatar rounded-circle" style="background-image: url(@if($answer->user->image == null) 'https://ui-avatars.com/api/?name={{ $answer->user->username }}&background=DE6060&color=fff&rounded=true&size=56' @else {{ asset('storage/' . $answer->user->image) }} @endif)"></span>
                     </div>
                     <div class="col-11">
                         <a href="{{ route('profile.index', $answer->user->username_slug) }}" class="text-dark">

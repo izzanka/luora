@@ -42,7 +42,7 @@
             @if(!$isEditing)
                 <div class="col-1">
                     @if ($showProfile)
-                        <span class="avatar rounded-circle avatar-sm" style="background-image: url(@if(auth()->user()->image == null) 'https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=DE6060&color=fff&rounded=true&size=56' @else {{ asset(auth()->user()->image) }} @endif)"></span>
+                        <span class="avatar rounded-circle avatar-sm" style="background-image: url(@if(auth()->user()->image == null) 'https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=DE6060&color=fff&rounded=true&size=56' @else {{ asset('storage/' . auth()->user()->image) }} @endif)"></span>
                     @endif
                 </div>
             @endif

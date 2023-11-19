@@ -99,7 +99,7 @@
                         </div>
                         <div class="nav-item dropdown">
                             <a id="dropdown" href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
-                                <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if(auth()->user()->image == null) 'https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset(auth()->user()->image) }} @endif)"></span>
+                                <span class="avatar avatar-sm rounded-circle" style="background-image: url(@if(auth()->user()->image == null) 'https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=DE6060&color=fff&rounded=true&size=112' @else {{ asset('storage/' . auth()->user()->image) }} @endif)"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                 <a target="_blank" class="dropdown-item text-dark" href="{{ route('profile.index', auth()->user()->username_slug) }}">

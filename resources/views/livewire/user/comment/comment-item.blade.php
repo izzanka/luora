@@ -72,7 +72,7 @@
     <hr class="mt-3 mb-2">
     <div class="row">
         <div class="col-1">
-            <span class="avatar rounded-circle avatar-sm" style="background-image: url(@if($comment->user->image == null) 'https://ui-avatars.com/api/?name={{ $comment->user->username }}&background=DE6060&color=fff&rounded=true&size=56' @else {{ asset($comment->user->image) }} @endif)"></span>
+            <span class="avatar rounded-circle avatar-sm" style="background-image: url(@if($comment->user->image == null) 'https://ui-avatars.com/api/?name={{ $comment->user->username }}&background=DE6060&color=fff&rounded=true&size=56' @else {{ asset('storage/' . $comment->user->image) }} @endif)"></span>
         </div>
         <div class="col-11">
             <div style="font-size: 13px">
