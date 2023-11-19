@@ -71,6 +71,11 @@ class CommentCreate extends Component
                     'parent_id' => $this->parentId,
                 ]);
 
+                $this->dispatch('toastify',
+                    text: 'Add comment success ',
+                    background: '#2D9655',
+                );
+
                 $this->dispatch('hide-comment-form');
                 $this->dispatch('comment-created', id: $comment->id);
             }

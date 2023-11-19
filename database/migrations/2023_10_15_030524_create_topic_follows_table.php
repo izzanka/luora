@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Topic;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('topic_follows', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Topic::class);
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('topic_id')->constrained('topics')->cascadeOnDelete();
             $table->timestamps();
         });
     }

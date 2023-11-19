@@ -133,11 +133,12 @@
                 </div>
             </div>
         </div>
+
         <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script type="text/javascript">
 
-            window.addEventListener('toastify',function(e){
+            window.addEventListener('toastify', function(e){
                 Toastify({
                     text: e.detail.text,
                     duration: 3000,
@@ -156,7 +157,6 @@
                 }
             }
         </script>
-        @yield('javascript')
     </body>
 </html>
 

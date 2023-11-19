@@ -2,36 +2,90 @@
 
 namespace App\Http\Controllers;
 use App\Models\Answer;
+use App\Models\AnswerVote;
+use App\Models\Comment;
+use App\Models\Question;
+use App\Models\Share;
+use App\Models\View;
+use App\Models\Vote;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use Illuminate\Http\Request;
 
 class StatController extends Controller
 {
-    // public function index()
-    // {
-    //     $total_views = Answer::where('user_id', auth()->id())->sum('total_views');
-    //     $total_upvotes = Answer::where('user_id', auth()->id())->sum('total_upvotes');
-    //     $total_shares = Answer::where('user_id', auth()->id())->sum('total_shares');
-    //     $answers = Answer::where('user_id', auth()->id())->withCount('comments')->get();
+    public function index(Request $request)
+    {
+        if($request->sort == 'all'){
 
-    //     $comments['Comments'] = 0;
+            $answers = Answer::where('user_id', auth()->id())->get();
+            $labels = ['Views','Upvotes','Comments','Shares'];
 
-    //     foreach($answers as $answer)
-    //     {
-    //         $comments['Comments'] += $answer->comments_count;
-    //     }
+            $views_count = 0;
+            $comments_count = 0;
+            $upvotes_count = 0;
+            $shares_count = 0;
 
-    //     $views['Views'] = $total_views;
-    //     $upvotes['Upvotes'] = $total_upvotes;
-    //     $shares['Shares'] = $total_shares;
+            foreach($answers as $answer)
+            {
+               $views_count += View::where('viewable_id', $answer->id)->count();
+               $comments_count += Comment::where('answer_id', $answer->id)->count();
+               $upvotes_count += $answer->total_upvotes;
+               $shares_count += $answer->total_shares;
+            }
 
-    //     $answers = Answer::select('total_views')->where('user_id',auth()->id())->take(7)->pluck('total_views')->toArray();
-    //     $answers_date = Answer::select('created_at')->where('user_id',auth()->id())->take(7)->pluck('created_at')->toArray();
+            $views = $views_count;
+            $comments = $comments_count;
+            $upvotes = $upvotes_count;
+            $shares = $shares_count;
 
-    //     $labels = [];
-    //     foreach($answers_date as $date)
-    //     {
-    //         $labels[] = $date->format("M d, Y");
-    //     }
+            $sort = 'all';
+            $sortBy = 'All time';
 
-    //     return view('livewire.user.stat', compact('views','upvotes','comments','shares','answers','labels'));
-    // }
+        }else{
+
+            $last_date = Carbon::today()->subDays(6);
+            $dates = CarbonPeriod::create(now()->subDays(6), now());
+            $answers = Answer::where('user_id', auth()->id())->where('created_at', '>=', $last_date->format('Y-m-d'))->get();
+
+            $labels = [];
+            $views = [];
+            $comments = [];
+            $upvotes = [];
+            $shares = [];
+
+
+            foreach($dates as $date)
+            {
+                $date_format = $date->format('Y-m-d');
+
+                $views_count = 0;
+                $comments_count = 0;
+                $upvotes_count = 0;
+                $shares_count = 0;
+
+                foreach($answers as $answer)
+                {
+                    $views_count += View::where('viewable_id', $answer->id)->whereDate('viewed_at', $date_format)->count();
+                    $comments_count += Comment::where('answer_id', $answer->id)->whereDate('created_at', $date_format)->count();
+                    $upvotes_count += Vote::where('answer_id', $answer->id)->where('vote', 'up')->whereDate('created_at', $date_format)->count();
+                    $shares_count += Share::where('answer_id', $answer->id)->whereDate('shared_at', $date_format)->count();
+                }
+
+                $labels[] =  $date->format('M d, Y');
+
+                $views[] = $views_count;
+                $comments[] = $comments_count;
+                $upvotes[] = $upvotes_count;
+                $shares[] = $shares_count;
+            }
+
+            $sort = 'day';
+            $sortBy = 'Last 7 days';
+
+        }
+
+        return view('livewire.user.stat', compact('sort','labels','views','comments','upvotes', 'shares', 'sortBy'));
+    }
+
 }

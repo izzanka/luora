@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Follow extends Model
+class Share extends Model
 {
     use HasFactory;
-
     protected $guarded = [];
+    public $timestamps = false;
+
+    public function answer()
+    {
+        return $this->belongsTo(Answer::class);
+    }
 }

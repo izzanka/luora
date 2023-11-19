@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Question;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Question::class);
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('question_id')->constrained('questions')->cascadeOnDelete();
             $table->text('answer');
             $table->string('image')->nullable();
             $table->string('status')->nullable();
-            $table->bigInteger('total_shares')->unsigned()->default(0);
             $table->bigInteger('total_upvotes')->unsigned()->default(0);
             $table->bigInteger('total_downvotes')->unsigned()->default(0);
+            $table->bigInteger('total_shares')->unsigned()->default(0);
             $table->timestamps();
         });
     }

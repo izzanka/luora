@@ -28,11 +28,6 @@ class CommentIndex extends Component
                 $this->comments = $this->comments->prepend($comment);
             }
 
-            $this->dispatch('toastify',
-                text: 'Add comment success ',
-                background: '#2D9655',
-            );
-
             $this->dispatch('update-comment');
             $this->mount();
 

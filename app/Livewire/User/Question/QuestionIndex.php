@@ -83,11 +83,11 @@ class QuestionIndex extends Component
     {
         try {
 
-            $answers = Answer::select('id', 'question_id')->where('question_id', $question->id)->get();
+            // $answers = Answer::select('id', 'question_id')->where('question_id', $question->id)->get();
 
-            foreach ($answers as $answer) {
-                $answer->delete();
-            }
+            // foreach ($answers as $answer) {
+            //     $answer->delete();
+            // }
 
             $question->delete();
 

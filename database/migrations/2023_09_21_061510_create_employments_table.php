@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('employments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('position', 50);
             $table->string('company', 50);
             $table->string('start_year', 4);

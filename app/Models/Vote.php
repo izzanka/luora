@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CommentVote extends Model
+class Vote extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function comment()
+    public function answer()
     {
-        return $this->belongsTo(Comment::class);
+        return $this->belongsTo(Answer::class);
     }
 }

@@ -31,13 +31,4 @@ class Comment extends Model
         return $this->belongsTo(Answer::class);
     }
 
-    public function commentVotes()
-    {
-        return $this->hasMany(CommentVote::class);
-    }
-
-    public function userCommentVotes()
-    {
-        return $this->commentVotes()->one()->where('user_id', auth()->id());
-    }
 }

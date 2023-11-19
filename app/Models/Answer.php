@@ -25,19 +25,24 @@ class Answer extends Model implements Viewable
         return $this->belongsTo(User::class);
     }
 
-    public function answerVotes()
+    public function votes()
     {
-        return $this->hasMany(AnswerVote::class);
+        return $this->hasMany(Vote::class);
     }
 
-    public function userAnswerVotes()
+    public function userVotes()
     {
-        return $this->answerVotes()->one()->where('user_id', auth()->id());
+        return $this->votes()->one()->where('user_id', auth()->id());
     }
 
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function shares()
+    {
+        return $this->hasMany(Share::class);
     }
 
 }

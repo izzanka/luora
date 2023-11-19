@@ -45,7 +45,7 @@
                         <div wire:loading wire:target="votes('up')">
                             <span class="spinner-border spinner-border-sm me-2" role="status"></span>
                         </div>
-                        Upvote &#8226; {{ $total_upvotes }}
+                        Upvote &#8226; {{ number_format_short($total_upvotes) }}
                     </button>
                     <button wire:click="votes('down')" class="btn btn-pill btn-icon btn-outline-secondary @if($vote == 'down') active border-secondary @endif">
                         <svg wire:loading.remove wire:target="votes('down')" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-down" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -72,9 +72,9 @@
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1"></path>
                         </svg>
-                        {{ $total_comments }}
+                        {{ number_format_short($total_comments) }}
                     </button>
-                    {{-- <button class="btn btn-pill btn-ghost-secondary">
+                    <button class="btn btn-pill btn-ghost-secondary" data-bs-toggle="modal" data-bs-target="#shareAnswer{{ $answer->id }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-share" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
@@ -83,47 +83,47 @@
                             <path d="M8.7 10.7l6.6 -3.4"></path>
                             <path d="M8.7 13.3l6.6 3.4"></path>
                         </svg>
-                        0
-                    </button> --}}
-                        <div class="float-end">
-                            <svg role="button" data-bs-toggle="dropdown" xmlns="http://www.w3.org/2000/svg" class="mt-2 icon icon-tabler icon-tabler-dots" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                            </svg>
-                            <div class="dropdown-menu">
-                                @if (auth()->id() == $answer->user_id)
-                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editAnswerModal">
-                                        <svg role="button" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
-                                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
-                                            <path d="M16 5l3 3"></path>
-                                        </svg>
-                                    Edit</a>
-                                    <a class="dropdown-item" href="#" wire:click.prevent="delete({{ $answer->id }})" wire:confirm="Delete answer?">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M4 7l16 0"></path>
-                                            <path d="M10 11l0 6"></path>
-                                            <path d="M14 11l0 6"></path>
-                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                        </svg>
-                                    Delete</a>
-                                @else
-                                    <a class="dropdown-item" href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="me-2 icon icon-tabler icon-tabler-alert-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
-                                            <path d="M12 8v4"></path>
-                                            <path d="M12 16h.01"></path>
-                                        </svg>
-                                    Report</a>
-                                @endif
-                            </div>
+                        {{ number_format_short($total_shares) }}
+                    </button>
+                    <div class="float-end">
+                        <svg role="button" data-bs-toggle="dropdown" xmlns="http://www.w3.org/2000/svg" class="mt-2 icon icon-tabler icon-tabler-dots" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                            <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                            <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                        </svg>
+                        <div class="dropdown-menu">
+                            @if (auth()->id() == $answer->user_id)
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editAnswerModal{{$answer->id}}">
+                                    <svg role="button" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                                        <path d="M16 5l3 3"></path>
+                                    </svg>
+                                Edit</a>
+                                <a class="dropdown-item" href="#" wire:click.prevent="delete({{ $answer->id }})" wire:confirm="Delete answer?">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 7l16 0"></path>
+                                        <path d="M10 11l0 6"></path>
+                                        <path d="M14 11l0 6"></path>
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                    </svg>
+                                Delete</a>
+                            @else
+                                <a class="dropdown-item" href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="me-2 icon icon-tabler icon-tabler-alert-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                        <path d="M12 8v4"></path>
+                                        <path d="M12 16h.01"></path>
+                                    </svg>
+                                Report</a>
+                            @endif
                         </div>
+                    </div>
                 </div>
                 <div x-show="open">
                     <livewire:user.comments.comment-index :$answer />
@@ -132,9 +132,8 @@
         </div>
     </div>
 
-
     @if (auth()->id() == $answer->user_id)
-        <div class="modal" id="editAnswerModal" tabindex="-1" wire:ignore.self>
+        <div class="modal" id="editAnswerModal{{$answer->id}}" tabindex="-1" wire:ignore.self>
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <form wire:submit="edit">
@@ -165,5 +164,40 @@
         </div>
     @endif
 
+    <div class="modal" id="shareAnswer{{ $answer->id }}" tabindex="-1" wire:ignore.self>
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Share answer</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @foreach($shares as $share)
+                        <div class="row mb-3">
+                            <div class="col-10">
+                                {!! $share['svg'] !!}
+                                {{ $share['name'] }}
+                            </div>
+                            <div class="col-2">
+                                <a class="btn btn-primary btn-sm btn-pill float-end" href="{{ $share['url'] }}" target="_blank" wire:click="share('{{ $share['name'] }}')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="me-1 icon icon-tabler icon-tabler-share" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                        <path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                        <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                        <path d="M8.7 10.7l6.6 -3.4"></path>
+                                        <path d="M8.7 13.3l6.6 3.4"></path>
+                                    </svg>
+                                    Share
+                                </a>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </div>

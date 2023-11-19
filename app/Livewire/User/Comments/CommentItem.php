@@ -15,16 +15,16 @@ class CommentItem extends Component
 
     public bool $editing = false;
 
-    public $vote;
+    // public $vote;
 
-    public int $total_upvotes = 0;
+    // public int $total_upvotes = 0;
 
     public function mount(Comment $comment)
     {
-        $comment->load('userCommentVotes');
+        // $comment->load('userCommentVotes');
         $this->comment = $comment;
-        $this->vote = $this->comment->userCommentVotes->vote ?? null;
-        $this->total_upvotes = $this->comment->total_upvotes;
+        // $this->vote = $this->comment->userCommentVotes->vote ?? null;
+        // $this->total_upvotes = $this->comment->total_upvotes;
     }
 
     public function startReplying()
@@ -96,54 +96,54 @@ class CommentItem extends Component
         }
     }
 
-    public function votes(string $vote, string $from)
-    {
-        if ($vote == 'up' || $vote == 'down') {
-            try {
+    // public function votes(string $vote, string $from)
+    // {
+    //     if ($vote == 'up' || $vote == 'down') {
+    //         try {
 
-                if ($this->vote == null) {
-                    CommentVote::create([
-                        'comment_id' => $this->comment->id,
-                        'user_id' => auth()->id(),
-                        'vote' => $vote,
-                    ]);
+    //             if ($this->vote == null) {
+    //                 CommentVote::create([
+    //                     'comment_id' => $this->comment->id,
+    //                     'user_id' => auth()->id(),
+    //                     'vote' => $vote,
+    //                 ]);
 
-                    $vote == 'up' ? $this->comment->increment('total_upvotes') : $this->comment->increment('total_downvotes');
-                } elseif ($vote == $this->vote) {
-                    $this->comment->userCommentVotes->delete();
+    //                 $vote == 'up' ? $this->comment->increment('total_upvotes') : $this->comment->increment('total_downvotes');
+    //             } elseif ($vote == $this->vote) {
+    //                 $this->comment->userCommentVotes->delete();
 
-                    $vote == 'up' ? $this->comment->decrement('total_upvotes') : $this->comment->decrement('total_downvotes');
-                } else {
-                    $this->comment->userCommentVotes->update(['vote' => $vote]);
+    //                 $vote == 'up' ? $this->comment->decrement('total_upvotes') : $this->comment->decrement('total_downvotes');
+    //             } else {
+    //                 $this->comment->userCommentVotes->update(['vote' => $vote]);
 
-                    if ($vote == 'up') {
-                        $this->comment->increment('total_upvotes');
-                        $this->comment->decrement('total_downvotes');
-                    } else {
-                        $this->comment->increment('total_downvotes');
-                        $this->comment->decrement('total_upvotes');
-                    }
-                }
+    //                 if ($vote == 'up') {
+    //                     $this->comment->increment('total_upvotes');
+    //                     $this->comment->decrement('total_downvotes');
+    //                 } else {
+    //                     $this->comment->increment('total_downvotes');
+    //                     $this->comment->decrement('total_upvotes');
+    //                 }
+    //             }
 
-                $this->dispatch('toastify',
-                    text: 'Vote comment success ',
-                    background: '#2D9655',
-                );
+    //             $this->dispatch('toastify',
+    //                 text: 'Vote comment success ',
+    //                 background: '#2D9655',
+    //             );
 
-                if ($from == 'home') {
-                    $this->redirect(route('home'));
-                } else {
-                    $this->redirect(route('question.index', $from));
-                }
+    //             if ($from == 'home') {
+    //                 $this->redirect(route('home'));
+    //             } else {
+    //                 $this->redirect(route('question.index', $from));
+    //             }
 
-            } catch (\Throwable $th) {
-                $this->dispatch('toastify',
-                    text: 'Vote comment failed, please try again later ',
-                    background: '#CB4B10',
-                );
-            }
-        }
-    }
+    //         } catch (\Throwable $th) {
+    //             $this->dispatch('toastify',
+    //                 text: 'Vote comment failed, please try again later ',
+    //                 background: '#CB4B10',
+    //             );
+    //         }
+    //     }
+    // }
 
     #[On('comment-created')]
     private function commentCreated(int $id)

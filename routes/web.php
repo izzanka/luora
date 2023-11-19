@@ -8,6 +8,7 @@ use App\Livewire\Home;
 use App\Livewire\User\Answer\AnswerIndex;
 use App\Livewire\User\Profile\ProfileIndex;
 use App\Livewire\User\Question\QuestionIndex;
+use App\Livewire\User\Stat;
 use Illuminate\Support\Facades\Route;
 
 /*

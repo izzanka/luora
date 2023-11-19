@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Answer;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,11 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('follows', function (Blueprint $table) {
+        Schema::create('shares', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignId('following_id')->constrained('users');
-            $table->timestamps();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('answer_id')->constrained('answers')->cascadeOnDelete();
+            $table->string('name');
+            $table->timestamp('shared_at');
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('follows');
+        Schema::dropIfExists('shares');
     }
 };
