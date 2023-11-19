@@ -169,7 +169,9 @@ class ProfileIndex extends Component
                 $image = $this->current_image;
 
                 if ($this->image) {
-                    Storage::delete($image);
+                    if($image != null){
+                        Storage::delete($image);
+                    }
                     $image = $this->image->store('images/photos');
                 }
 
