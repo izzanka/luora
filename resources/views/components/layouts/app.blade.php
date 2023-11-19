@@ -141,7 +141,7 @@
             window.addEventListener('toastify', function(e){
                 Toastify({
                     text: e.detail.text,
-                    duration: 3000,
+                    duration: 5000,
                     close: true,
                     gravity: "top",
                     position: "center",
